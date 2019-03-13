@@ -9,7 +9,14 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/title_settings"
+        android:text="settings"
         android:background="@color/white"/>
 
+    <EditText
+        android:id="@+id/editText"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="change me - settings fragment" />
 </FrameLayout>
