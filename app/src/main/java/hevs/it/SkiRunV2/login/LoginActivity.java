@@ -1,4 +1,4 @@
-package hevs.it.SkiRunV2;
+package hevs.it.SkiRunV2.login;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,6 +15,9 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+
+import hevs.it.SkiRunV2.MainActivity;
+import hevs.it.SkiRunV2.R;
 
 
 public class LoginActivity extends AppCompatActivity {
