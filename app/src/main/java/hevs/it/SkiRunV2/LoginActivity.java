@@ -41,7 +41,7 @@ public class LoginActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
 
 
-        
+
         Log.i("TestCallback", "test");
 
         FirebaseManager.getClubs(new FirebaseCallBack() {
