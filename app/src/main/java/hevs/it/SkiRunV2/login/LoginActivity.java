@@ -1,4 +1,4 @@
-package hevs.it.SkiRunV2.login;
+package hevs.it.SkiRunV2;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,6 +19,14 @@ import com.google.firebase.auth.FirebaseAuth;
 import hevs.it.SkiRunV2.MainActivity;
 import hevs.it.SkiRunV2.R;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import hevs.it.SkiRunV2.entity.ClubEntity;
+import hevs.it.SkiRunV2.firebase.FirebaseCallBack;
+import hevs.it.SkiRunV2.firebase.FirebaseManager;
+import hevs.it.SkiRunV2.models.Club;
+
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -33,6 +41,26 @@ public class LoginActivity extends AppCompatActivity {
 
         //Get Firebase auth instance
         auth = FirebaseAuth.getInstance();
+
+
+        Log.i("TestCallback", "test");
+
+        FirebaseManager.getClubs(new FirebaseCallBack() {
+            @Override
+            public void onCallBack(Object o) {
+                Log.i("TestCallback",o.toString());
+                /*
+                List<ClubEntity> clubs = (List<ClubEntity>) o;
+                Log.i("TestCallback",o.toString());
+                Log.i("TestCallback","clubs size"+clubs.size());
+                for (ClubEntity club: clubs
+                     ) {
+                    Log.i("TestCallback", club.getName());
+                }
+                */
+
+            }
+        });
 
         if (auth.getCurrentUser() != null) {
             startActivity(new Intent(LoginActivity.this, MainActivity.class));
