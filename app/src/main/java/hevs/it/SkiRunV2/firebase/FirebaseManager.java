@@ -1,6 +1,7 @@
 package hevs.it.SkiRunV2.firebase;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -15,6 +16,8 @@ import java.util.Map;
 
 import hevs.it.SkiRunV2.entity.ClubEntity;
 import hevs.it.SkiRunV2.entity.CompetitionEntity;
+import hevs.it.SkiRunV2.entity.DisciplineEntity;
+import hevs.it.SkiRunV2.entity.MissionEntity;
 import hevs.it.SkiRunV2.entity.TypeJobEntity;
 import hevs.it.SkiRunV2.entity.UserEntity;
 
@@ -22,9 +25,9 @@ public class FirebaseManager {
 
     private static FirebaseDatabase mFirebaseDatabase = FirebaseDatabase.getInstance();
 
-    public static void getUser(String email, final FirebaseCallBack firebaseCallBack) {
+    public static void getUser(String uid, final FirebaseCallBack firebaseCallBack) {
         //Get the entity Person from an email
-        DatabaseReference ref = mFirebaseDatabase.getReference().child(FirebaseSession.NODE_USERS).child(email);
+        DatabaseReference ref = mFirebaseDatabase.getReference().child(FirebaseSession.NODE_USERS).child(uid);
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -43,19 +46,13 @@ public class FirebaseManager {
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                Map<String, Object> objectMap = (HashMap<String, Object>) dataSnapshot.getValue();
-
                 List<ClubEntity> clubs = new ArrayList<ClubEntity>();
-                for (Object obj : objectMap.values()) {
-                    if (obj instanceof Map) {
-                        Map<String, Object> mapObj = (Map<String, Object>) obj;
-                        ClubEntity club = new ClubEntity();
-                        club.setName((String) mapObj.get("name"));
-                        clubs.add(club);
-                    }
+                for (DataSnapshot childDataSnapshot : dataSnapshot.getChildren()) {
+                    ClubEntity club = new ClubEntity();
+                    club.setName(childDataSnapshot.getKey());
+                    clubs.add(club);
                 }
-                firebaseCallBack.onCallBack(dataSnapshot);
+                firebaseCallBack.onCallBack(clubs);
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -69,16 +66,11 @@ public class FirebaseManager {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                Map<String, Object> objectMap = (HashMap<String, Object>) dataSnapshot.getValue();
-
                 List<TypeJobEntity> jobs = new ArrayList<TypeJobEntity>();
-                for (Object obj : objectMap.values()) {
-                    if (obj instanceof Map) {
-                        Map<String, Object> mapObj = (Map<String, Object>) obj;
-                        TypeJobEntity job = new TypeJobEntity();
-                        job.setName((String) mapObj.get("name"));
-                        jobs.add(job);
-                    }
+                for (DataSnapshot childDataSnapshot : dataSnapshot.getChildren()) {
+                    TypeJobEntity job = new TypeJobEntity();
+                    job.setName(childDataSnapshot.getKey());
+                    jobs.add(job);
                 }
                 firebaseCallBack.onCallBack(jobs);
             }
@@ -94,8 +86,35 @@ public class FirebaseManager {
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                CompetitionEntity competition = dataSnapshot.getValue(CompetitionEntity.class);
-                firebaseCallBack.onCallBack(competition);
+                CompetitionEntity competition = new CompetitionEntity();
+                competition.setName(dataSnapshot.getKey());
+                competition.setStartDate((long)dataSnapshot.child(FirebaseSession.NODE_STARTDATE).getValue());
+                competition.setEndDate((long)dataSnapshot.child(FirebaseSession.NODE_ENDDATE).getValue());
+                competition.setRefApi(((String)dataSnapshot.child(FirebaseSession.NODE_REFAPI).getValue()));
+
+                List<ClubEntity> clubs = new ArrayList<ClubEntity>();
+                for (DataSnapshot childDataSnapshot : dataSnapshot.child(FirebaseSession.NODE_GUESTCLUBS).getChildren()) {
+                    ClubEntity club = new ClubEntity();
+                    club.setName(childDataSnapshot.getKey());
+                    clubs.add(club);
+                }
+
+                List<DisciplineEntity> disciplines = new ArrayList<DisciplineEntity>();
+                for (DataSnapshot childDataSnapshot : dataSnapshot.child(FirebaseSession.NODE_DISCIPLINES).getChildren()) {
+                    DisciplineEntity discipline = new DisciplineEntity();
+                    discipline.setName(childDataSnapshot.getKey());
+                    disciplines.add(discipline);
+                }
+
+
+
+                competition.setGuestsClub(clubs);
+                competition.setDisciplines(disciplines);
+                Log.i("TestCallback", ""+competition.getDisciplines().size());
+                Log.i("TestCallback", competition.toString());
+
+                //CompetitionEntity competition = dataSnapshot.getValue(CompetitionEntity.class);
+                //firebaseCallBack.onCallBack(competition);
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
