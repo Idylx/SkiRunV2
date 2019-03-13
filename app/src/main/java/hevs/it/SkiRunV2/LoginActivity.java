@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,6 +16,14 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import hevs.it.SkiRunV2.entity.ClubEntity;
+import hevs.it.SkiRunV2.firebase.FirebaseCallBack;
+import hevs.it.SkiRunV2.firebase.FirebaseManager;
+import hevs.it.SkiRunV2.models.Club;
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -30,6 +39,26 @@ public class LoginActivity extends AppCompatActivity {
 
         //Get Firebase auth instance
         auth = FirebaseAuth.getInstance();
+
+
+        Log.i("TestCallback", "test");
+
+        FirebaseManager.getClubs(new FirebaseCallBack() {
+            @Override
+            public void onCallBack(Object o) {
+                Log.i("TestCallback",o.toString());
+                /*
+                List<ClubEntity> clubs = (List<ClubEntity>) o;
+                Log.i("TestCallback",o.toString());
+                Log.i("TestCallback","clubs size"+clubs.size());
+                for (ClubEntity club: clubs
+                     ) {
+                    Log.i("TestCallback", club.getName());
+                }
+                */
+
+            }
+        });
 
         if (auth.getCurrentUser() != null) {
             startActivity(new Intent(LoginActivity.this, MainActivity.class));

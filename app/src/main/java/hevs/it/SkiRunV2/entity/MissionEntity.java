@@ -119,6 +119,7 @@ public class MissionEntity implements Mission {
         this.doors = doors;
     }
 
+    /*
     public String toString(){
         if(getDoors() == null)
             return getHourAndMinutes(fromTimestamp(getStartTime())) + " - "
@@ -129,7 +130,7 @@ public class MissionEntity implements Mission {
                     + getHourAndMinutes(fromTimestamp(getEndTime())) + " "
                     + getMissionName() + " " + getDoors();
     }
-
+*/
     public void setNbrPeople(int nbrPeople) {
         this.nbrPeople = nbrPeople;
     }
