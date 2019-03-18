@@ -5,18 +5,64 @@
     android:layout_height="match_parent"
     tools:context=".DashboardFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="nooooooo"
-        android:background="@color/white"/>
+        android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/editText"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="change me - dashboard fragment" />
+        <TextView
+            android:id="@+id/tv_label_competion"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:gravity="bottom"
+            android:padding="10dp"
+            android:text="@string/competition"
+            android:textColor="@color/white"
+            android:textSize="16dp" />
+
+        <Spinner
+            android:id="@+id/sp_competion"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_alignParentEnd="true"
+            android:layout_toEndOf="@+id/tv_label_competion"
+            android:spinnerMode="dropdown"
+            android:textColor="@color/white"
+            android:textSize="18dp" />
+
+        <TextView
+            android:id="@+id/tv_label_discipline"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/tv_label_competion"
+            android:gravity="bottom"
+            android:padding="10dp"
+            android:text="@string/discipline"
+            android:textColor="@color/white"
+            android:textSize="16dp" />
+
+        <Spinner
+            android:id="@+id/sp_discipline"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_below="@+id/tv_label_competion"
+            android:layout_alignParentEnd="true"
+            android:layout_toEndOf="@+id/tv_label_discipline"
+            android:layout_toRightOf="@+id/tv_label_discipline"
+            android:spinnerMode="dropdown"
+            android:textColor="@color/white"
+            android:textSize="18dp" />
+
+        <ListView
+            android:id="@+id/lv_missions"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/sp_discipline"
+            android:textColor="@color/white"/>
+
+    </RelativeLayout>
 </FrameLayout>

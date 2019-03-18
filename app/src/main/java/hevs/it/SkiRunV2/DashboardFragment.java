@@ -1,21 +1,30 @@
 package hevs.it.SkiRunV2;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.Spinner;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import hevs.it.SkiRunV2.entity.CompetitionEntity;
+import hevs.it.SkiRunV2.entity.MissionEntity;
+import hevs.it.SkiRunV2.firebase.FirebaseCallBack;
+import hevs.it.SkiRunV2.firebase.FirebaseManager;
 
 public class DashboardFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+
+    Spinner spCompetitions;
+    Spinner spDisciplines;
+    ListView lvMissions;
 
     public DashboardFragment() {
         // Required empty public constructor
@@ -33,8 +42,6 @@ public class DashboardFragment extends Fragment {
     public static DashboardFragment newInstance(String param1, String param2) {
         DashboardFragment fragment = new DashboardFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -42,17 +49,82 @@ public class DashboardFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+        refreshCompetions();
+
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_dashboard, container, false);
+        View view = inflater.inflate(R.layout.fragment_dashboard, container, false);
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        spCompetitions = (Spinner) getView().findViewById(R.id.sp_competion);
+        spDisciplines = (Spinner) getView().findViewById(R.id.sp_discipline);
+        lvMissions = (ListView) getView().findViewById(R.id.lv_missions);
+
+
+        spCompetitions.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                refreshDisciplines();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        spDisciplines.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                refreshMissions();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+
+
+    private void refreshCompetions() {
+        FirebaseManager.getListCompetions(new FirebaseCallBack() {
+            @Override
+            public void onCallBack(Object o) {
+                ArrayList<String> competions = (ArrayList<String>) o;
+                ArrayAdapter<String>  adapterCompetions = new ArrayAdapter<String>(DashboardFragment.this.getContext(), android.R.layout.simple_spinner_item, competions);
+                spCompetitions.setAdapter(adapterCompetions);
+            }
+        });
+    }
+
+    private void refreshDisciplines() {
+        FirebaseManager.getCompetition(spCompetitions.getSelectedItem().toString(), new FirebaseCallBack() {
+            @Override
+            public void onCallBack(Object o) {
+                CompetitionEntity competitionSelected = (CompetitionEntity) o;
+                ArrayAdapter<String>  adapterDiscipline = new ArrayAdapter<String>(DashboardFragment.this.getContext(), android.R.layout.simple_spinner_item, competitionSelected.getListDiscipline());
+                spDisciplines.setAdapter(adapterDiscipline);
+            }
+        });
+    }
+
+    private void refreshMissions() {
+        FirebaseManager.getMissions(spCompetitions.getSelectedItem().toString(), spDisciplines.getSelectedItem().toString(), new FirebaseCallBack() {
+            @Override
+            public void onCallBack(Object o) {
+                ArrayAdapter<MissionEntity> adapterMission = new ArrayAdapter<MissionEntity>(DashboardFragment.this.getContext(), android.R.layout.simple_list_item_1, (List<MissionEntity>)o);
+                lvMissions.setAdapter(adapterMission);
+            }
+        });
     }
 
 

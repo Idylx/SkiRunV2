@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.google.firebase.database.Exclude;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import hevs.it.SkiRunV2.models.Competition;
@@ -87,6 +88,15 @@ public class CompetitionEntity implements Competition {
     }
 
     public void setRefApi(String refApi){this.refApi = refApi;}
+
+    public ArrayList<String> getListDiscipline(){
+
+        ArrayList<String>  list = new ArrayList<String>();
+        for(DisciplineEntity discipline : getDisciplines()){
+            list.add(discipline.getName());
+        }
+        return  list;
+    }
 
 
     @Override

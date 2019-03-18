@@ -139,9 +139,7 @@ public class MissionEntity implements Mission {
 
     @Override
     public String toString() {
-        return "MissionEntity{" +
-                "missionName='" + missionName + '\'' +
-                '}';
+        return  missionName;
     }
 
 }
