@@ -32,6 +32,17 @@
     <string name="title_avilibility">Availibility</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_settings">Settings</string>
+    <string name="edit_profile">Edit Profile ></string>
+    <string name="account">Account</string>
+    <string name="mission_preference">Mission Preferences</string>
+    <string name="change_password_preferences">Change Password ></string>
+    <string name="role">role ></string>
+    <string name="club">club ></string>
+    <string name="other">Other</string>
+    <string name="language">language ></string>
+    <string name="logout">Logout ></string>
+    <string name="delete_account">Delete Account ></string>
+    <string name="ok">Ok</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

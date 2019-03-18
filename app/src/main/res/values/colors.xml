@@ -18,4 +18,8 @@
     <color name="lbl_name">#333333</color>
     <color name="btn_logut_bg">#ff6861</color>
     <color name="bottom_navigation">#11617D</color>
+    <color name="red">#FFFF0000</color>
+    <color name="grey">#AAAAAA</color>
+    <color name="lightGrey">#F5F5F5</color>
+
 </resources>

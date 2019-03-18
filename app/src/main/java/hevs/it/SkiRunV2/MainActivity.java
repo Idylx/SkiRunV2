@@ -8,6 +8,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
+import hevs.it.SkiRunV2.Settings.SettingsFragment;
+
 public class MainActivity extends AppCompatActivity  {
 
     final Fragment settingsFragment = new SettingsFragment();

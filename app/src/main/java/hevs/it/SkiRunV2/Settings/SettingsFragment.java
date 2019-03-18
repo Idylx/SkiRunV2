@@ -1,13 +1,22 @@
-package hevs.it.SkiRunV2;
+package hevs.it.SkiRunV2.Settings;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+
+import hevs.it.SkiRunV2.MainActivity;
+import hevs.it.SkiRunV2.R;
 
 
 public class SettingsFragment extends Fragment {
+
+    private Button mEditProfileButton;
+    private View mView;
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -52,10 +61,24 @@ public class SettingsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        mView = inflater.inflate(R.layout.fragment_settings, container, false);
+
+        onPressEditButton();
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_settings, container, false);
+        return mView;
     }
 
+    public void onPressEditButton (){
 
+        mEditProfileButton = (Button) mView.findViewById(R.id.editProfileButton);
 
+        mEditProfileButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity(), EditProfileActivity.class));
+            }
+        });
+    }
 }
