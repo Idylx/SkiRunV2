@@ -8,27 +8,11 @@
     android:background="@drawable/gradient_background">
 
     <EditText
-        android:id="@+id/edit_email_editText"
-        android:layout_width="310dp"
-        android:layout_height="47dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="100dp"
-        android:layout_marginEnd="8dp"
-        android:background="@color/lightGrey"
-        android:ems="10"
-        android:gravity="center"
-        android:inputType="textEmailAddress"
-        android:textColor="@color/grey"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
         android:id="@+id/edit_lastname_editText"
         android:layout_width="310dp"
         android:layout_height="47dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="150dp"
         android:layout_marginEnd="8dp"
         android:background="@color/lightGrey"
         android:ems="10"
@@ -37,7 +21,7 @@
         android:textColor="@color/grey"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_email_editText" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/edit_firstname_editText"

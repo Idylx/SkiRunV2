@@ -24,7 +24,6 @@ public class EditProfileActivity extends AppCompatActivity {
     private Button mButtonOk;
     private FirebaseUser mFirebaseCurrentUser;
     private UserEntity mCurrentUser;
-    private EditText mEmail_EditText;
     private EditText mLastname_EditText;
     private EditText mFirstname_EditText;
     private EditText mPhone_EditText;
@@ -35,7 +34,6 @@ public class EditProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit_profile);
 
         // find the id of edit text
-        mEmail_EditText = findViewById(R.id.edit_email_editText);
         mLastname_EditText = findViewById(R.id.edit_lastname_editText);
         mFirstname_EditText = findViewById(R.id.edit_firstname_editText);
         mPhone_EditText = findViewById(R.id.edit_phone_editText);
@@ -49,7 +47,6 @@ public class EditProfileActivity extends AppCompatActivity {
             public void onCallBack(Object o) {
                 mCurrentUser = (UserEntity) o;
                 Log.i("email current user is", mCurrentUser.getEmail());
-                mEmail_EditText.setText(mCurrentUser.getEmail());
                 mLastname_EditText.setText(mCurrentUser.getLastname());
                 mFirstname_EditText.setText(mCurrentUser.getFirstname());
                 mPhone_EditText.setText(mCurrentUser.getPhone());
@@ -67,7 +64,6 @@ public class EditProfileActivity extends AppCompatActivity {
     public void saveEditedUserOnFirebase(){
 
         // get the edited text
-        mCurrentUser.setEmail(mEmail_EditText.getText().toString());
         mCurrentUser.setLastname(mLastname_EditText.getText().toString());
         mCurrentUser.setFirstname(mFirstname_EditText.getText().toString());
         mCurrentUser.setPhone(mPhone_EditText.getText().toString());
@@ -84,8 +80,16 @@ public class EditProfileActivity extends AppCompatActivity {
         mButtonOk.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                saveEditedUserOnFirebase();
-                finish();
+
+                if (!mLastname_EditText.getText().toString().isEmpty()&&
+                        !mFirstname_EditText.getText().toString().isEmpty() &&
+                        !mPhone_EditText.getText().toString().isEmpty()){
+                    saveEditedUserOnFirebase();
+                    finish();
+                }else {
+                    Toast.makeText(getApplicationContext(), R.string.fieldsEmpty, Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
     }

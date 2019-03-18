@@ -7,6 +7,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import hevs.it.SkiRunV2.MainActivity;
 import hevs.it.SkiRunV2.R;
@@ -16,6 +21,8 @@ public class SettingsFragment extends Fragment {
 
     private Button mEditProfileButton;
     private View mView;
+    private FirebaseUser mFirebaseCurrentUser;
+    private TextView mEmail;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -63,6 +70,12 @@ public class SettingsFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         mView = inflater.inflate(R.layout.fragment_settings, container, false);
+
+        mFirebaseCurrentUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        mEmail = mView.findViewById(R.id.username);
+
+        mEmail.setText( "Username : " + mFirebaseCurrentUser.getEmail());
 
         onPressEditButton();
 
