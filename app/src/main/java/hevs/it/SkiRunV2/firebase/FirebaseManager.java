@@ -152,6 +152,20 @@ public class FirebaseManager {
                     mission.setEndTime((long)childDataSnapshot.child(FirebaseSession.NODE_ENDDT).getValue());
                     mission.setNbrPeople((((long) childDataSnapshot.child(FirebaseSession.NODE_NB).getValue())));
                     mission.setTypeJob((String)childDataSnapshot.child(FirebaseSession.NODE_TYPEOFJOB).getValue());
+
+                    List<String> subs = new ArrayList<String>();
+                    for(DataSnapshot childDataSnapshotSub : childDataSnapshot.child(FirebaseSession.NODE_SUBSCRIBED).getChildren()){
+                        subs.add(childDataSnapshotSub.getKey());
+                    };
+                    mission.setSubscribeds(subs);
+
+                    List<String> select = new ArrayList<String>();
+                    for(DataSnapshot childDataSnapshotSel : childDataSnapshot.child(FirebaseSession.NODE_SELECTED).getChildren()){
+                        select.add(childDataSnapshotSel.getKey());
+                    };
+                    mission.setSelecteds(select);
+
+
                     missions.add(mission);
                 }
                 firebaseCallBack.onCallBack(missions);

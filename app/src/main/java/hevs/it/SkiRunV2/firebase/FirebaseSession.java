@@ -21,6 +21,8 @@ public class FirebaseSession {
     public static final String NODE_STARTDT = "startDateTime";
     public static final String NODE_NB = "nbrPeople";
     public static final String NODE_TYPEOFJOB = "typeJob";
+    public static final String NODE_SUBSCRIBED = "subscribed";
+    public static final String NODE_SELECTED = "selected";
 
 
 }

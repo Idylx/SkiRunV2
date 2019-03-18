@@ -13,8 +13,8 @@ public interface Mission {
     Long getStartTime();
     Long getEndTime();
     Long getNbrPeople();
-    List getSubscribed();
-    List getSelecteds();
+    List<String> getSubscribed();
+    List<String> getSelecteds();
     Map<String,Object> getResults();
 
 }
