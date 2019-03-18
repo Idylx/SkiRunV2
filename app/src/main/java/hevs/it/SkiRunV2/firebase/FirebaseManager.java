@@ -90,7 +90,7 @@ public class FirebaseManager {
                 competition.setName(dataSnapshot.getKey());
                 competition.setStartDate((long)dataSnapshot.child(FirebaseSession.NODE_STARTDATE).getValue());
                 competition.setEndDate((long)dataSnapshot.child(FirebaseSession.NODE_ENDDATE).getValue());
-                competition.setRefApi(((String)dataSnapshot.child(FirebaseSession.NODE_REFAPI).getValue()));
+                competition.setRefApi((String)dataSnapshot.child(FirebaseSession.NODE_REFAPI).getValue());
 
                 List<ClubEntity> clubs = new ArrayList<ClubEntity>();
                 for (DataSnapshot childDataSnapshot : dataSnapshot.child(FirebaseSession.NODE_GUESTCLUBS).getChildren()) {
@@ -106,15 +106,36 @@ public class FirebaseManager {
                     disciplines.add(discipline);
                 }
 
-
-
                 competition.setGuestsClub(clubs);
                 competition.setDisciplines(disciplines);
-                Log.i("TestCallback", ""+competition.getDisciplines().size());
-                Log.i("TestCallback", competition.toString());
+                firebaseCallBack.onCallBack(competition);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+    }
 
-                //CompetitionEntity competition = dataSnapshot.getValue(CompetitionEntity.class);
-                //firebaseCallBack.onCallBack(competition);
+
+    public static void getMissions(String competiton, String disciplines, final FirebaseCallBack firebaseCallBack) {
+        DatabaseReference ref = mFirebaseDatabase.getReference().child(FirebaseSession.NODE_COMPETITIONS).child(competiton).child(FirebaseSession.NODE_DISCIPLINES).child(disciplines);
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                List<MissionEntity> missions = new ArrayList<MissionEntity>();
+                for (DataSnapshot childDataSnapshot : dataSnapshot.getChildren()) {
+                    MissionEntity mission = new MissionEntity();
+                    mission.setMissionName(childDataSnapshot.getKey());
+                    mission.setDescription((String)childDataSnapshot.child(FirebaseSession.NODE_DESCRIPTION).getValue());
+                    mission.setDoors((String)childDataSnapshot.child(FirebaseSession.NODE_DOOR).getValue());
+                    mission.setStartTime((long)childDataSnapshot.child(FirebaseSession.NODE_STARTDT).getValue());
+                    mission.setEndTime((long)childDataSnapshot.child(FirebaseSession.NODE_ENDDT).getValue());
+                    mission.setNbrPeople((((long) childDataSnapshot.child(FirebaseSession.NODE_NB).getValue())));
+                    mission.setTypeJob((String)childDataSnapshot.child(FirebaseSession.NODE_TYPEOFJOB).getValue());
+                    missions.add(mission);
+                }
+                firebaseCallBack.onCallBack(missions);
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
