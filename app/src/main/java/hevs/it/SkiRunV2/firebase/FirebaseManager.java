@@ -81,6 +81,24 @@ public class FirebaseManager {
         });
     }
 
+    public static void getListCompetions(final FirebaseCallBack firebaseCallBack) {
+        DatabaseReference ref = mFirebaseDatabase.getReference().child(FirebaseSession.NODE_COMPETITIONS);
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                List<String> competitons = new ArrayList<String>();
+                for (DataSnapshot childDataSnapshot : dataSnapshot.getChildren()) {
+                    competitons.add(childDataSnapshot.getKey());
+                }
+                firebaseCallBack.onCallBack(competitons);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+    }
+
     public static void getCompetition(String name, final FirebaseCallBack firebaseCallBack) {
         //Get the entity Competition from an name
         DatabaseReference ref = mFirebaseDatabase.getReference().child(FirebaseSession.NODE_COMPETITIONS).child(name);
@@ -89,8 +107,8 @@ public class FirebaseManager {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 CompetitionEntity competition = new CompetitionEntity();
                 competition.setName(dataSnapshot.getKey());
-                competition.setStartDate((long)dataSnapshot.child(FirebaseSession.NODE_STARTDATE).getValue());
-                competition.setEndDate((long)dataSnapshot.child(FirebaseSession.NODE_ENDDATE).getValue());
+                //competition.setStartDate((long)dataSnapshot.child(FirebaseSession.NODE_STARTDATE).getValue());
+                //competition.setEndDate((long)dataSnapshot.child(FirebaseSession.NODE_ENDDATE).getValue());
                 competition.setRefApi((String)dataSnapshot.child(FirebaseSession.NODE_REFAPI).getValue());
 
                 List<ClubEntity> clubs = new ArrayList<ClubEntity>();
