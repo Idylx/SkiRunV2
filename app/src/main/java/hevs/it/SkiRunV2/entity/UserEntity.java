@@ -11,6 +11,7 @@ public class UserEntity implements User {
 
     @NonNull
     @Exclude
+    private String uid;
     private String email;
     private String firstname;
     private String lastname;
@@ -23,6 +24,7 @@ public class UserEntity implements User {
     public UserEntity(){}
 
     public UserEntity(User user){
+        this.uid=user.getUid();
         this.email = user.getEmail();
         this.firstname = user.getFirstname();
         this.lastname = user.getLastname();
@@ -34,6 +36,13 @@ public class UserEntity implements User {
 
     }
 
+
+    @Override
+    public String getUid() { return null; }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
 
     @Override
     public String getEmail() {

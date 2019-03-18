@@ -134,6 +134,13 @@ public class MissionEntity implements Mission {
     public void setNbrPeople(int nbrPeople) {
         this.nbrPeople = nbrPeople;
     }
+
+    @Override
+    public String toString() {
+        return "MissionEntity{" +
+                "missionName='" + missionName + '\'' +
+                '}';
+    }
 }
 
 
