@@ -32,6 +32,7 @@ public class FirebaseManager {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 UserEntity user = dataSnapshot.getValue(UserEntity.class);
+                user.setUid(dataSnapshot.getKey());
                 firebaseCallBack.onCallBack(user);
             }
 
