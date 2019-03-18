@@ -15,6 +15,12 @@ public class FirebaseSession {
     public static final String NODE_DISCIPLINES = "disciplines";
 
     //Mission nodes
-    public static final String NODE_DESCRIPTION = "disciplines";
+    public static final String NODE_DESCRIPTION = "description";
+    public static final String NODE_DOOR = "door";
+    public static final String NODE_ENDDT = "endDateTime";
+    public static final String NODE_STARTDT = "startDateTime";
+    public static final String NODE_NB = "nbrPeople";
+    public static final String NODE_TYPEOFJOB = "typeJob";
+
 
 }

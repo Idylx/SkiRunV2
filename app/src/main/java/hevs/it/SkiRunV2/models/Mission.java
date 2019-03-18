@@ -12,7 +12,7 @@ public interface Mission {
     String getTypeJob();
     Long getStartTime();
     Long getEndTime();
-    int getNbrPeople();
+    Long getNbrPeople();
     List getSubscribed();
     List getSelecteds();
     Map<String,Object> getResults();
