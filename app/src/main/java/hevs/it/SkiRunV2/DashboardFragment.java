@@ -1,5 +1,8 @@
 package hevs.it.SkiRunV2;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,6 +13,9 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,6 +75,7 @@ public class DashboardFragment extends Fragment {
         lvMissions = (ListView) getView().findViewById(R.id.lv_missions);
 
 
+
         spCompetitions.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -81,6 +88,7 @@ public class DashboardFragment extends Fragment {
             }
         });
 
+
         spDisciplines.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -92,6 +100,44 @@ public class DashboardFragment extends Fragment {
 
             }
         });
+
+        lvMissions.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                MissionEntity clickedMission = (MissionEntity) lvMissions.getItemAtPosition(position);
+                //Open DetailsBookActivity - Pass some values to get the details of the book
+                AlertDialog.Builder builder = new AlertDialog.Builder(DashboardFragment.this.getContext(), R.style.AlertDialog);
+
+                //Set title for AlertDialog
+                builder.setTitle(clickedMission.getMissionName());
+
+                //Set body message of Dialog
+                builder.setMessage(clickedMission.getDescription());
+
+                //// Is dismiss when touching outside?
+                builder.setCancelable(true);
+
+                //Positive Button and it onClicked event listener
+                builder.setPositiveButton("Start Mission",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+
+                            }
+                        });
+
+                //Negative Button
+                builder.setNegativeButton("Ok",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+
+                            }
+                        });
+
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
+        });
+
     }
 
 
@@ -100,7 +146,8 @@ public class DashboardFragment extends Fragment {
             @Override
             public void onCallBack(Object o) {
                 ArrayList<String> competions = (ArrayList<String>) o;
-                ArrayAdapter<String>  adapterCompetions = new ArrayAdapter<String>(DashboardFragment.this.getContext(), android.R.layout.simple_spinner_item, competions);
+                ArrayAdapter<String>  adapterCompetions = new ArrayAdapter<String>(DashboardFragment.this.getContext(),  R.layout.text_view, competions);
+                adapterCompetions.notifyDataSetChanged();
                 spCompetitions.setAdapter(adapterCompetions);
             }
         });
@@ -111,7 +158,8 @@ public class DashboardFragment extends Fragment {
             @Override
             public void onCallBack(Object o) {
                 CompetitionEntity competitionSelected = (CompetitionEntity) o;
-                ArrayAdapter<String>  adapterDiscipline = new ArrayAdapter<String>(DashboardFragment.this.getContext(), android.R.layout.simple_spinner_item, competitionSelected.getListDiscipline());
+                ArrayAdapter<String>  adapterDiscipline = new ArrayAdapter<String>(DashboardFragment.this.getContext(), R.layout.text_view, competitionSelected.getListDiscipline());
+                adapterDiscipline.notifyDataSetChanged();
                 spDisciplines.setAdapter(adapterDiscipline);
             }
         });
@@ -121,7 +169,20 @@ public class DashboardFragment extends Fragment {
         FirebaseManager.getMissions(spCompetitions.getSelectedItem().toString(), spDisciplines.getSelectedItem().toString(), new FirebaseCallBack() {
             @Override
             public void onCallBack(Object o) {
-                ArrayAdapter<MissionEntity> adapterMission = new ArrayAdapter<MissionEntity>(DashboardFragment.this.getContext(), android.R.layout.simple_list_item_1, (List<MissionEntity>)o);
+                String uidUser = FirebaseAuth.getInstance().getUid();
+
+                List<MissionEntity> myMissions = new ArrayList<MissionEntity>();
+                for(MissionEntity mission :  (List<MissionEntity>)o){
+                    for(String uid : mission.getSelecteds()){
+                        Boolean resp = uid.equals(uidUser);
+                        if(uid.equals(uidUser)) {
+                            myMissions.add(mission);
+                            break;
+                        }
+                    }
+                }
+                ArrayAdapter<MissionEntity> adapterMission = new ArrayAdapter<MissionEntity>(DashboardFragment.this.getContext(),  R.layout.text_view, myMissions);
+                adapterMission.notifyDataSetChanged();
                 lvMissions.setAdapter(adapterMission);
             }
         });

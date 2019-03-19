@@ -21,8 +21,8 @@ public class MissionEntity implements Mission {
     private Long startTime;
     private Long endTime;
     private Long nbrPeople;
-    private List subscribeds;
-    private List selecteds;
+    private List<String> subscribeds;
+    private List<String> selecteds;
     private Map<String,Object> results;
 
 
@@ -82,12 +82,12 @@ public class MissionEntity implements Mission {
     }
 
     @Override
-    public List getSubscribed() {
+    public List <String> getSubscribed() {
         return subscribeds;
     }
 
     @Override
-    public List getSelecteds() {
+    public List<String> getSelecteds() {
         return selecteds;
     }
 
@@ -101,6 +101,13 @@ public class MissionEntity implements Mission {
     }
 
 
+    public void setSubscribeds(List<String> subscribeds) {
+        this.subscribeds = subscribeds;
+    }
+
+    public void setSelecteds(List<String> selecteds) {
+        this.selecteds = selecteds;
+    }
 
     @Override
     public String getDoors() {
@@ -139,7 +146,7 @@ public class MissionEntity implements Mission {
 
     @Override
     public String toString() {
-        return  missionName;
+        return  missionName + " ";
     }
 
 }
