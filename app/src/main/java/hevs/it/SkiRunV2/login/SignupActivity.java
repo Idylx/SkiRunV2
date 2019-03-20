@@ -18,10 +18,12 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import hevs.it.SkiRunV2.MainActivity;
 import hevs.it.SkiRunV2.R;
+import hevs.it.SkiRunV2.entity.UserEntity;
+import hevs.it.SkiRunV2.firebase.FirebaseUserManager;
 
 public class SignupActivity extends AppCompatActivity {
 
-    private EditText inputEmail, inputPassword;
+    private EditText inputEmail, inputPassword, inputLastname, inputFirstname, inputPhone;
     private Button btnSignIn, btnSignUp, btnResetPassword;
     private ProgressBar progressBar;
     private FirebaseAuth auth;
@@ -38,6 +40,9 @@ public class SignupActivity extends AppCompatActivity {
         btnSignUp = (Button) findViewById(R.id.sign_up_button);
         inputEmail = (EditText) findViewById(R.id.email);
         inputPassword = (EditText) findViewById(R.id.password);
+        inputLastname = (EditText) findViewById(R.id.lastname);
+        inputFirstname = (EditText) findViewById(R.id.firstname);
+        inputPhone = (EditText) findViewById(R.id.phone);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         btnResetPassword = (Button) findViewById(R.id.btn_reset_password);
 
@@ -59,11 +64,29 @@ public class SignupActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                String email = inputEmail.getText().toString().trim();
-                String password = inputPassword.getText().toString().trim();
+                final String email = inputEmail.getText().toString().trim();
+                final String password = inputPassword.getText().toString().trim();
+                final String lastname = inputLastname.getText().toString().trim();
+                final String firstname = inputFirstname.getText().toString().trim();
+                final String phone = inputPhone.getText().toString().trim();
 
                 if (TextUtils.isEmpty(email)) {
                     Toast.makeText(getApplicationContext(), "Enter email address!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (TextUtils.isEmpty(lastname)) {
+                    Toast.makeText(getApplicationContext(), "Enter your lastname !", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (TextUtils.isEmpty(firstname)) {
+                    Toast.makeText(getApplicationContext(), "Enter your firstname !", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (TextUtils.isEmpty(phone)) {
+                    Toast.makeText(getApplicationContext(), "Enter your phone !", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -92,6 +115,17 @@ public class SignupActivity extends AppCompatActivity {
                                     Toast.makeText(SignupActivity.this, "Authentication failed." + task.getException(),
                                             Toast.LENGTH_SHORT).show();
                                 } else {
+
+                                    UserEntity mCurrentUser = new UserEntity();
+                                    // get the edited text
+                                    mCurrentUser.setEmail(email);
+                                    mCurrentUser.setLastname(lastname);
+                                    mCurrentUser.setFirstname(firstname);
+                                    mCurrentUser.setPhone(phone);
+
+                                    // add it to firebase
+                                    FirebaseUserManager.updateUser(mCurrentUser);
+
                                     startActivity(new Intent(SignupActivity.this, MainActivity.class));
                                     finish();
                                 }

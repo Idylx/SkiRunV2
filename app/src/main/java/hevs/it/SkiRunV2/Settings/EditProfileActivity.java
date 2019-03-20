@@ -1,6 +1,5 @@
 package hevs.it.SkiRunV2.Settings;
 
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,7 +16,6 @@ import hevs.it.SkiRunV2.entity.UserEntity;
 import hevs.it.SkiRunV2.firebase.FirebaseCallBack;
 import hevs.it.SkiRunV2.firebase.FirebaseManager;
 import hevs.it.SkiRunV2.firebase.FirebaseUserManager;
-import hevs.it.SkiRunV2.models.User;
 
 public class EditProfileActivity extends AppCompatActivity {
 
@@ -47,6 +45,8 @@ public class EditProfileActivity extends AppCompatActivity {
             public void onCallBack(Object o) {
                 mCurrentUser = (UserEntity) o;
                 Log.i("email current user is", mCurrentUser.getEmail());
+
+                // set all the edit text with the current data
                 mLastname_EditText.setText(mCurrentUser.getLastname());
                 mFirstname_EditText.setText(mCurrentUser.getFirstname());
                 mPhone_EditText.setText(mCurrentUser.getPhone());
@@ -54,13 +54,38 @@ public class EditProfileActivity extends AppCompatActivity {
         });
 
         try {
+            // the user press on 'ok' --> he wants to save all the changes
             onPressOkButton();
         }catch (NullPointerException e){
             Toast.makeText(this, R.string.retry, Toast.LENGTH_SHORT).show();
         }
-
     }
 
+    // the user press on 'ok'
+    public void onPressOkButton(){
+
+        mButtonOk = (Button) findViewById(R.id.edit_button_ok);
+
+        mButtonOk.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+
+                // check that all the fields are not empty
+                if (!mLastname_EditText.getText().toString().isEmpty()&&
+                        !mFirstname_EditText.getText().toString().isEmpty() &&
+                        !mPhone_EditText.getText().toString().isEmpty()){
+
+                    // save the edited user in firebase
+                    saveEditedUserOnFirebase();
+                    finish();
+                }else {
+                    Toast.makeText(getApplicationContext(), R.string.fieldsEmpty, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    // save the user and his new data in firebase
     public void saveEditedUserOnFirebase(){
 
         // get the edited text
@@ -70,27 +95,5 @@ public class EditProfileActivity extends AppCompatActivity {
 
         // add it to firebase
         FirebaseUserManager.updateUser(mCurrentUser);
-
-    }
-
-    public void onPressOkButton(){
-
-        mButtonOk = (Button) findViewById(R.id.edit_button_ok);
-
-        mButtonOk.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-
-                if (!mLastname_EditText.getText().toString().isEmpty()&&
-                        !mFirstname_EditText.getText().toString().isEmpty() &&
-                        !mPhone_EditText.getText().toString().isEmpty()){
-                    saveEditedUserOnFirebase();
-                    finish();
-                }else {
-                    Toast.makeText(getApplicationContext(), R.string.fieldsEmpty, Toast.LENGTH_SHORT).show();
-                }
-
-            }
-        });
     }
 }
