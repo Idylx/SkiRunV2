@@ -8,13 +8,17 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import hevs.it.SkiRunV2.Settings.SettingsFragment;
+import hevs.it.SkiRunV2.availability.AvailabilityFragment;
 
 public class MainActivity extends AppCompatActivity  {
 
+    FirebaseAuth auth;
     final Fragment settingsFragment = new SettingsFragment();
     final Fragment dashboardFragment = new DashboardFragment();
-    final Fragment availibilityFragment = new AvailibilityFragment();
+    final Fragment availibilityFragment = new AvailabilityFragment();
 
     final FragmentManager fm = getSupportFragmentManager();
     Fragment active = settingsFragment;
@@ -49,6 +53,8 @@ public class MainActivity extends AppCompatActivity  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        auth = FirebaseAuth.getInstance();
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.getMenu().findItem(R.id.navigation_dashboard).setChecked(true);
