@@ -107,10 +107,10 @@ public class FirebaseManager {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 CompetitionEntity competition = new CompetitionEntity();
                 competition.setName(dataSnapshot.getKey());
-                //competition.setStartDate((long)dataSnapshot.child(FirebaseSession.NODE_STARTDATE).getValue());
-                //competition.setEndDate((long)dataSnapshot.child(FirebaseSession.NODE_ENDDATE).getValue());
+                competition.setStartDate((long)dataSnapshot.child(FirebaseSession.NODE_STARTDATE).getValue());
+                competition.setEndDate((long)dataSnapshot.child(FirebaseSession.NODE_ENDDATE).getValue());
                 competition.setRefApi((String)dataSnapshot.child(FirebaseSession.NODE_REFAPI).getValue());
-
+                Log.i("FBCB", competition.getStartDate()+"");
                 List<ClubEntity> clubs = new ArrayList<ClubEntity>();
                 for (DataSnapshot childDataSnapshot : dataSnapshot.child(FirebaseSession.NODE_GUESTCLUBS).getChildren()) {
                     ClubEntity club = new ClubEntity();

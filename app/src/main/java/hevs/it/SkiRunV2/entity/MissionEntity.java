@@ -1,9 +1,11 @@
 package hevs.it.SkiRunV2.entity;
 
 import android.support.annotation.NonNull;
+import android.text.format.DateFormat;
 
 import com.google.firebase.database.Exclude;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -146,7 +148,8 @@ public class MissionEntity implements Mission {
 
     @Override
     public String toString() {
-        return  missionName + " ";
+        return  missionName + " " + DateFormat.format("dd/MM/yy hh:mm", new Date(startTime*1000)).toString() +
+                " - " + DateFormat.format("hh:mm", new Date(endTime*1000)).toString();
     }
 
 }

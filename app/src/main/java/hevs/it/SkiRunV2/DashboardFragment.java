@@ -2,10 +2,10 @@ package hevs.it.SkiRunV2;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,17 +13,16 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.Toast;
-
-import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import hevs.it.SkiRunV2.entity.CompetitionEntity;
 import hevs.it.SkiRunV2.entity.MissionEntity;
 import hevs.it.SkiRunV2.firebase.FirebaseCallBack;
 import hevs.it.SkiRunV2.firebase.FirebaseManager;
+import hevs.it.SkiRunV2.firebase.FirebaseSession;
 
 public class DashboardFragment extends Fragment {
 
@@ -31,6 +30,11 @@ public class DashboardFragment extends Fragment {
     Spinner spCompetitions;
     Spinner spDisciplines;
     ListView lvMissions;
+
+    ArrayList<String> competions;
+    ArrayAdapter<String>  adapterCompetions;
+    ArrayAdapter<String>  adapterDiscipline;
+    ArrayAdapter<MissionEntity> adapterMission;
 
     public DashboardFragment() {
         // Required empty public constructor
@@ -112,12 +116,15 @@ public class DashboardFragment extends Fragment {
                 builder.setTitle(clickedMission.getMissionName());
 
                 //Set body message of Dialog
-                builder.setMessage(clickedMission.getDescription());
+                builder.setMessage(clickedMission.getDescription()+" \n"+
+                        "Date:  " +DateFormat.format("dd/MM/yy", new Date(clickedMission.getStartTime()*1000)).toString()+" \n"+
+                        "Start: " +DateFormat.format("hh:mm", new Date(clickedMission.getStartTime()*1000)).toString()+" \n"+
+                        "End:   " +DateFormat.format("hh:mm", new Date(clickedMission.getEndTime()*1000)).toString()+" \n");
 
-                //// Is dismiss when touching outside?
+                //Dismiss when touching outside
                 builder.setCancelable(true);
 
-                //Positive Button and it onClicked event listener
+                //TODO next step when starting the mission
                 builder.setPositiveButton("Start Mission",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
@@ -125,8 +132,8 @@ public class DashboardFragment extends Fragment {
                             }
                         });
 
-                //Negative Button
-                builder.setNegativeButton("Ok",
+                //
+                builder.setNegativeButton("Cancel",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
 
@@ -145,8 +152,8 @@ public class DashboardFragment extends Fragment {
         FirebaseManager.getListCompetions(new FirebaseCallBack() {
             @Override
             public void onCallBack(Object o) {
-                ArrayList<String> competions = (ArrayList<String>) o;
-                ArrayAdapter<String>  adapterCompetions = new ArrayAdapter<String>(DashboardFragment.this.getContext(),  R.layout.text_view, competions);
+                competions = (ArrayList<String>) o;
+                adapterCompetions = new ArrayAdapter<String>(DashboardFragment.this.getContext(),  R.layout.custom_textview, competions);
                 adapterCompetions.notifyDataSetChanged();
                 spCompetitions.setAdapter(adapterCompetions);
             }
@@ -158,7 +165,7 @@ public class DashboardFragment extends Fragment {
             @Override
             public void onCallBack(Object o) {
                 CompetitionEntity competitionSelected = (CompetitionEntity) o;
-                ArrayAdapter<String>  adapterDiscipline = new ArrayAdapter<String>(DashboardFragment.this.getContext(), R.layout.text_view, competitionSelected.getListDiscipline());
+                adapterDiscipline = new ArrayAdapter<String>(DashboardFragment.this.getContext(), R.layout.custom_textview, competitionSelected.getListDiscipline());
                 adapterDiscipline.notifyDataSetChanged();
                 spDisciplines.setAdapter(adapterDiscipline);
             }
@@ -169,19 +176,17 @@ public class DashboardFragment extends Fragment {
         FirebaseManager.getMissions(spCompetitions.getSelectedItem().toString(), spDisciplines.getSelectedItem().toString(), new FirebaseCallBack() {
             @Override
             public void onCallBack(Object o) {
-                String uidUser = FirebaseAuth.getInstance().getUid();
 
                 List<MissionEntity> myMissions = new ArrayList<MissionEntity>();
                 for(MissionEntity mission :  (List<MissionEntity>)o){
                     for(String uid : mission.getSelecteds()){
-                        Boolean resp = uid.equals(uidUser);
-                        if(uid.equals(uidUser)) {
+                        if(uid.equals(FirebaseSession.UID_USER)) {
                             myMissions.add(mission);
                             break;
                         }
                     }
                 }
-                ArrayAdapter<MissionEntity> adapterMission = new ArrayAdapter<MissionEntity>(DashboardFragment.this.getContext(),  R.layout.text_view, myMissions);
+                adapterMission = new ArrayAdapter<MissionEntity>(DashboardFragment.this.getContext(),  R.layout.custom_textview, myMissions);
                 adapterMission.notifyDataSetChanged();
                 lvMissions.setAdapter(adapterMission);
             }
