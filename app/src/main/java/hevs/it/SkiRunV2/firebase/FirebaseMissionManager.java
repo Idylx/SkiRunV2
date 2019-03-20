@@ -8,7 +8,7 @@ public class FirebaseMissionManager {
 
     private static FirebaseDatabase mFirebaseDatabase = FirebaseDatabase.getInstance();
 
-    public static void updateMission(String competiton, String disciplines, String mission) {
+    public static void updateSubscriberMission(String competiton, String disciplines, String mission) {
         DatabaseReference ref = mFirebaseDatabase.getReference().child(FirebaseSession.NODE_COMPETITIONS).child(competiton).child(FirebaseSession.NODE_DISCIPLINES).child(disciplines).child(mission).child(FirebaseSession.NODE_SUBSCRIBED);
         ref.child(FirebaseSession.UID_USER).setValue(true);
     }

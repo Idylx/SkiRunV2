@@ -101,7 +101,7 @@ public class AvailabilityFragment extends Fragment {
             @Override
             public void onCallBack(Object o) {
                 ArrayList<String> competitions = (ArrayList<String>) o;
-                ArrayAdapter<String> adapterCompetions = new ArrayAdapter<String>(AvailabilityFragment.this.getContext(), android.R.layout.simple_spinner_item, competitions);
+                ArrayAdapter<String> adapterCompetions = new ArrayAdapter<String>(AvailabilityFragment.this.getContext(),R.layout.custom_textview, competitions);
                 spCompetitions.setAdapter(adapterCompetions);
             }
         });
@@ -112,7 +112,7 @@ public class AvailabilityFragment extends Fragment {
             @Override
             public void onCallBack(Object o) {
                 CompetitionEntity competitionSelected = (CompetitionEntity) o;
-                ArrayAdapter<String> adapterDiscipline = new ArrayAdapter<String>(AvailabilityFragment.this.getContext(), android.R.layout.simple_spinner_item, competitionSelected.getListDiscipline());
+                ArrayAdapter<String> adapterDiscipline = new ArrayAdapter<String>(AvailabilityFragment.this.getContext(), R.layout.custom_textview, competitionSelected.getListDiscipline());
                 spDisciplines.setAdapter(adapterDiscipline);
             }
         });
@@ -124,6 +124,8 @@ public class AvailabilityFragment extends Fragment {
             @Override
             public void onCallBack(Object o) {
                 List<MissionEntity> missions = (List<MissionEntity>) o;
+                adapter.setCurrentCompetition(spCompetitions.getSelectedItem().toString());
+                adapter.setCurrentDiscipline(spDisciplines.getSelectedItem().toString());
                 adapter.update(missions);
             }
         });

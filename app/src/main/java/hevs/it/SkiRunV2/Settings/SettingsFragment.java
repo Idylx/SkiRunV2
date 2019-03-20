@@ -8,13 +8,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import hevs.it.SkiRunV2.MainActivity;
 import hevs.it.SkiRunV2.R;
 import hevs.it.SkiRunV2.login.LoginActivity;
-import hevs.it.SkiRunV2.login.ResetPasswordActivity;
 
 
 public class SettingsFragment extends Fragment {
@@ -117,9 +116,7 @@ public class SettingsFragment extends Fragment {
     }
 
     public void onChangePassword(){
-        auth.signOut();
-        startActivity(new Intent(getActivity(), ResetPasswordActivity.class));
-        getActivity().finish();
+
     }
 
     public void onPressRoleButton(){
