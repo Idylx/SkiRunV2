@@ -13,6 +13,8 @@ import com.google.firebase.auth.FirebaseUser;
 
 import hevs.it.SkiRunV2.MainActivity;
 import hevs.it.SkiRunV2.R;
+import hevs.it.SkiRunV2.login.LoginActivity;
+import hevs.it.SkiRunV2.login.ResetPasswordActivity;
 
 
 public class SettingsFragment extends Fragment {
@@ -21,6 +23,7 @@ public class SettingsFragment extends Fragment {
     private View mView;
     private FirebaseUser mFirebaseCurrentUser;
     private TextView mEmail;
+    private FirebaseAuth auth;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -61,6 +64,9 @@ public class SettingsFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        //Get Firebase auth instance
+        auth = FirebaseAuth.getInstance();
     }
 
     @Override
@@ -78,6 +84,9 @@ public class SettingsFragment extends Fragment {
 
         // button 'Edit profile'
         onPressEditButton();
+
+        // button 'Change password'
+        onChangePassword();
 
         // button 'Role'
         onPressRoleButton();
@@ -105,6 +114,12 @@ public class SettingsFragment extends Fragment {
                 startActivity(new Intent(getActivity(), EditProfileActivity.class));
             }
         });
+    }
+
+    public void onChangePassword(){
+        auth.signOut();
+        startActivity(new Intent(getActivity(), ResetPasswordActivity.class));
+        getActivity().finish();
     }
 
     public void onPressRoleButton(){
@@ -146,7 +161,9 @@ public class SettingsFragment extends Fragment {
         mLogoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                auth.signOut();
+                startActivity(new Intent(getActivity(), LoginActivity.class));
+                getActivity().finish();
             }
         });
     }
