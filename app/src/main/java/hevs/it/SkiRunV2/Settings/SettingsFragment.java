@@ -8,10 +8,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import hevs.it.SkiRunV2.R;
 import hevs.it.SkiRunV2.login.LoginActivity;
+
 
 public class SettingsFragment extends Fragment {
 
