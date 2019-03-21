@@ -67,12 +67,11 @@ public class FirebaseManager {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                List<TypeJobEntity> jobs = new ArrayList<TypeJobEntity>();
+                List<String> jobs = new ArrayList<String>();
                 for (DataSnapshot childDataSnapshot : dataSnapshot.getChildren()) {
-                    TypeJobEntity job = new TypeJobEntity();
-                    job.setName(childDataSnapshot.getKey());
-                    jobs.add(job);
+                    jobs.add(childDataSnapshot.getKey());
                 }
+
                 firebaseCallBack.onCallBack(jobs);
             }
             @Override

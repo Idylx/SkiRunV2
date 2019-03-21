@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity  {
 
         fm.beginTransaction().add(R.id.main_container, availibilityFragment, "3").hide(availibilityFragment).commit();
         fm.beginTransaction().add(R.id.main_container, settingsFragment, "2").hide(settingsFragment).commit();
-        fm.beginTransaction().add(R.id.main_container, dashboardFragment, "1").commit();
+        fm.beginTransaction().add(R.id.main_container, dashboardFragment, "1").hide(dashboardFragment).commit();
 
 
 

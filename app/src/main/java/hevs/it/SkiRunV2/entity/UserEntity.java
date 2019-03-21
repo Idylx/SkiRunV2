@@ -90,6 +90,10 @@ public class UserEntity implements User {
         return jobPreference;
     }
 
+    public void setJobPreference(String jobPreference) {
+        this.jobPreference = jobPreference;
+    }
+
     @Override
     public String getClub() {
         return club;
