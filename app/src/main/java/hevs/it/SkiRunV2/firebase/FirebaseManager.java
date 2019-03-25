@@ -78,6 +78,26 @@ public class FirebaseManager {
         });
     }
 
+    public static void getClubsNames(final FirebaseCallBack firebaseCallBack) {
+        DatabaseReference ref = mFirebaseDatabase.getReference().child(FirebaseSession.NODE_CLUBS);
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                List<String> clubs = new ArrayList<String>();
+                for (DataSnapshot childDataSnapshot : dataSnapshot.getChildren()) {
+                    clubs.add(childDataSnapshot.getKey());
+                }
+
+                firebaseCallBack.onCallBack(clubs);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+    }
+
+
     public static void getListCompetions(final FirebaseCallBack firebaseCallBack) {
         DatabaseReference ref = mFirebaseDatabase.getReference().child(FirebaseSession.NODE_COMPETITIONS);
         ref.addListenerForSingleValueEvent(new ValueEventListener() {

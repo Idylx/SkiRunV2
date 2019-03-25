@@ -17,6 +17,8 @@ public class UserEntity implements User {
     private String lastname;
     private String phone;
     private String role;
+
+
     private String club;
     private String jobPreference;
 
@@ -78,6 +80,10 @@ public class UserEntity implements User {
 
     public void setPhone(String phone){
         this.phone = phone;
+    }
+
+    public void setClub(String club) {
+        this.club = club;
     }
 
     @Override
