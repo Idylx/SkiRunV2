@@ -2,16 +2,12 @@ package hevs.it.SkiRunV2.Settings;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.RadioButton;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -20,16 +16,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import hevs.it.SkiRunV2.R;
-import hevs.it.SkiRunV2.entity.TypeJobEntity;
 import hevs.it.SkiRunV2.entity.UserEntity;
 import hevs.it.SkiRunV2.firebase.FirebaseCallBack;
 import hevs.it.SkiRunV2.firebase.FirebaseManager;
 import hevs.it.SkiRunV2.firebase.FirebaseUserManager;
+import hevs.it.SkiRunV2.models.TypeJob;
 
 public class RoleActivity extends AppCompatActivity {
 
     private RecyclerView mRecyclerView;
-    private RolesAdapter mTypeJobAdapter;
+    private RoleAdapter mTypeJobAdapter;
     private FirebaseUser mFirebaseCurrentUser;
     private List<String> mTypeJobList = new ArrayList<>();
     private RadioButton mRadioButtonJobName;
@@ -75,9 +71,10 @@ public class RoleActivity extends AppCompatActivity {
             @Override
             public void onCallBack(Object o) {
                 mTypeJobList = (ArrayList<String>) o;
-                mTypeJobAdapter = new RolesAdapter(mTypeJobList);
+                mTypeJobAdapter = new RoleAdapter(mTypeJobList);
                 mRecyclerView.setAdapter(mTypeJobAdapter);
                 mTypeJobAdapter.notifyDataSetChanged();
+                
             }
         });
     }
@@ -88,7 +85,7 @@ public class RoleActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                mCurrentUser.setJobPreference("Logistics");
+                mCurrentUser.setJobPreference("Door Controller" );
 
                 // add it to firebase
                 FirebaseUserManager.updateUser(mCurrentUser);

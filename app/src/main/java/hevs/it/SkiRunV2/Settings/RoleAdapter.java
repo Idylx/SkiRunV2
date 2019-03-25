@@ -6,21 +6,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RadioButton;
-import android.widget.TextView;
 
 import java.util.List;
 
 import hevs.it.SkiRunV2.R;
-import hevs.it.SkiRunV2.entity.TypeJobEntity;
 import hevs.it.SkiRunV2.entity.UserEntity;
 
-public class RolesAdapter extends RecyclerView.Adapter<RolesAdapter.RolesViewHolder> {
+public class RoleAdapter extends RecyclerView.Adapter<RoleAdapter.RolesViewHolder> {
 
     private List<String> mTypeJobList;
     private int lastSelectedPosition = -1;
     private UserEntity mCurrentUser;
+    private String typeJobName;
 
-    public RolesAdapter(List<String> mRolesDataSet){
+    public RoleAdapter(List<String> mRolesDataSet){
         this.mTypeJobList = mRolesDataSet;
     }
 
@@ -53,7 +52,7 @@ public class RolesAdapter extends RecyclerView.Adapter<RolesAdapter.RolesViewHol
 
     @Override
     public void onBindViewHolder(@NonNull RolesViewHolder holder, int position) {
-        String typeJobName = mTypeJobList.get(position);
+        typeJobName = mTypeJobList.get(position);
         holder.mRadioBtnNameRole.setText(typeJobName);
         holder.mRadioBtnNameRole.setChecked(lastSelectedPosition == position);
 

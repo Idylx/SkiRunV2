@@ -51,6 +51,7 @@
     <string name="lastname">Your Lastname</string>
     <string name="firstname">Your Firstname</string>
     <string name="phone">Your phone</string>
+    <string name="jobPreferences">Job preferences</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
