@@ -5,10 +5,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 import android.widget.RadioButton;
-import com.google.firebase.auth.FirebaseUser;
+
 import java.util.List;
+
 import hevs.it.SkiRunV2.R;
 import hevs.it.SkiRunV2.entity.UserEntity;
 import hevs.it.SkiRunV2.firebase.FirebaseUserManager;
@@ -18,45 +18,13 @@ public class RoleAdapter extends RecyclerView.Adapter<RoleAdapter.RolesViewHolde
     private List<String> mTypeJobList;
     private UserEntity mCurrentUser;
     private String typeJobName;
+    private int lastSelectedPosition = -1;
+
 
     public RoleAdapter(List<String> mRolesDataSet, UserEntity mCurrentUser){
         this.mTypeJobList = mRolesDataSet;
         this.mCurrentUser = mCurrentUser;
-    }
 
-    public class RolesViewHolder extends RecyclerView.ViewHolder {
-
-        public RadioButton mRadioBtnNameRole;
-        public String mCurrentTypeJob;
-
-        public RolesViewHolder(View v) {
-            super(v);
-            mRadioBtnNameRole =  (RadioButton) v.findViewById(R.id.role_radioButton);
-
-            mRadioBtnNameRole.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    checkLogic();
-                    notifyDataSetChanged();
-                }
-            });
-        }
-
-        public void checkLogic(){
-            //checkbox click event handling
-            mRadioBtnNameRole.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
-                    if (isChecked){
-                        typeJobName = mCurrentTypeJob;
-                        mCurrentUser.setJobPreference(typeJobName);
-                        // add it to firebase
-                        FirebaseUserManager.updateUser(mCurrentUser);
-                    }
-                }
-            });
-        }
     }
 
     @NonNull
@@ -72,19 +40,46 @@ public class RoleAdapter extends RecyclerView.Adapter<RoleAdapter.RolesViewHolde
     public void onBindViewHolder(@NonNull RolesViewHolder holder, int position) {
         typeJobName = mTypeJobList.get(position);
         holder.mRadioBtnNameRole.setText(typeJobName);
-        holder.mCurrentTypeJob = mTypeJobList.get(position);
 
+        holder.mCurrentTypeJob = mTypeJobList.get(position);
         if (typeJobName.equals(mCurrentUser.getJobPreference())){
             holder.mRadioBtnNameRole.setChecked(true);
+            lastSelectedPosition= position;
         }
         else {
             holder.mRadioBtnNameRole.setChecked(false);
         }
+
+
     }
 
     @Override
     public int getItemCount() {
         return mTypeJobList.size();
+    }
+    public class RolesViewHolder extends RecyclerView.ViewHolder {
+
+        public RadioButton mRadioBtnNameRole;
+        public String mCurrentTypeJob;
+
+        public RolesViewHolder(View v) {
+            super(v);
+            mRadioBtnNameRole =  (RadioButton) v.findViewById(R.id.role_radioButton);
+
+            mRadioBtnNameRole.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v){
+                    lastSelectedPosition = getAdapterPosition();
+                    typeJobName = mCurrentTypeJob;
+                    mCurrentUser.setJobPreference(typeJobName);
+                    // add it to firebase
+                    FirebaseUserManager.updateUser(mCurrentUser);
+                    notifyDataSetChanged();
+                }
+            });
+        }
+
+
     }
 
 }

@@ -116,16 +116,6 @@ public class AvailabilityFragment extends Fragment {
 
     }
 
-    // on resume logic
-    @Override
-    public void onResume() {
-        super.onResume();
-        refreshCompetitions();
-        refreshDisciplines();
-        refreshMissions();
-    }
-
-
 
     private void refreshCompetitions() {
         //get current competition
