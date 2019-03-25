@@ -7,22 +7,23 @@ import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import hevs.it.SkiRunV2.R;
-import hevs.it.SkiRunV2.entity.MissionEntity;
 import hevs.it.SkiRunV2.firebase.FirebaseMissionManager;
 
 public class AvailabilityMissionViewHolder
-    extends RecyclerView.ViewHolder implements View.OnClickListener{
+        extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-    public TextView missionName, missionTime;
-    public CheckBox selectionMission;
+    //items of one row
+    TextView missionName, missionTime;
+    CheckBox selectionMission;
 
-    public MissionEntity mission;
+    public String currentMissionName;
 
-    public String currentCompetition;
-    public String currentDiscipline;
+    //current settings of missions
+    String currentCompetition;
+    String currentDiscipline;
 
-
-    public AvailabilityMissionViewHolder(View itemView) {
+    //constructor
+    AvailabilityMissionViewHolder(View itemView) {
         super(itemView);
         missionName =(TextView) itemView.findViewById(R.id.AvailibilityMissionName);
         missionTime =(TextView) itemView.findViewById(R.id.AvailibilityMissionTime);
@@ -30,7 +31,7 @@ public class AvailabilityMissionViewHolder
 
         itemView.setOnClickListener(this);
 
-
+        //set listener to the checkbox
         checkLogic();
     }
 
@@ -40,16 +41,19 @@ public class AvailabilityMissionViewHolder
         checkLogic();
     }
 
-    public void checkLogic(){
+
+
+    private void checkLogic(){
         //checkbox click event handling
         selectionMission.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView,
                                          boolean isChecked) {
+                // if changed on the check box set the subscription of the user
                 if (isChecked) {
-                    FirebaseMissionManager.updateSubscriberMission(currentCompetition,  currentDiscipline, mission.getMissionName());
+                    FirebaseMissionManager.updateSubscriberMission(currentCompetition,  currentDiscipline, currentMissionName);
                 } else {
-                    FirebaseMissionManager.removeSubscriberMission(currentCompetition,  currentDiscipline, mission.getMissionName());
+                    FirebaseMissionManager.removeSubscriberMission(currentCompetition,  currentDiscipline, currentMissionName);
                 }
             }
         });

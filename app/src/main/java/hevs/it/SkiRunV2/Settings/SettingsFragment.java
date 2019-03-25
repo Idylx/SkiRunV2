@@ -11,13 +11,15 @@ import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
 import hevs.it.SkiRunV2.R;
 import hevs.it.SkiRunV2.login.LoginActivity;
+import hevs.it.SkiRunV2.login.ResetPasswordActivity;
 
 
 public class SettingsFragment extends Fragment {
 
-    private Button mEditProfileButton, mRoleButton, mClubButton, mLanguageButton, mLogoutButton;
+    private Button mEditProfileButton, mRoleButton, mClubButton, mLanguageButton, mLogoutButton, mResetPassword;
     private View mView;
     private FirebaseUser mFirebaseCurrentUser;
     private TextView mEmail;
@@ -60,7 +62,7 @@ public class SettingsFragment extends Fragment {
         onPressEditButton();
 
         // button 'Change password'
-        onChangePassword();
+        onPressChangePassword();
 
         // button 'Role'
         onPressRoleButton();
@@ -92,8 +94,15 @@ public class SettingsFragment extends Fragment {
         });
     }
 
-    // button 'change password'
-    public void onChangePassword(){
+    public void onPressChangePassword(){
+
+        mResetPassword = (Button) mView.findViewById(R.id.changePasswordProfileButton);
+        mResetPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), ResetPasswordActivity.class));
+            }
+        });
 
     }
 

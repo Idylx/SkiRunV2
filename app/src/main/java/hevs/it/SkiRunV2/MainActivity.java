@@ -63,6 +63,7 @@ public class MainActivity extends AppCompatActivity  {
 
         auth = FirebaseAuth.getInstance();
 
+        getSupportActionBar().setTitle(R.string.app_name);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.getMenu().findItem(R.id.navigation_dashboard).setChecked(true);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -75,9 +76,6 @@ public class MainActivity extends AppCompatActivity  {
 
 
     }
-
-
-
 
     public void AddFragment(){
         fm.beginTransaction().add(R.id.main_container, dashboardFragment, "1").add(R.id.main_container, settingsFragment, "2").add(R.id.main_container, availibilityFragment, "3").commit();
