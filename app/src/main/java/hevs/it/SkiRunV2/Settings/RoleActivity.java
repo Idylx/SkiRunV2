@@ -20,7 +20,6 @@ import hevs.it.SkiRunV2.entity.UserEntity;
 import hevs.it.SkiRunV2.firebase.FirebaseCallBack;
 import hevs.it.SkiRunV2.firebase.FirebaseManager;
 import hevs.it.SkiRunV2.firebase.FirebaseUserManager;
-import hevs.it.SkiRunV2.models.TypeJob;
 
 public class RoleActivity extends AppCompatActivity {
 
@@ -30,7 +29,6 @@ public class RoleActivity extends AppCompatActivity {
     private List<String> mTypeJobList = new ArrayList<>();
     private RadioButton mRadioButtonJobName;
     private UserEntity mCurrentUser;
-    private Button mButtonOk;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +37,6 @@ public class RoleActivity extends AppCompatActivity {
 
         mRadioButtonJobName = (RadioButton) findViewById(R.id.role_radioButton);
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view_roles);
-        mButtonOk = (Button) findViewById(R.id.role_button_ok);
 
         // get current user
         mFirebaseCurrentUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -61,8 +58,6 @@ public class RoleActivity extends AppCompatActivity {
                 new DividerItemDecoration(mRecyclerView.getContext(),
                         recyclerLayoutManager.getOrientation());
         mRecyclerView.addItemDecoration(dividerItemDecoration);
-
-        onPressOkButton();
     }
 
 
@@ -71,15 +66,16 @@ public class RoleActivity extends AppCompatActivity {
             @Override
             public void onCallBack(Object o) {
                 mTypeJobList = (ArrayList<String>) o;
-                mTypeJobAdapter = new RoleAdapter(mTypeJobList);
+                mTypeJobAdapter = new RoleAdapter(mTypeJobList, mCurrentUser);
                 mRecyclerView.setAdapter(mTypeJobAdapter);
                 mTypeJobAdapter.notifyDataSetChanged();
-                
+
+
             }
         });
     }
 
-    public void onPressOkButton(){
+   /* public void onPressOkButton(){
 
         mButtonOk.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -93,6 +89,8 @@ public class RoleActivity extends AppCompatActivity {
                 }
         });
     }
+
+    */
 
 
 
