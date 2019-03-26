@@ -6,12 +6,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import java.util.Date;
 import java.util.List;
 
 import hevs.it.SkiRunV2.R;
 import hevs.it.SkiRunV2.entity.MissionEntity;
-import hevs.it.SkiRunV2.firebase.FirebaseSession;
 
 public class AvailabilityMissionAdapter extends RecyclerView.Adapter<AvailabilityMissionViewHolder> {
 
@@ -49,7 +50,7 @@ public class AvailabilityMissionAdapter extends RecyclerView.Adapter<Availabilit
 
         // check subscriptions to set the current state of the checkbox
         for (String s : missions.get(i).getSubscribed()) {
-            if (s.equals(FirebaseSession.UID_USER))
+            if (s.equals(FirebaseAuth.getInstance().getUid()))
                 holder.selectionMission.setChecked(true);
             else
                 holder.selectionMission.setChecked(false);

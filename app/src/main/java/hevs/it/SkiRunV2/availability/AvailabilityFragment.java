@@ -43,9 +43,6 @@ public class AvailabilityFragment extends Fragment {
     ArrayAdapter<String> adapterDiscipline;
 
 
-    private static final String TAG = "AvailabilityFragment";
-
-
     public AvailabilityFragment() {
         // Required empty public constructor
     }
@@ -117,13 +114,14 @@ public class AvailabilityFragment extends Fragment {
     }
 
 
+
     private void refreshCompetitions() {
         //get current competition
         FirebaseManager.getListCompetions(new FirebaseCallBack() {
             @Override
             public void onCallBack(Object o) {
                 ArrayList<String> competitions = (ArrayList<String>) o;
-                adapterCompetions = new ArrayAdapter<String>(AvailabilityFragment.this.getContext(),R.layout.custom_textview, competitions);
+                adapterCompetions = new ArrayAdapter<String>(getContext(),R.layout.custom_textview, competitions);
                 spCompetitions.setAdapter(adapterCompetions);
             }
         });
@@ -136,7 +134,7 @@ public class AvailabilityFragment extends Fragment {
             @Override
             public void onCallBack(Object o) {
                 CompetitionEntity competitionSelected = (CompetitionEntity) o;
-                adapterDiscipline = new ArrayAdapter<String>(AvailabilityFragment.this.getContext(), R.layout.custom_textview, competitionSelected.getListDiscipline());
+                adapterDiscipline = new ArrayAdapter<String>(getContext(), R.layout.custom_textview, competitionSelected.getListDiscipline());
                 spDisciplines.setAdapter(adapterDiscipline);
             }
         });

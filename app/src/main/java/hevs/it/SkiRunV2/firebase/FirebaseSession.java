@@ -1,10 +1,7 @@
 package hevs.it.SkiRunV2.firebase;
 
-import com.google.firebase.auth.FirebaseAuth;
-
 public class FirebaseSession {
 
-    public static final String UID_USER = FirebaseAuth.getInstance().getUid();
 
     public static final String NODE_USERS = "usersV2";
     public static final String NODE_CLUBS = "clubsV2";

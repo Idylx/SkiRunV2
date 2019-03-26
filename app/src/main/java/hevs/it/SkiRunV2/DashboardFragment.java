@@ -14,6 +14,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -22,7 +24,6 @@ import hevs.it.SkiRunV2.entity.CompetitionEntity;
 import hevs.it.SkiRunV2.entity.MissionEntity;
 import hevs.it.SkiRunV2.firebase.FirebaseCallBack;
 import hevs.it.SkiRunV2.firebase.FirebaseManager;
-import hevs.it.SkiRunV2.firebase.FirebaseSession;
 
 public class DashboardFragment extends Fragment {
 
@@ -147,13 +148,25 @@ public class DashboardFragment extends Fragment {
 
     }
 
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (hidden) {
+            //do when hidden
+            refreshMissions();
+        } else {
+            //do when show
+            refreshMissions();
+        }
+    }
+
 
     private void refreshCompetions() {
         FirebaseManager.getListCompetions(new FirebaseCallBack() {
             @Override
             public void onCallBack(Object o) {
                 competions = (ArrayList<String>) o;
-                adapterCompetions = new ArrayAdapter<String>(DashboardFragment.this.getContext(),  R.layout.custom_textview, competions);
+                adapterCompetions = new ArrayAdapter<String>(getContext(),  R.layout.custom_textview, competions);
                 adapterCompetions.notifyDataSetChanged();
                 spCompetitions.setAdapter(adapterCompetions);
             }
@@ -165,7 +178,7 @@ public class DashboardFragment extends Fragment {
             @Override
             public void onCallBack(Object o) {
                 CompetitionEntity competitionSelected = (CompetitionEntity) o;
-                adapterDiscipline = new ArrayAdapter<String>(DashboardFragment.this.getContext(), R.layout.custom_textview, competitionSelected.getListDiscipline());
+                adapterDiscipline = new ArrayAdapter<String>(getContext(), R.layout.custom_textview, competitionSelected.getListDiscipline());
                 adapterDiscipline.notifyDataSetChanged();
                 spDisciplines.setAdapter(adapterDiscipline);
             }
@@ -180,13 +193,13 @@ public class DashboardFragment extends Fragment {
                 List<MissionEntity> myMissions = new ArrayList<MissionEntity>();
                 for(MissionEntity mission :  (List<MissionEntity>)o){
                     for(String uid : mission.getSelecteds()){
-                        if(uid.equals(FirebaseSession.UID_USER)) {
+                        if(uid.equals(FirebaseAuth.getInstance().getUid())) {
                             myMissions.add(mission);
                             break;
                         }
                     }
                 }
-                adapterMission = new ArrayAdapter<MissionEntity>(DashboardFragment.this.getContext(),  R.layout.custom_textview, myMissions);
+                adapterMission = new ArrayAdapter<MissionEntity>(getContext(),  R.layout.custom_textview, myMissions);
                 adapterMission.notifyDataSetChanged();
                 lvMissions.setAdapter(adapterMission);
             }

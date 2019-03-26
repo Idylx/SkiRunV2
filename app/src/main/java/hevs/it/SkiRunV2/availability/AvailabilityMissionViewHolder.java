@@ -3,7 +3,6 @@ package hevs.it.SkiRunV2.availability;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import hevs.it.SkiRunV2.R;
@@ -32,31 +31,20 @@ public class AvailabilityMissionViewHolder
         itemView.setOnClickListener(this);
 
         //set listener to the checkbox
-        checkLogic();
     }
 
     @Override
     public void onClick(View v) {
-
-        checkLogic();
+    if (selectionMission.isChecked()){
+        selectionMission.setChecked(false);
+        FirebaseMissionManager.removeSubscriberMission(currentCompetition,  currentDiscipline, currentMissionName);
+    }
+    else
+        selectionMission.setChecked(true);
+        FirebaseMissionManager.updateSubscriberMission(currentCompetition,currentDiscipline,currentMissionName);
     }
 
 
 
-    private void checkLogic(){
-        //checkbox click event handling
-        selectionMission.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView,
-                                         boolean isChecked) {
-                // if changed on the check box set the subscription of the user
-                if (isChecked) {
-                    FirebaseMissionManager.updateSubscriberMission(currentCompetition,  currentDiscipline, currentMissionName);
-                } else {
-                    FirebaseMissionManager.removeSubscriberMission(currentCompetition,  currentDiscipline, currentMissionName);
-                }
-            }
-        });
 
-    }
 }

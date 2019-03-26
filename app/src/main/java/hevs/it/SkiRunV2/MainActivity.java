@@ -21,7 +21,23 @@ public class MainActivity extends AppCompatActivity  {
     final Fragment availibilityFragment = new AvailabilityFragment();
 
     final FragmentManager fm = getSupportFragmentManager();
-    Fragment active = settingsFragment;
+    String activeString;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        auth = FirebaseAuth.getInstance();
+
+        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        navigation.getMenu().findItem(R.id.navigation_dashboard).setChecked(true);
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+        AddFragment();
+
+        setFragmentDashboard();
+    }
 
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -31,53 +47,70 @@ public class MainActivity extends AppCompatActivity  {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_availibility:
-                    fm.beginTransaction().hide(active).commit();
-                    active = availibilityFragment;
-                    fm.beginTransaction().show(availibilityFragment).commit();
-                    getSupportActionBar().setTitle(R.string.title_avilibility);
-
+                    setFragmentAvailability();
                     return true;
 
                 case R.id.navigation_dashboard:
-                    fm.beginTransaction().hide(active).commit();
-                    active = dashboardFragment;
-                    fm.beginTransaction().show(dashboardFragment).commit();
-                    getSupportActionBar().setTitle(R.string.app_name);
+                    setFragmentDashboard();
                     return true;
 
                 case R.id.navigation_settings:
-                    fm.beginTransaction().hide(active).commit();
-                    active = settingsFragment;
-                    fm.beginTransaction().show(settingsFragment).commit();
-                    getSupportActionBar().setTitle(R.string.title_settings);
+                    setFragmentSettings();
                     return true;
             }
             return false;
         }
     };
 
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        auth = FirebaseAuth.getInstance();
-
-        getSupportActionBar().setTitle(R.string.app_name);
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        navigation.getMenu().findItem(R.id.navigation_dashboard).setChecked(true);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        AddFragment();
-        active = dashboardFragment;
-        fm.beginTransaction().show(dashboardFragment).commit();
-        fm.beginTransaction().hide(availibilityFragment).commit();
-        fm.beginTransaction().hide(settingsFragment).commit();
-
-
-
+    protected void onResume() {
+        super.onResume();
+        reloadCorrectFragment();
     }
 
     public void AddFragment(){
         fm.beginTransaction().add(R.id.main_container, dashboardFragment, "1").add(R.id.main_container, settingsFragment, "2").add(R.id.main_container, availibilityFragment, "3").commit();
+    }
+
+    private void reloadCorrectFragment(){
+        switch (activeString){
+            case "dashboard":
+                setFragmentDashboard();
+
+                break;
+            case "settings":
+                setFragmentSettings();
+                break;
+            case "availability":
+                setFragmentAvailability();
+                break;
+            default :
+                setFragmentDashboard();
+                break;
+        }
+    }
+    private void setFragmentSettings(){
+        fm.beginTransaction().hide(availibilityFragment).commit();
+        fm.beginTransaction().hide(dashboardFragment).commit();
+        activeString = "settings";
+        fm.beginTransaction().show(settingsFragment).commit();
+        getSupportActionBar().setTitle(R.string.title_settings);
+    }
+
+    private void setFragmentDashboard(){
+        fm.beginTransaction().hide(availibilityFragment).commit();
+        fm.beginTransaction().hide(settingsFragment).commit();
+        activeString = "dashboard";
+        fm.beginTransaction().show(dashboardFragment).commit();
+        getSupportActionBar().setTitle(R.string.app_name);
+    }
+
+    private void setFragmentAvailability(){
+        fm.beginTransaction().hide(settingsFragment).commit();
+        fm.beginTransaction().hide(dashboardFragment).commit();
+        activeString = "availability";
+        fm.beginTransaction().show(availibilityFragment).commit();
+        getSupportActionBar().setTitle(R.string.title_avilibility);
     }
 }

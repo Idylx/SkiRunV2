@@ -122,6 +122,8 @@ public class SignupActivity extends AppCompatActivity {
                                     mCurrentUser.setLastname(lastname);
                                     mCurrentUser.setFirstname(firstname);
                                     mCurrentUser.setPhone(phone);
+                                    mCurrentUser.setJobPreference("Aucune préférence");
+                                    mCurrentUser.setClub("Pas de club");
 
                                     // add it to firebase
                                     FirebaseUserManager.updateUser(mCurrentUser);

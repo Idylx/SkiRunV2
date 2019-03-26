@@ -16,7 +16,6 @@ import hevs.it.SkiRunV2.entity.ClubEntity;
 import hevs.it.SkiRunV2.entity.CompetitionEntity;
 import hevs.it.SkiRunV2.entity.DisciplineEntity;
 import hevs.it.SkiRunV2.entity.MissionEntity;
-import hevs.it.SkiRunV2.entity.TypeJobEntity;
 import hevs.it.SkiRunV2.entity.UserEntity;
 
 public class FirebaseManager {
@@ -26,7 +25,7 @@ public class FirebaseManager {
     public static void getUser(String uid, final FirebaseCallBack firebaseCallBack) {
         //Get the entity Person from an email
         DatabaseReference ref = mFirebaseDatabase.getReference().child(FirebaseSession.NODE_USERS).child(uid);
-        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+        ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 UserEntity user = dataSnapshot.getValue(UserEntity.class);
@@ -42,7 +41,7 @@ public class FirebaseManager {
 
     public static void getClubs(final FirebaseCallBack firebaseCallBack) {
         DatabaseReference ref = mFirebaseDatabase.getReference().child(FirebaseSession.NODE_CLUBS);
-        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+        ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 List<ClubEntity> clubs = new ArrayList<ClubEntity>();
@@ -80,7 +79,7 @@ public class FirebaseManager {
 
     public static void getClubsNames(final FirebaseCallBack firebaseCallBack) {
         DatabaseReference ref = mFirebaseDatabase.getReference().child(FirebaseSession.NODE_CLUBS);
-        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+        ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
@@ -100,7 +99,7 @@ public class FirebaseManager {
 
     public static void getListCompetions(final FirebaseCallBack firebaseCallBack) {
         DatabaseReference ref = mFirebaseDatabase.getReference().child(FirebaseSession.NODE_COMPETITIONS);
-        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+        ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
@@ -119,7 +118,7 @@ public class FirebaseManager {
     public static void getCompetition(String name, final FirebaseCallBack firebaseCallBack) {
         //Get the entity Competition from an name
         DatabaseReference ref = mFirebaseDatabase.getReference().child(FirebaseSession.NODE_COMPETITIONS).child(name);
-        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+        ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 CompetitionEntity competition = new CompetitionEntity();
@@ -155,20 +154,25 @@ public class FirebaseManager {
 
     public static void getMissions(String competiton, String disciplines, final FirebaseCallBack firebaseCallBack) {
         DatabaseReference ref = mFirebaseDatabase.getReference().child(FirebaseSession.NODE_COMPETITIONS).child(competiton).child(FirebaseSession.NODE_DISCIPLINES).child(disciplines);
-        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+        ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                 List<MissionEntity> missions = new ArrayList<MissionEntity>();
                 for (DataSnapshot childDataSnapshot : dataSnapshot.getChildren()) {
+
                     MissionEntity mission = new MissionEntity();
-                    mission.setMissionName(childDataSnapshot.getKey());
-                    mission.setDescription((String)childDataSnapshot.child(FirebaseSession.NODE_DESCRIPTION).getValue());
-                    mission.setDoors((String)childDataSnapshot.child(FirebaseSession.NODE_DOOR).getValue());
-                    mission.setStartTime((long)childDataSnapshot.child(FirebaseSession.NODE_STARTDT).getValue());
-                    mission.setEndTime((long)childDataSnapshot.child(FirebaseSession.NODE_ENDDT).getValue());
-                    mission.setNbrPeople((((long) childDataSnapshot.child(FirebaseSession.NODE_NB).getValue())));
-                    mission.setTypeJob((String)childDataSnapshot.child(FirebaseSession.NODE_TYPEOFJOB).getValue());
+                    try {
+                        mission.setMissionName(childDataSnapshot.getKey());
+                        mission.setDescription((String) childDataSnapshot.child(FirebaseSession.NODE_DESCRIPTION).getValue());
+                        mission.setDoors((String) childDataSnapshot.child(FirebaseSession.NODE_DOOR).getValue());
+                        mission.setStartTime((long) childDataSnapshot.child(FirebaseSession.NODE_STARTDT).getValue());
+                        mission.setEndTime((long) childDataSnapshot.child(FirebaseSession.NODE_ENDDT).getValue());
+                        mission.setNbrPeople((((long) childDataSnapshot.child(FirebaseSession.NODE_NB).getValue())));
+                        mission.setTypeJob((String) childDataSnapshot.child(FirebaseSession.NODE_TYPEOFJOB).getValue());
+                    }catch (Exception e){
+                        Log.println(1,"firebaseManager",e.toString());
+                    }
 
                     List<String> subs = new ArrayList<String>();
                     for(DataSnapshot childDataSnapshotSub : childDataSnapshot.child(FirebaseSession.NODE_SUBSCRIBED).getChildren()){
