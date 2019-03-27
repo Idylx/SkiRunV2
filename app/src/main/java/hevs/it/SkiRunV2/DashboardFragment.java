@@ -80,7 +80,6 @@ public class DashboardFragment extends Fragment {
         lvMissions = (ListView) getView().findViewById(R.id.lv_missions);
 
 
-
         spCompetitions.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -166,7 +165,7 @@ public class DashboardFragment extends Fragment {
             @Override
             public void onCallBack(Object o) {
                 competions = (ArrayList<String>) o;
-                adapterCompetions = new ArrayAdapter<String>(getContext(),  R.layout.custom_textview, competions);
+                adapterCompetions = new ArrayAdapter<String>(getContext(), R.layout.custom_textview, competions);
                 adapterCompetions.notifyDataSetChanged();
                 spCompetitions.setAdapter(adapterCompetions);
             }

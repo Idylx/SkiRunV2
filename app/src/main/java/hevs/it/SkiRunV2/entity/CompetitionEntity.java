@@ -1,6 +1,7 @@
 package hevs.it.SkiRunV2.entity;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.google.firebase.database.Exclude;
 
@@ -91,9 +92,17 @@ public class CompetitionEntity implements Competition {
 
     public ArrayList<String> getListDiscipline(){
 
-        ArrayList<String>  list = new ArrayList<String>();
-        for(DisciplineEntity discipline : getDisciplines()){
-            list.add(discipline.getName());
+        ArrayList<String> list = new ArrayList<String>();
+        try {
+
+            for (DisciplineEntity discipline : getDisciplines()) {
+                list.add(discipline.getName());
+            }
+        }
+        catch (NullPointerException e ){
+            Log.println(2, "competGetDiscipline", e.getMessage());
+            list.add("null exception");
+            return list;
         }
         return  list;
     }

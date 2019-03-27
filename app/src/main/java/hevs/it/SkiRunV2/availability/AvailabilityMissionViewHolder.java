@@ -21,6 +21,8 @@ public class AvailabilityMissionViewHolder
     String currentCompetition;
     String currentDiscipline;
 
+
+
     //constructor
     AvailabilityMissionViewHolder(View itemView) {
         super(itemView);
@@ -28,23 +30,22 @@ public class AvailabilityMissionViewHolder
         missionTime =(TextView) itemView.findViewById(R.id.AvailibilityMissionTime);
         selectionMission =(CheckBox) itemView.findViewById(R.id.AvailibilityMissionCheckBox);
 
-        itemView.setOnClickListener(this);
-
+        selectionMission.setClickable(false);
         //set listener to the checkbox
+        itemView.setOnClickListener(this);
     }
+
 
     @Override
     public void onClick(View v) {
-    if (selectionMission.isChecked()){
-        selectionMission.setChecked(false);
-        FirebaseMissionManager.removeSubscriberMission(currentCompetition,  currentDiscipline, currentMissionName);
+        if(!selectionMission.isChecked()){
+            selectionMission.setChecked(true);
+            FirebaseMissionManager.updateSubscriberMission(currentCompetition,currentDiscipline, currentMissionName);
+        }else{
+            selectionMission.setChecked(false);
+            FirebaseMissionManager.removeSubscriberMission(currentCompetition,currentDiscipline, currentMissionName);
+        }
+
+
     }
-    else
-        selectionMission.setChecked(true);
-        FirebaseMissionManager.updateSubscriberMission(currentCompetition,currentDiscipline,currentMissionName);
-    }
-
-
-
-
 }

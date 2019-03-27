@@ -48,14 +48,7 @@ public class AvailabilityMissionAdapter extends RecyclerView.Adapter<Availabilit
         holder.currentCompetition = currentCompetition;
         holder.currentDiscipline = currentDiscipline;
 
-        // check subscriptions to set the current state of the checkbox
-        for (String s : missions.get(i).getSubscribed()) {
-            if (s.equals(FirebaseAuth.getInstance().getUid()))
-                holder.selectionMission.setChecked(true);
-            else
-                holder.selectionMission.setChecked(false);
-        }
-
+        holder.selectionMission.setChecked(checkSubscrubed(i));
     }
 
     @Override
@@ -78,5 +71,15 @@ public class AvailabilityMissionAdapter extends RecyclerView.Adapter<Availabilit
         missions.clear();
         missions.addAll(newMission);
         notifyDataSetChanged();
+    }
+
+    boolean checkSubscrubed(int i) {
+        for (String s : missions.get(i).getSubscribed()) {
+            if (s.equals(FirebaseAuth.getInstance().getUid()))
+                return true;
+            else
+               return false;
+        }
+        return false;
     }
 }

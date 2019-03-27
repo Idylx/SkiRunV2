@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,9 +40,15 @@ public class AvailabilityFragment extends Fragment {
     RecyclerView rv;
     RecyclerView.LayoutManager layoutManager;
 
+
+    CompetitionEntity competitionSelected;
+    ArrayList<String> competions;
     ArrayAdapter<String> adapterCompetions;
     ArrayAdapter<String> adapterDiscipline;
 
+
+    String currentCompetitions;
+    String currentDiscipline;
 
     public AvailabilityFragment() {
         // Required empty public constructor
@@ -52,11 +59,17 @@ public class AvailabilityFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //get every competition on the creation of the fragment
-        refreshCompetitions();
+        competitionSelected = new CompetitionEntity();
+        competions = new ArrayList<>();
+
 
         // initialize the list of mission
         missions = new ArrayList<>();
+        refreshCompetitions();
+
+        //get every competition on the creation of the fragment
+
+
     }
 
     @Override
@@ -75,6 +88,12 @@ public class AvailabilityFragment extends Fragment {
         adapter = new AvailabilityMissionAdapter(missions);
         rv.setAdapter(adapter);
 
+
+        adapterCompetions = new ArrayAdapter<String>(getContext(), R.layout.custom_textview, competions);
+        adapterDiscipline = new ArrayAdapter<String>(getContext(), R.layout.custom_textview, competitionSelected.getListDiscipline());
+
+
+
         return view;
     }
 
@@ -84,6 +103,8 @@ public class AvailabilityFragment extends Fragment {
         // set spinner from view
         spCompetitions = (Spinner) getView().findViewById(R.id.spinner_competition);
         spDisciplines = (Spinner) getView().findViewById(R.id.spinner_discipline);
+        spDisciplines.setAdapter(adapterDiscipline);
+        spCompetitions.setAdapter(adapterCompetions);
 
 
         spCompetitions.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -91,6 +112,7 @@ public class AvailabilityFragment extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 //refresh Discipline with the selected competition
                 refreshDisciplines();
+                refreshMissions();
             }
 
             @Override
@@ -120,9 +142,10 @@ public class AvailabilityFragment extends Fragment {
         FirebaseManager.getListCompetions(new FirebaseCallBack() {
             @Override
             public void onCallBack(Object o) {
-                ArrayList<String> competitions = (ArrayList<String>) o;
-                adapterCompetions = new ArrayAdapter<String>(getContext(),R.layout.custom_textview, competitions);
-                spCompetitions.setAdapter(adapterCompetions);
+                competions = (ArrayList<String>) o;
+                adapterCompetions.clear();
+                adapterCompetions.addAll(competions);
+                adapterCompetions.notifyDataSetChanged();
             }
         });
     }
@@ -133,27 +156,34 @@ public class AvailabilityFragment extends Fragment {
         FirebaseManager.getCompetition(spCompetitions.getSelectedItem().toString(), new FirebaseCallBack() {
             @Override
             public void onCallBack(Object o) {
-                CompetitionEntity competitionSelected = (CompetitionEntity) o;
-                adapterDiscipline = new ArrayAdapter<String>(getContext(), R.layout.custom_textview, competitionSelected.getListDiscipline());
-                spDisciplines.setAdapter(adapterDiscipline);
+                competitionSelected = (CompetitionEntity) o;
+                adapterDiscipline.clear();
+                adapterDiscipline.addAll(competitionSelected.getListDiscipline());
+                adapterDiscipline.notifyDataSetChanged();
             }
         });
     }
 
 
     private void refreshMissions() {
-        //get current missions
-        FirebaseManager.getMissions(spCompetitions.getSelectedItem().toString(), spDisciplines.getSelectedItem().toString(), new FirebaseCallBack() {
-            @Override
-            public void onCallBack(Object o) {
-                List<MissionEntity> missions = (List<MissionEntity>) o;
-                //set selection on the adapter
-                adapter.setCurrentCompetition(spCompetitions.getSelectedItem().toString());
-                adapter.setCurrentDiscipline(spDisciplines.getSelectedItem().toString());
-                // update list
-                adapter.update(missions);
-            }
-        });
+       try {
+           //get current missions
+           FirebaseManager.getMissions(spCompetitions.getSelectedItem().toString(), spDisciplines.getSelectedItem().toString(), new FirebaseCallBack() {
+               @Override
+               public void onCallBack(Object o) {
+                   List<MissionEntity> missions = (List<MissionEntity>) o;
+                   //set selection on the adapter
+                   adapter.setCurrentCompetition(spCompetitions.getSelectedItem().toString());
+                   adapter.setCurrentDiscipline(spDisciplines.getSelectedItem().toString());
+                   // update list
+                   adapter.update(missions);
+               }
+           });
+       }
+       catch (NullPointerException e){
+           Log.println(1, "AvailabilityFragment", e.getMessage());
+       }
+
     }
 
 
