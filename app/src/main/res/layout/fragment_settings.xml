@@ -37,18 +37,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/roleButton" />
 
-        <Button
-            android:id="@+id/deleteAccountButton"
-            android:layout_width="345dp"
-            android:layout_height="30dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="10dp"
-            android:background="?android:attr/selectableItemBackground"
-            android:text="@string/delete_account"
-            android:textAlignment="textStart"
-            android:textColor="@color/red"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/logoutButton" />
 
         <TextView
             android:id="@+id/otherTextView"
@@ -109,6 +97,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="20dp"
             android:text="@string/account"
+            android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="18sp"
             android:textStyle="bold"

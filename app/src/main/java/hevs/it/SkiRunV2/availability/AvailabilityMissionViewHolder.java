@@ -11,6 +11,7 @@ import hevs.it.SkiRunV2.firebase.FirebaseMissionManager;
 public class AvailabilityMissionViewHolder
         extends RecyclerView.ViewHolder implements View.OnClickListener{
 
+
     //items of one row
     TextView missionName, missionTime;
     CheckBox selectionMission;
@@ -45,7 +46,5 @@ public class AvailabilityMissionViewHolder
             selectionMission.setChecked(false);
             FirebaseMissionManager.removeSubscriberMission(currentCompetition,currentDiscipline, currentMissionName);
         }
-
-
     }
 }

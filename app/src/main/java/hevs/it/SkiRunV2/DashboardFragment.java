@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,10 +28,12 @@ import hevs.it.SkiRunV2.firebase.FirebaseManager;
 
 public class DashboardFragment extends Fragment {
 
-
     Spinner spCompetitions;
     Spinner spDisciplines;
+
     ListView lvMissions;
+
+    CompetitionEntity competitionSelected;
 
     ArrayList<String> competions;
     ArrayAdapter<String>  adapterCompetions;
@@ -41,14 +44,7 @@ public class DashboardFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment DashboardFragment.
-     */
+
     // TODO: Rename and change types and number of parameters
     public static DashboardFragment newInstance(String param1, String param2) {
         DashboardFragment fragment = new DashboardFragment();
@@ -60,7 +56,12 @@ public class DashboardFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        competitionSelected = new CompetitionEntity();
+        competions = new ArrayList<>();
+
         refreshCompetions();
+
 
     }
 
@@ -70,6 +71,12 @@ public class DashboardFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_dashboard, container, false);
+
+
+        adapterCompetions = new ArrayAdapter<String>(getContext(), R.layout.custom_textview, competions);
+        adapterDiscipline = new ArrayAdapter<String>(getContext(), R.layout.custom_textview, competitionSelected.getListDiscipline());
+
+
         return view;
     }
 
@@ -79,6 +86,8 @@ public class DashboardFragment extends Fragment {
         spDisciplines = (Spinner) getView().findViewById(R.id.sp_discipline);
         lvMissions = (ListView) getView().findViewById(R.id.lv_missions);
 
+        spCompetitions.setAdapter(adapterCompetions);
+        spDisciplines.setAdapter(adapterDiscipline);
 
         spCompetitions.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -165,44 +174,56 @@ public class DashboardFragment extends Fragment {
             @Override
             public void onCallBack(Object o) {
                 competions = (ArrayList<String>) o;
-                adapterCompetions = new ArrayAdapter<String>(getContext(), R.layout.custom_textview, competions);
+                adapterCompetions.clear();
+                adapterCompetions.addAll(competions);
                 adapterCompetions.notifyDataSetChanged();
-                spCompetitions.setAdapter(adapterCompetions);
             }
         });
     }
 
     private void refreshDisciplines() {
-        FirebaseManager.getCompetition(spCompetitions.getSelectedItem().toString(), new FirebaseCallBack() {
-            @Override
-            public void onCallBack(Object o) {
-                CompetitionEntity competitionSelected = (CompetitionEntity) o;
-                adapterDiscipline = new ArrayAdapter<String>(getContext(), R.layout.custom_textview, competitionSelected.getListDiscipline());
-                adapterDiscipline.notifyDataSetChanged();
-                spDisciplines.setAdapter(adapterDiscipline);
-            }
-        });
+        try {
+
+                FirebaseManager.getCompetition(spCompetitions.getSelectedItem().toString(), new FirebaseCallBack() {
+                @Override
+                public void onCallBack(Object o) {
+                    competitionSelected = (CompetitionEntity) o;
+                    adapterDiscipline.clear();
+                    adapterDiscipline.addAll(competitionSelected.getListDiscipline());
+                    adapterDiscipline.notifyDataSetChanged();
+                }
+            });
+        }catch (NullPointerException e){
+            Log.println(1, "DashboardFragment", e.getMessage());
+        }
     }
 
     private void refreshMissions() {
-        FirebaseManager.getMissions(spCompetitions.getSelectedItem().toString(), spDisciplines.getSelectedItem().toString(), new FirebaseCallBack() {
-            @Override
-            public void onCallBack(Object o) {
 
-                List<MissionEntity> myMissions = new ArrayList<MissionEntity>();
-                for(MissionEntity mission :  (List<MissionEntity>)o){
-                    for(String uid : mission.getSelecteds()){
-                        if(uid.equals(FirebaseAuth.getInstance().getUid())) {
-                            myMissions.add(mission);
-                            break;
+        try{
+            FirebaseManager.getMissions(spCompetitions.getSelectedItem().toString(),
+                    spDisciplines.getSelectedItem().toString(), new FirebaseCallBack() {
+                @Override
+                public void onCallBack(Object o) {
+
+                    List<MissionEntity> myMissions = new ArrayList<MissionEntity>();
+                    for(MissionEntity mission :  (List<MissionEntity>)o){
+                        for(String uid : mission.getSelecteds()){
+                            if(uid.equals(FirebaseAuth.getInstance().getUid())) {
+                                myMissions.add(mission);
+                                break;
+                            }
                         }
                     }
+                    adapterMission = new ArrayAdapter<MissionEntity>(getContext(),  R.layout.custom_textview, myMissions);
+                    adapterMission.notifyDataSetChanged();
+                    lvMissions.setAdapter(adapterMission);
                 }
-                adapterMission = new ArrayAdapter<MissionEntity>(getContext(),  R.layout.custom_textview, myMissions);
-                adapterMission.notifyDataSetChanged();
-                lvMissions.setAdapter(adapterMission);
-            }
-        });
+            });
+        }
+        catch (NullPointerException e){
+            Log.println(1, "DashboardFragment", e.getMessage());
+        }
     }
 
 

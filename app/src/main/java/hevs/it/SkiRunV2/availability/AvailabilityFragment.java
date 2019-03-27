@@ -46,10 +46,6 @@ public class AvailabilityFragment extends Fragment {
     ArrayAdapter<String> adapterCompetions;
     ArrayAdapter<String> adapterDiscipline;
 
-
-    String currentCompetitions;
-    String currentDiscipline;
-
     public AvailabilityFragment() {
         // Required empty public constructor
     }
