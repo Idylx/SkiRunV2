@@ -13,6 +13,8 @@ import hevs.it.SkiRunV2.firebase.FirebaseUserManager;
 
 public class RoleAdapter extends RecyclerView.Adapter<RoleAdapter.RolesViewHolder> {
 
+    private static final String TAG = "RoleAdapter";
+
     // variables
     private List<String> mTypeJobList;
     private UserEntity mCurrentUser;

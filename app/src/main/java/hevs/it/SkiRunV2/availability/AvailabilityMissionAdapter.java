@@ -16,6 +16,8 @@ import hevs.it.SkiRunV2.entity.MissionEntity;
 
 public class AvailabilityMissionAdapter extends RecyclerView.Adapter<AvailabilityMissionViewHolder> {
 
+    private static final String TAG = "AvailabilityMissionAdapter";
+
     // get list of mission
     private List<MissionEntity> missions;
 

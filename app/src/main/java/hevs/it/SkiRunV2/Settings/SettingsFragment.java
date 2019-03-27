@@ -19,6 +19,8 @@ import hevs.it.SkiRunV2.login.ResetPasswordActivity;
 
 public class SettingsFragment extends Fragment {
 
+    private static final String TAG = "Settingsfragment";
+
     private Button mEditProfileButton, mRoleButton, mClubButton, mLanguageButton, mLogoutButton, mResetPassword;
     private View mView;
     private FirebaseUser mFirebaseCurrentUser;

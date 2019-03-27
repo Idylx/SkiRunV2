@@ -19,6 +19,8 @@ import hevs.it.SkiRunV2.firebase.FirebaseUserManager;
 
 public class EditProfileActivity extends AppCompatActivity {
 
+    private static final String TAG = "EditProfileActivityr";
+
     private Button mButtonOk;
     private FirebaseUser mFirebaseCurrentUser;
     private UserEntity mCurrentUser;

@@ -16,6 +16,8 @@ import hevs.it.SkiRunV2.firebase.FirebaseManager;
 
 public class RoleActivity extends AppCompatActivity {
 
+    private static final String TAG = "RoleActivity";
+
     // variables
     private RecyclerView mRecyclerView;
     private RoleAdapter mTypeJobAdapter;

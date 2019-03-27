@@ -13,6 +13,8 @@ import hevs.it.SkiRunV2.firebase.FirebaseUserManager;
 
 public class ClubAdapter extends RecyclerView.Adapter<ClubAdapter.ClubsViewHolder>  {
 
+    private static final String TAG = "ClubAdapter";
+
     // variables
     private List<String> mClubList;
     private UserEntity mCurrentUser;

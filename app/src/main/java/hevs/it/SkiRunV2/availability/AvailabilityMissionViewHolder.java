@@ -11,6 +11,7 @@ import hevs.it.SkiRunV2.firebase.FirebaseMissionManager;
 public class AvailabilityMissionViewHolder
         extends RecyclerView.ViewHolder implements View.OnClickListener{
 
+    private static final String TAG = "AvailabilityMissionViewHolder";
 
     //items of one row
     TextView missionName, missionTime;

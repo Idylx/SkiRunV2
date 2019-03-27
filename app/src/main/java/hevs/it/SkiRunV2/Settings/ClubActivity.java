@@ -16,6 +16,8 @@ import hevs.it.SkiRunV2.firebase.FirebaseManager;
 
 public class ClubActivity extends AppCompatActivity {
 
+    private static final String TAG = "ClubActivity";
+
     // Variables
     private RecyclerView mRecyclerView;
     private ClubAdapter mClubAdapter;

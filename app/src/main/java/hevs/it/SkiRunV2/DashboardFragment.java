@@ -28,14 +28,20 @@ import hevs.it.SkiRunV2.firebase.FirebaseManager;
 
 public class DashboardFragment extends Fragment {
 
+    // spinner
     Spinner spCompetitions;
     Spinner spDisciplines;
 
+    // list view
     ListView lvMissions;
 
+    // competition
     CompetitionEntity competitionSelected;
 
+    // array of competitions
     ArrayList<String> competions;
+
+    // array of adapters
     ArrayAdapter<String>  adapterCompetions;
     ArrayAdapter<String>  adapterDiscipline;
     ArrayAdapter<MissionEntity> adapterMission;
@@ -60,9 +66,8 @@ public class DashboardFragment extends Fragment {
         competitionSelected = new CompetitionEntity();
         competions = new ArrayList<>();
 
+        // refresh the competitions
         refreshCompetions();
-
-
     }
 
 
@@ -72,10 +77,9 @@ public class DashboardFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_dashboard, container, false);
 
-
+        // instanciate the adapters
         adapterCompetions = new ArrayAdapter<String>(getContext(), R.layout.custom_textview, competions);
         adapterDiscipline = new ArrayAdapter<String>(getContext(), R.layout.custom_textview, competitionSelected.getListDiscipline());
-
 
         return view;
     }
@@ -86,12 +90,15 @@ public class DashboardFragment extends Fragment {
         spDisciplines = (Spinner) getView().findViewById(R.id.sp_discipline);
         lvMissions = (ListView) getView().findViewById(R.id.lv_missions);
 
+        // set the adapters
         spCompetitions.setAdapter(adapterCompetions);
         spDisciplines.setAdapter(adapterDiscipline);
 
+        // listener on  spinner competition
         spCompetitions.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                // refresh disciplines
                 refreshDisciplines();
             }
 
@@ -101,7 +108,7 @@ public class DashboardFragment extends Fragment {
             }
         });
 
-
+        // listener on the spinner disciplines
         spDisciplines.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -114,6 +121,7 @@ public class DashboardFragment extends Fragment {
             }
         });
 
+        // listener on the mission
         lvMissions.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
@@ -168,22 +176,27 @@ public class DashboardFragment extends Fragment {
         }
     }
 
-
+    // refresh competition
     private void refreshCompetions() {
-        FirebaseManager.getListCompetions(new FirebaseCallBack() {
-            @Override
-            public void onCallBack(Object o) {
-                competions = (ArrayList<String>) o;
-                adapterCompetions.clear();
-                adapterCompetions.addAll(competions);
-                adapterCompetions.notifyDataSetChanged();
-            }
-        });
+        try {
+            FirebaseManager.getListCompetions(new FirebaseCallBack() {
+                @Override
+                public void onCallBack(Object o) {
+                    competions = (ArrayList<String>) o;
+                    adapterCompetions.clear();
+                    adapterCompetions.addAll(competions);
+                    adapterCompetions.notifyDataSetChanged();
+                }
+            });
+        }
+        catch (NullPointerException e){
+            Log.println(1, "DashboardFragment", e.getMessage());
+        }
     }
 
+    // refresh descipline
     private void refreshDisciplines() {
         try {
-
                 FirebaseManager.getCompetition(spCompetitions.getSelectedItem().toString(), new FirebaseCallBack() {
                 @Override
                 public void onCallBack(Object o) {
@@ -198,6 +211,7 @@ public class DashboardFragment extends Fragment {
         }
     }
 
+    // refresh missions
     private void refreshMissions() {
 
         try{
@@ -222,6 +236,9 @@ public class DashboardFragment extends Fragment {
             });
         }
         catch (NullPointerException e){
+            Log.println(1, "DashboardFragment", e.getMessage());
+        }
+        catch (IndexOutOfBoundsException e ){
             Log.println(1, "DashboardFragment", e.getMessage());
         }
     }
