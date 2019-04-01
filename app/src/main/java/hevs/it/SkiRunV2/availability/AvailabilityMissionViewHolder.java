@@ -23,8 +23,6 @@ public class AvailabilityMissionViewHolder
     String currentCompetition;
     String currentDiscipline;
 
-
-
     //constructor
     AvailabilityMissionViewHolder(View itemView) {
         super(itemView);

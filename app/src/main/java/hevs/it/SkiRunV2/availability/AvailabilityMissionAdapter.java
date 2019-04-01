@@ -30,6 +30,7 @@ public class AvailabilityMissionAdapter extends RecyclerView.Adapter<Availabilit
         this.missions = missions;
     }
 
+
     @Override
     public AvailabilityMissionViewHolder onCreateViewHolder(ViewGroup parent, int i) {
 

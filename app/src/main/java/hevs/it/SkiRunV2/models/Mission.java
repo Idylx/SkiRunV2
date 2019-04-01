@@ -8,7 +8,7 @@ public interface Mission {
 
     String getMissionName();
     String getDescription();
-    String getDoors();
+    String getLocation();
     String getTypeJob();
     Long getStartTime();
     Long getEndTime();

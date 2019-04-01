@@ -2,6 +2,7 @@ package hevs.it.SkiRunV2.Settings;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,21 +38,24 @@ public class ClubAdapter extends RecyclerView.Adapter<ClubAdapter.ClubsViewHolde
     @Override
     public void onBindViewHolder(@NonNull ClubsViewHolder holder, int position) {
 
-        // get the club name
-        mClubName = mClubList.get(position);
-        // set the text of the radio button with the club name
-        holder.mRadioBtnNameClub.setText(mClubName);
-        // Get the current club
-        holder.mCurrentClub = mClubList.get(position);
-        // if the name of the club is the same name of the club of the user
-        if (mClubName.equals(mCurrentUser.getClub())){
-            // check the radiobutton
-            holder.mRadioBtnNameClub.setChecked(true);
-            lastSelectedPosition= position;
-        }
-        else {
-            // uncheck the radiobutton
-            holder.mRadioBtnNameClub.setChecked(false);
+        try {
+            // get the club name
+            mClubName = mClubList.get(position);
+            // set the text of the radio button with the club name
+            holder.mRadioBtnNameClub.setText(mClubName);
+            // Get the current club
+            holder.mCurrentClub = mClubList.get(position);
+            // if the name of the club is the same name of the club of the user
+            if (mClubName.equals(mCurrentUser.getClub())) {
+                // check the radiobutton
+                holder.mRadioBtnNameClub.setChecked(true);
+                lastSelectedPosition = position;
+            } else {
+                // uncheck the radiobutton
+                holder.mRadioBtnNameClub.setChecked(false);
+            }
+        }catch(Exception e){
+            Log.i(TAG, e.getMessage());
         }
     }
 

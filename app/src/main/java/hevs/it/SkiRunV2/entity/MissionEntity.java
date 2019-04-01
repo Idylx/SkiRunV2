@@ -19,7 +19,7 @@ public class MissionEntity implements Mission {
     private String missionName;
     private String description;
     private String typeJob;
-    private String doors;
+    private String location;
     private Long startTime;
     private Long endTime;
     private Long nbrPeople;
@@ -38,7 +38,7 @@ public class MissionEntity implements Mission {
         this.typeJob= mission.getTypeJob();
         this.startTime = mission.getStartTime();
         this.endTime = mission.getEndTime();
-        this.doors = mission.getDoors();
+        this.location = mission.getLocation();
         this.nbrPeople = mission.getNbrPeople();
         this.subscribeds = mission.getSubscribed();
         this.selecteds = mission.getSelecteds();
@@ -112,8 +112,8 @@ public class MissionEntity implements Mission {
     }
 
     @Override
-    public String getDoors() {
-        return doors;
+    public String getLocation() {
+        return location;
     }
 
     @Override
@@ -125,20 +125,20 @@ public class MissionEntity implements Mission {
         this.typeJob = typeJob;
     }
 
-    public void setDoors(String doors){
-        this.doors = doors;
+    public void setLocation(String location){
+        this.location = location;
     }
 
     /*
     public String toString(){
-        if(getDoors() == null)
+        if(getLocation() == null)
             return getHourAndMinutes(fromTimestamp(getStartTime())) + " - "
                     + getHourAndMinutes(fromTimestamp(getEndTime())) + " "
                     + getMissionName();
         else
             return getHourAndMinutes(fromTimestamp(getStartTime())) + " - "
                     + getHourAndMinutes(fromTimestamp(getEndTime())) + " "
-                    + getMissionName() + " " + getDoors();
+                    + getMissionName() + " " + getLocation();
     }
 */
     public void setNbrPeople(Long nbrPeople) {

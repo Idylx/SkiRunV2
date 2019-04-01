@@ -17,7 +17,7 @@ public class FirebaseSession {
 
     //Mission nodes
     public static final String NODE_DESCRIPTION = "description";
-    public static final String NODE_DOOR = "door";
+    public static final String NODE_LOCATION = "location";
     public static final String NODE_ENDDT = "endDateTime";
     public static final String NODE_STARTDT = "startDateTime";
     public static final String NODE_NB = "nbrPeople";

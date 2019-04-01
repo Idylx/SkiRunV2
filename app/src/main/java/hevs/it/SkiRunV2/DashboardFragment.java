@@ -52,7 +52,14 @@ public class DashboardFragment extends Fragment {
         // Required empty public constructor
     }
 
-
+    /**
+     * Use this factory method to create a new instance of
+     * this fragment using the provided parameters.
+     *
+     * @param param1 Parameter 1.
+     * @param param2 Parameter 2.
+     * @return A new instance of fragment DashboardFragment.
+     */
     // TODO: Rename and change types and number of parameters
     public static DashboardFragment newInstance(String param1, String param2) {
         DashboardFragment fragment = new DashboardFragment();
@@ -70,6 +77,7 @@ public class DashboardFragment extends Fragment {
 
         // refresh the competitions
         refreshCompetions();
+
     }
 
 
@@ -100,7 +108,6 @@ public class DashboardFragment extends Fragment {
         spCompetitions.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                // refresh disciplines
                 refreshDisciplines();
             }
 
@@ -166,19 +173,6 @@ public class DashboardFragment extends Fragment {
 
     }
 
-    @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-        if (hidden) {
-            //do when hidden
-            refreshMissions();
-        } else {
-            //do when show
-            refreshMissions();
-        }
-    }
-
-    // refresh competition
     private void refreshCompetions() {
         try {
             FirebaseManager.getListCompetions(new FirebaseCallBack() {

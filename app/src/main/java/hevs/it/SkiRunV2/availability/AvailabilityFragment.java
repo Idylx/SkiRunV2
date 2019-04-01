@@ -63,7 +63,6 @@ public class AvailabilityFragment extends Fragment {
         // initialize the list of mission
         missions = new ArrayList<>();
         refreshCompetitions();
-        refreshDisciplines();
 
 
         //get every competition on the creation of the fragment
@@ -84,10 +83,9 @@ public class AvailabilityFragment extends Fragment {
         rv.setLayoutManager(layoutManager);
 
         //set the adapter to the recycler view
-        adapter = new AvailabilityMissionAdapter(missions);
-        adapterCompetions = new ArrayAdapter<String>(getContext(), R.layout.custom_textview, competions);
+        adapterCompetions = new ArrayAdapter<String>(this.getContext(), R.layout.custom_textview, competions);
         adapterDiscipline = new ArrayAdapter<String>(getContext(), R.layout.custom_textview, competitionSelected.getListDiscipline());
-
+        adapter = new AvailabilityMissionAdapter(missions);
 
 
         return view;
@@ -95,17 +93,13 @@ public class AvailabilityFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-
-        refreshMissions();
         // set spinner from view
         spCompetitions = (Spinner) getView().findViewById(R.id.spinner_competition);
         spDisciplines = (Spinner) getView().findViewById(R.id.spinner_discipline);
 
-
-        spDisciplines.setAdapter(adapterDiscipline);
         spCompetitions.setAdapter(adapterCompetions);
+        spDisciplines.setAdapter(adapterDiscipline);
         rv.setAdapter(adapter);
-
 
         spCompetitions.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -158,6 +152,7 @@ public class AvailabilityFragment extends Fragment {
                     adapterDiscipline.clear();
                     adapterDiscipline.addAll(competitionSelected.getListDiscipline());
                     adapterDiscipline.notifyDataSetChanged();
+                    refreshMissions();
                 }
             });
         }catch (NullPointerException e){
@@ -182,7 +177,11 @@ public class AvailabilityFragment extends Fragment {
             });
         }
         catch (NullPointerException e){
-            Log.println(1, "AvailabilityFragment", e.getMessage());
+            Log.i(TAG, e.getMessage());
+        }
+        catch (IndexOutOfBoundsException eI){
+            Log.i(TAG, eI.getMessage());
+            spDisciplines.setSelection(0);
         }
 
     }

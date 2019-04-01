@@ -20,6 +20,8 @@ import hevs.it.SkiRunV2.entity.UserEntity;
 
 public class FirebaseManager {
 
+    private static final String TAG = "FirebaseManager";
+
     private static FirebaseDatabase mFirebaseDatabase = FirebaseDatabase.getInstance();
 
     public static void getUser(String uid, final FirebaseCallBack firebaseCallBack) {
@@ -122,28 +124,39 @@ public class FirebaseManager {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 CompetitionEntity competition = new CompetitionEntity();
-                competition.setName(dataSnapshot.getKey());
-                competition.setStartDate((long)dataSnapshot.child(FirebaseSession.NODE_STARTDATE).getValue());
-                competition.setEndDate((long)dataSnapshot.child(FirebaseSession.NODE_ENDDATE).getValue());
-                competition.setRefApi((String)dataSnapshot.child(FirebaseSession.NODE_REFAPI).getValue());
-                Log.i("FBCB", competition.getStartDate()+"");
-                List<ClubEntity> clubs = new ArrayList<ClubEntity>();
-                for (DataSnapshot childDataSnapshot : dataSnapshot.child(FirebaseSession.NODE_GUESTCLUBS).getChildren()) {
-                    ClubEntity club = new ClubEntity();
-                    club.setName(childDataSnapshot.getKey());
-                    clubs.add(club);
-                }
 
-                List<DisciplineEntity> disciplines = new ArrayList<DisciplineEntity>();
-                for (DataSnapshot childDataSnapshot : dataSnapshot.child(FirebaseSession.NODE_DISCIPLINES).getChildren()) {
-                    DisciplineEntity discipline = new DisciplineEntity();
-                    discipline.setName(childDataSnapshot.getKey());
-                    disciplines.add(discipline);
-                }
+                    competition.setName(dataSnapshot.getKey());
+                    try{
+                    competition.setStartDate((long) dataSnapshot.child(FirebaseSession.NODE_STARTDATE).getValue());
+                    competition.setEndDate((long) dataSnapshot.child(FirebaseSession.NODE_ENDDATE).getValue());
+                    competition.setRefApi((String) dataSnapshot.child(FirebaseSession.NODE_REFAPI).getValue());
+                    Log.i("FBCB", competition.getStartDate() + "");
+                    List<ClubEntity> clubs = new ArrayList<ClubEntity>();
+                    for (DataSnapshot childDataSnapshot : dataSnapshot.child(FirebaseSession.NODE_GUESTCLUBS).getChildren()) {
+                        ClubEntity club = new ClubEntity();
+                        club.setName(childDataSnapshot.getKey());
+                        clubs.add(club);
+                    }
 
-                competition.setGuestsClub(clubs);
-                competition.setDisciplines(disciplines);
-                firebaseCallBack.onCallBack(competition);
+                    List<DisciplineEntity> disciplines = new ArrayList<DisciplineEntity>();
+                    for (DataSnapshot childDataSnapshot : dataSnapshot.child(FirebaseSession.NODE_DISCIPLINES).getChildren()) {
+                        DisciplineEntity discipline = new DisciplineEntity();
+                        discipline.setName(childDataSnapshot.getKey());
+                        disciplines.add(discipline);
+                    }
+
+                    competition.setGuestsClub(clubs);
+                    competition.setDisciplines(disciplines);
+                    firebaseCallBack.onCallBack(competition);
+                }catch (Exception e){
+                    competition.setStartDate(0L);
+                    competition.setEndDate(0L);
+                    competition.setRefApi("");
+                    competition.setGuestsClub(new ArrayList<ClubEntity>());
+                    competition.setDisciplines(new ArrayList<DisciplineEntity>());
+                    firebaseCallBack.onCallBack(competition);
+                    Log.e(TAG, e.getMessage());
+                }
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -162,16 +175,24 @@ public class FirebaseManager {
                 for (DataSnapshot childDataSnapshot : dataSnapshot.getChildren()) {
 
                     MissionEntity mission = new MissionEntity();
-                    try {
+
                         mission.setMissionName(childDataSnapshot.getKey());
+                    try {
                         mission.setDescription((String) childDataSnapshot.child(FirebaseSession.NODE_DESCRIPTION).getValue());
-                        mission.setDoors((String) childDataSnapshot.child(FirebaseSession.NODE_DOOR).getValue());
+                        mission.setLocation((String) childDataSnapshot.child(FirebaseSession.NODE_LOCATION).getValue());
                         mission.setStartTime((long) childDataSnapshot.child(FirebaseSession.NODE_STARTDT).getValue());
                         mission.setEndTime((long) childDataSnapshot.child(FirebaseSession.NODE_ENDDT).getValue());
                         mission.setNbrPeople((((long) childDataSnapshot.child(FirebaseSession.NODE_NB).getValue())));
                         mission.setTypeJob((String) childDataSnapshot.child(FirebaseSession.NODE_TYPEOFJOB).getValue());
-                    }catch (Exception e){
-                        Log.println(1,"firebaseManager",e.toString());
+                    }catch (NullPointerException e){
+                        mission.setMissionName("Null");
+                        mission.setDescription("Null");
+                        mission.setLocation("null");
+                        mission.setStartTime(0L);
+                        mission.setEndTime(0L);
+                        mission.setNbrPeople(0L);
+                        mission.setTypeJob("");
+                        Log.wtf(TAG, e.getMessage());
                     }
 
                     List<String> subs = new ArrayList<String>();
