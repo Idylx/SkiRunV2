@@ -25,6 +25,7 @@ import hevs.it.SkiRunV2.firebase.FirebaseManager;
 
 public class AvailabilityFragment extends Fragment {
 
+    private static final String TAG = "AvailabilityFragment";
 
     //Spinner
     Spinner spCompetitions;

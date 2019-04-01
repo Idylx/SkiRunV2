@@ -23,6 +23,8 @@ import hevs.it.SkiRunV2.firebase.FirebaseUserManager;
 
 public class SignupActivity extends AppCompatActivity {
 
+    private static final String TAG = "SignupActivity";
+
     private EditText inputEmail, inputPassword, inputLastname, inputFirstname, inputPhone;
     private Button btnSignIn, btnSignUp, btnResetPassword;
     private ProgressBar progressBar;

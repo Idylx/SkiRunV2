@@ -15,6 +15,8 @@ import hevs.it.SkiRunV2.availability.AvailabilityFragment;
 
 public class MainActivity extends AppCompatActivity  {
 
+    private static final String TAG = "MainActivity";
+
     FirebaseAuth auth;
     final Fragment settingsFragment = new SettingsFragment();
     final Fragment dashboardFragment = new DashboardFragment();

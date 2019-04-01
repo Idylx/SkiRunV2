@@ -11,6 +11,8 @@ import java.util.List;
 //Has an arraylist of fragments that are managed using this PagerAdapter
 public class EditStateSectionAdapter extends FragmentStatePagerAdapter {
 
+    private static final String TAG = "EditStateSectionAdapter";
+
     private final List<Fragment> profileFragmentList = new ArrayList<>();
 
     public EditStateSectionAdapter(FragmentManager fm) {

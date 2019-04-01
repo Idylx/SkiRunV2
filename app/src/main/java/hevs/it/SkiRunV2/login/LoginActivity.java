@@ -22,6 +22,8 @@ import hevs.it.SkiRunV2.firebase.FirebaseManager;
 
 public class LoginActivity extends AppCompatActivity {
 
+    private static final String TAG = "LoginActivity";
+
     private EditText inputEmail, inputPassword;
     private FirebaseAuth auth;
     private ProgressBar progressBar;

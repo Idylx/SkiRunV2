@@ -28,6 +28,8 @@ import hevs.it.SkiRunV2.firebase.FirebaseManager;
 
 public class DashboardFragment extends Fragment {
 
+    private static final String TAG = "DashboardFragment";
+
     // spinner
     Spinner spCompetitions;
     Spinner spDisciplines;

@@ -7,6 +7,8 @@ import hevs.it.SkiRunV2.R;
 
 public class LanguageActivity extends AppCompatActivity {
 
+    private static final String TAG = "LanguageActivity";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

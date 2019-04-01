@@ -18,6 +18,8 @@ import hevs.it.SkiRunV2.R;
 
 public class ResetPasswordActivity extends AppCompatActivity {
 
+    private static final String TAG = "ResetPasswordActivity";
+
     private EditText inputEmail;
     private Button btnReset, btnBack;
     private FirebaseAuth auth;
