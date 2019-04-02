@@ -2,6 +2,7 @@ package hevs.it.SkiRunV2;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -25,6 +26,8 @@ import hevs.it.SkiRunV2.entity.CompetitionEntity;
 import hevs.it.SkiRunV2.entity.MissionEntity;
 import hevs.it.SkiRunV2.firebase.FirebaseCallBack;
 import hevs.it.SkiRunV2.firebase.FirebaseManager;
+import hevs.it.SkiRunV2.missions.LambdaMissions;
+import hevs.it.SkiRunV2.missions.TimekeeperMissions;
 
 public class DashboardFragment extends Fragment {
 
@@ -42,6 +45,7 @@ public class DashboardFragment extends Fragment {
 
     // array of competitions
     ArrayList<String> competions;
+    ArrayList<MissionEntity> myMissions;
 
     // array of adapters
     ArrayAdapter<String>  adapterCompetions;
@@ -51,29 +55,13 @@ public class DashboardFragment extends Fragment {
     public DashboardFragment() {
         // Required empty public constructor
     }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment DashboardFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static DashboardFragment newInstance(String param1, String param2) {
-        DashboardFragment fragment = new DashboardFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         competitionSelected = new CompetitionEntity();
         competions = new ArrayList<>();
+        myMissions = new ArrayList<>();
 
         // refresh the competitions
         refreshCompetions();
@@ -90,6 +78,7 @@ public class DashboardFragment extends Fragment {
         // instanciate the adapters
         adapterCompetions = new ArrayAdapter<String>(getContext(), R.layout.custom_textview, competions);
         adapterDiscipline = new ArrayAdapter<String>(getContext(), R.layout.custom_textview, competitionSelected.getListDiscipline());
+        adapterMission = new ArrayAdapter<MissionEntity>(getContext(), R.layout.custom_textview, myMissions );
 
         return view;
     }
@@ -103,6 +92,7 @@ public class DashboardFragment extends Fragment {
         // set the adapters
         spCompetitions.setAdapter(adapterCompetions);
         spDisciplines.setAdapter(adapterDiscipline);
+        lvMissions.setAdapter(adapterMission);
 
         // listener on  spinner competition
         spCompetitions.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -134,7 +124,7 @@ public class DashboardFragment extends Fragment {
         lvMissions.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                MissionEntity clickedMission = (MissionEntity) lvMissions.getItemAtPosition(position);
+                final MissionEntity clickedMission = (MissionEntity) lvMissions.getItemAtPosition(position);
                 //Open DetailsBookActivity - Pass some values to get the details of the book
                 AlertDialog.Builder builder = new AlertDialog.Builder(DashboardFragment.this.getContext(), R.style.AlertDialog);
 
@@ -149,11 +139,26 @@ public class DashboardFragment extends Fragment {
 
                 //Dismiss when touching outside
                 builder.setCancelable(true);
-
-                //TODO next step when starting the mission
                 builder.setPositiveButton("Start Mission",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
+
+                                if (clickedMission.getTypeJob().contains("TimeKeeper")){
+                                    Intent intentTimekeeper = new Intent(getContext(), TimekeeperMissions.class);
+
+                                    intentTimekeeper.putExtra("missionName", clickedMission.getMissionName());
+                                    intentTimekeeper.putExtra("competition", spCompetitions.getSelectedItem().toString());
+                                    intentTimekeeper.putExtra("discipline", spDisciplines.getSelectedItem().toString());
+                                    startActivity(intentTimekeeper);
+                                }
+                                else{
+                                    Intent intentLambda = new Intent(getContext(), LambdaMissions.class);
+
+                                    intentLambda.putExtra("missionName", clickedMission.getMissionName());
+                                    intentLambda.putExtra("competition", spCompetitions.getSelectedItem().toString());
+                                    intentLambda.putExtra("discipline", spDisciplines.getSelectedItem().toString());
+                                    startActivity(intentLambda);
+                                }
 
                             }
                         });
@@ -200,6 +205,7 @@ public class DashboardFragment extends Fragment {
                     adapterDiscipline.clear();
                     adapterDiscipline.addAll(competitionSelected.getListDiscipline());
                     adapterDiscipline.notifyDataSetChanged();
+                    refreshMissions();
                 }
             });
         }catch (NullPointerException e){
@@ -216,7 +222,7 @@ public class DashboardFragment extends Fragment {
                 @Override
                 public void onCallBack(Object o) {
 
-                    List<MissionEntity> myMissions = new ArrayList<MissionEntity>();
+                    List<MissionEntity> myMissions = new ArrayList<>();
                     for(MissionEntity mission :  (List<MissionEntity>)o){
                         for(String uid : mission.getSelecteds()){
                             if(uid.equals(FirebaseAuth.getInstance().getUid())) {
@@ -225,17 +231,17 @@ public class DashboardFragment extends Fragment {
                             }
                         }
                     }
-                    adapterMission = new ArrayAdapter<MissionEntity>(getContext(),  R.layout.custom_textview, myMissions);
+                    adapterMission.clear();
+                    adapterMission.addAll(myMissions);
                     adapterMission.notifyDataSetChanged();
-                    lvMissions.setAdapter(adapterMission);
                 }
             });
         }
         catch (NullPointerException e){
-            Log.println(1, "DashboardFragment", e.getMessage());
+            Log.e(TAG, e.getMessage());
         }
         catch (IndexOutOfBoundsException e ){
-            Log.println(1, "DashboardFragment", e.getMessage());
+            Log.e(TAG, e.getMessage());
         }
     }
 

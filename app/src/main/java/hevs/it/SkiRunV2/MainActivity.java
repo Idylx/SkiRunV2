@@ -70,11 +70,6 @@ public class MainActivity extends AppCompatActivity  {
         super.onResume();
         reloadCorrectFragment();
     }
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        reloadCorrectFragment();
-    }
 
     public void AddFragment(){
         fm.beginTransaction().add(R.id.main_container, dashboardFragment, "1").add(R.id.main_container, settingsFragment, "2").add(R.id.main_container, availibilityFragment, "3").commit();

@@ -14,7 +14,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Settings.LanguageActivity"></activity>
+        <activity android:name=".missions.TimekeeperMissions"></activity>
+        <activity android:name=".missions.LambdaMissions" />
+        <activity android:name=".Settings.LanguageActivity" />
         <activity android:name=".Settings.ClubActivity" />
         <activity android:name=".Settings.RoleActivity" />
         <activity android:name=".Settings.EditProfileActivity" />
