@@ -63,4 +63,12 @@
     <string name="datemission">dateMission</string>
     <string name="descriptionmission">descriptionMission</string>
     <string name="results">Results</string>
+    <string name="distance">Distance</string>
+    <string name="time">Time</string>
+    <string name="speed">speed</string>
+    <string name="enterNumber">Please enter a number !</string>
+    <string name="passwordtooshort">Password too short, enter minimum 6 characters!</string>
+    <string name="enterResult">Please enter a result !</string>
+    <string name="okbutton">The result has been saved</string>
+    <string name="somethingbad">Something went bad, please retry !</string>
 </resources>

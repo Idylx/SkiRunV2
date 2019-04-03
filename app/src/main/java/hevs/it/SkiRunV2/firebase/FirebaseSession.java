@@ -24,6 +24,7 @@ public class FirebaseSession {
     public static final String NODE_TYPEOFJOB = "typeJob";
     public static final String NODE_SUBSCRIBED = "subscribed";
     public static final String NODE_SELECTED = "selected";
+    public static final String NODE_RESULTS = "resultsByBibNumber";
 
 
 

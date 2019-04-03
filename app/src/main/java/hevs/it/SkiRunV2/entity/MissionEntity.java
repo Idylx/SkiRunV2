@@ -17,6 +17,7 @@ public class MissionEntity implements Mission {
     @NonNull
     @Exclude
     private String missionName;
+
     private String description;
     private String typeJob;
     private String location;

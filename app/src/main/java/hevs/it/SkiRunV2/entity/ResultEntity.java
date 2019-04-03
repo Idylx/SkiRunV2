@@ -1,29 +1,24 @@
 package hevs.it.SkiRunV2.entity;
 
-import android.support.annotation.NonNull;
-
 import com.google.firebase.database.Exclude;
 
 import hevs.it.SkiRunV2.models.Result;
 
 public class ResultEntity implements Result {
 
-    @NonNull
     @Exclude
     private int bibNumber;
-    private String status;
-    private String cameraLink;
-    private Long result;
+
+    private String result;
+    private String unit;
 
     public ResultEntity(){}
 
 
     public ResultEntity(Result result){
-
         this.bibNumber = result.getBibNumber();
-        this.status = result.getStatus();
-        this.cameraLink = result.getCameraLink();
         this.result = result.getResult();
+        this.unit = result.getUnit();
 
     }
 
@@ -37,27 +32,21 @@ public class ResultEntity implements Result {
     }
 
     @Override
-    public String getStatus() {
-        return status;
+    public String getUnit() {
+        return unit;
     }
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    @Override
-    public String getCameraLink() {
-        return cameraLink;
-    }
-    public void setCameraLink(String cameraLink) {
-        this.cameraLink = cameraLink;
+    public void setUnit(String unit) {
+        this.unit = unit;
     }
 
 
     @Override
-    public Long getResult() {
+    public String getResult() {
         return result;
     }
-    public void setResult(Long result) {
+    public void setResult(String result) {
         this.result = result;
     }
+
+
 }
