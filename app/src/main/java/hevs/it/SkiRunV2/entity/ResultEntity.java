@@ -22,7 +22,7 @@ public class ResultEntity implements Result {
 
     }
 
-
+    @Exclude
     @Override
     public int getBibNumber() {
         return bibNumber;

@@ -51,7 +51,13 @@ public class AvailabilityMissionAdapter extends RecyclerView.Adapter<Availabilit
         holder.currentCompetition = currentCompetition;
         holder.currentDiscipline = currentDiscipline;
 
-        holder.selectionMission.setChecked(checkSubscrubed(i));
+        for (String s : missions.get(i).getSubscribed()) {
+            if (s.equals(FirebaseAuth.getInstance().getUid()))
+                holder.selectionMission.setChecked(true);
+            else
+                holder.selectionMission.setChecked(false);
+        }
+
     }
 
     @Override

@@ -1,70 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DashboardFragment">
+    tools:context=".availability.AvailabilityFragment"
+    android:background="@drawable/gradient_background">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tv_label_competion"
-            android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:gravity="bottom"
-            android:padding="10dp"
-            android:text="@string/competition"
-            android:textColor="@color/white"
-            android:textSize="16dp" />
+    <Spinner
+        android:id="@+id/sp_competion"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:popupBackground="@color/colorPrimary"
+        android:spinnerMode="dropdown"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <Spinner
-            android:id="@+id/sp_competion"
-            android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:layout_alignParentEnd="true"
-            android:layout_toEndOf="@+id/tv_label_competion"
-            android:spinnerMode="dropdown"
-            android:textColor="@color/white"
-            android:textSize="18dp"
-            android:popupBackground="#CB000000"/>
-
-        <TextView
-            android:id="@+id/tv_label_discipline"
-            android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/tv_label_competion"
-            android:gravity="bottom"
-            android:padding="10dp"
-            android:text="@string/discipline"
-            android:textColor="@color/white"
-            android:textSize="16dp" />
-
-        <Spinner
+    <Spinner
             android:id="@+id/sp_discipline"
-            android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:layout_below="@+id/tv_label_competion"
-            android:layout_alignParentEnd="true"
-            android:layout_toEndOf="@+id/tv_label_discipline"
-            android:layout_toRightOf="@+id/tv_label_discipline"
-            android:spinnerMode="dropdown"
-            android:textColor="@color/white"
-            android:textSize="18dp"
-            android:popupBackground="#CB000000"/>
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="16dp"
+        android:popupBackground="@color/colorPrimary"
+        android:spinnerMode="dropdown"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sp_competion"/>
+
+    <TextView
+        android:id="@+id/textViewMissionDashboard"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/missions"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sp_discipline" />
 
         <ListView
             android:id="@+id/lv_missions"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/sp_discipline"
-            android:textColor="@color/white"/>
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:scrollbars="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewMissionDashboard"/>
 
-    </RelativeLayout>
-</FrameLayout>
+</android.support.constraint.ConstraintLayout>

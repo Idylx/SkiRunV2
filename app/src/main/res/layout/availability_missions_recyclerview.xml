@@ -11,7 +11,8 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="MissionName"
-        android:textColor="@color/colorAccent" />
+        android:textColor="@color/colorAccent"
+        android:textSize="18sp" />
 
     <TextView
         android:id="@+id/AvailibilityMissionTime"
@@ -19,7 +20,8 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="MissionTime"
-        android:textColor="@color/colorAccent" />
+        android:textColor="@color/colorAccent"
+        android:textSize="18sp" />
 
     <CheckBox
         android:id="@+id/AvailibilityMissionCheckBox"
