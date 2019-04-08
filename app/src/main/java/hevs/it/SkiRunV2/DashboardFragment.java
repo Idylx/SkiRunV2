@@ -26,6 +26,7 @@ import hevs.it.SkiRunV2.entity.CompetitionEntity;
 import hevs.it.SkiRunV2.entity.MissionEntity;
 import hevs.it.SkiRunV2.firebase.FirebaseCallBack;
 import hevs.it.SkiRunV2.firebase.FirebaseManager;
+import hevs.it.SkiRunV2.missions.DoorControllerMissions;
 import hevs.it.SkiRunV2.missions.LambdaMissions;
 import hevs.it.SkiRunV2.missions.TimekeeperMissions;
 
@@ -51,6 +52,10 @@ public class DashboardFragment extends Fragment {
     ArrayAdapter<String>  adapterCompetions;
     ArrayAdapter<String>  adapterDiscipline;
     ArrayAdapter<MissionEntity> adapterMission;
+
+    String typeJobString;
+
+    Intent intentToMissions;
 
     public DashboardFragment() {
         // Required empty public constructor
@@ -143,34 +148,34 @@ public class DashboardFragment extends Fragment {
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
 
-                                if (clickedMission.getTypeJob().contains("TimeKeeper")){
-                                    Intent intentTimekeeper = new Intent(getContext(), TimekeeperMissions.class);
-
-                                    intentTimekeeper.putExtra("missionName", clickedMission.getMissionName());
-                                    intentTimekeeper.putExtra("competition", spCompetitions.getSelectedItem().toString());
-                                    intentTimekeeper.putExtra("discipline", spDisciplines.getSelectedItem().toString());
-                                    startActivity(intentTimekeeper);
-                                }
-                                else{
-                                    Intent intentLambda = new Intent(getContext(), LambdaMissions.class);
-
-                                    intentLambda.putExtra("missionName", clickedMission.getMissionName());
-                                    intentLambda.putExtra("competition", spCompetitions.getSelectedItem().toString());
-                                    intentLambda.putExtra("discipline", spDisciplines.getSelectedItem().toString());
-                                    startActivity(intentLambda);
+                                if (clickedMission.getTypeJob().contains("TimeKeeper"))
+                                    typeJobString = "TimeKeeper";
+                                else {
+                                    if (clickedMission.getTypeJob().contains("Door Controller"))
+                                        typeJobString = "Door Controller";
+                                    else
+                                        typeJobString="lambda";
                                 }
 
+                                switch (typeJobString){
+                                    case "Door Controller":
+                                        redirectMission(DoorControllerMissions.class, clickedMission);
+                                        break;
+                                    case "TimeKeeper":
+                                        redirectMission(TimekeeperMissions.class, clickedMission);
+                                        break;
+                                    default:
+                                        redirectMission(LambdaMissions.class, clickedMission);
+                                        break;
+                                }
                             }
                         });
-
-                //
                 builder.setNegativeButton("Cancel",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
 
                             }
                         });
-
                 AlertDialog dialog = builder.create();
                 dialog.show();
             }
@@ -198,7 +203,7 @@ public class DashboardFragment extends Fragment {
     // refresh descipline
     private void refreshDisciplines() {
         try {
-                FirebaseManager.getCompetition(spCompetitions.getSelectedItem().toString(), new FirebaseCallBack() {
+            FirebaseManager.getCompetition(spCompetitions.getSelectedItem().toString(), new FirebaseCallBack() {
                 @Override
                 public void onCallBack(Object o) {
                     competitionSelected = (CompetitionEntity) o;
@@ -215,27 +220,26 @@ public class DashboardFragment extends Fragment {
 
     // refresh missions
     private void refreshMissions() {
-
         try{
             FirebaseManager.getMissions(spCompetitions.getSelectedItem().toString(),
                     spDisciplines.getSelectedItem().toString(), new FirebaseCallBack() {
-                @Override
-                public void onCallBack(Object o) {
+                        @Override
+                        public void onCallBack(Object o) {
 
-                    List<MissionEntity> myMissions = new ArrayList<>();
-                    for(MissionEntity mission :  (List<MissionEntity>)o){
-                        for(String uid : mission.getSelecteds()){
-                            if(uid.equals(FirebaseAuth.getInstance().getUid())) {
-                                myMissions.add(mission);
-                                break;
+                            List<MissionEntity> myMissions = new ArrayList<>();
+                            for(MissionEntity mission :  (List<MissionEntity>)o){
+                                for(String uid : mission.getSelecteds()){
+                                    if(uid.equals(FirebaseAuth.getInstance().getUid())) {
+                                        myMissions.add(mission);
+                                        break;
+                                    }
+                                }
                             }
+                            adapterMission.clear();
+                            adapterMission.addAll(myMissions);
+                            adapterMission.notifyDataSetChanged();
                         }
-                    }
-                    adapterMission.clear();
-                    adapterMission.addAll(myMissions);
-                    adapterMission.notifyDataSetChanged();
-                }
-            });
+                    });
         }
         catch (NullPointerException e){
             Log.e(TAG, e.getMessage());
@@ -246,4 +250,11 @@ public class DashboardFragment extends Fragment {
     }
 
 
+     public void redirectMission(Class c, MissionEntity missionEntity){
+         intentToMissions = new Intent(getContext(), c);
+         intentToMissions.putExtra("missionName", missionEntity.getMissionName());
+         intentToMissions.putExtra("competition", spCompetitions.getSelectedItem().toString());
+         intentToMissions.putExtra("discipline", spDisciplines.getSelectedItem().toString());
+         startActivity(intentToMissions);
+     }
 }

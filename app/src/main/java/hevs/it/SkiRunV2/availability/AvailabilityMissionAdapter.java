@@ -81,7 +81,7 @@ public class AvailabilityMissionAdapter extends RecyclerView.Adapter<Availabilit
         missions.addAll(newMission);
         notifyDataSetChanged();
     }
-
+/*
     boolean checkSubscrubed(int i) {
         for (String s : missions.get(i).getSubscribed()) {
             if (s.equals(FirebaseAuth.getInstance().getUid()))
@@ -90,5 +90,7 @@ public class AvailabilityMissionAdapter extends RecyclerView.Adapter<Availabilit
                return false;
         }
         return false;
-    }
+    }*/
+
+
 }

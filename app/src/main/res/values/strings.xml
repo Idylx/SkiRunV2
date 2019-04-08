@@ -71,4 +71,10 @@
     <string name="enterResult">Please enter a result !</string>
     <string name="okbutton">The result has been saved</string>
     <string name="somethingbad">Something went bad, please retry !</string>
+    <string name="capture">Capture</string>
+    <string name="secondsOfVideo">seconds of videos</string>
+    <string name="nowRecording">[Recording]</string>
+    <string name="nowSaving">Saving the video</string>
+    <string name="recordingSucceeded">Recording success</string>
+    <string name="recordingFailed">Recording failed</string>
 </resources>

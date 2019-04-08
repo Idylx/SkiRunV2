@@ -109,11 +109,9 @@
         android:id="@+id/validateResultButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="68dp"
+        android:layout_marginStart="70dp"
         android:layout_marginTop="64dp"
-        android:layout_marginEnd="8dp"
-        android:text="Button"
-        app:layout_constraintEnd_toStartOf="@+id/dnfbutton"
+        android:text="OK"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/resultEditText" />
 
@@ -122,8 +120,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="64dp"
-        android:layout_marginEnd="100dp"
-        android:text="dnfButton"
+        android:layout_marginEnd="70dp"
+        android:text="DNF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/resultEditText" />
 
