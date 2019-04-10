@@ -41,10 +41,10 @@
             android:textColorHint="@color/white">
 
             <EditText
-                android:id="@+id/lastname"
+                android:id="@+id/lastName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/lastname"
+                android:hint="@string/lastName"
                 android:inputType="text"
                 android:maxLines="1"
                 android:singleLine="true"
@@ -58,10 +58,10 @@
             android:textColorHint="@color/white">
 
             <EditText
-                android:id="@+id/firstname"
+                android:id="@+id/firstName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/firstname"
+                android:hint="@string/firstName"
                 android:inputType="text"
                 android:maxLines="1"
                 android:singleLine="true"

@@ -411,6 +411,7 @@ public class CircularEncoder {
 
             result = -1;
 
+            Log.wtf(TAG, "outputFile PATH : "+outputFile.getPath());
             // File or Blob
             Uri file = Uri.fromFile(outputFile);
             // Create the file metadata
@@ -423,6 +424,8 @@ public class CircularEncoder {
             MediaMuxer muxer = null;
 
             try {
+
+                Log.wtf(TAG, "FILEPATH : "+file.getPath());
                 muxer = new MediaMuxer(file.getPath(),
                         MediaMuxer.OutputFormat.MUXER_OUTPUT_MPEG_4);
                 int videoTrack = muxer.addTrack(mEncodedFormat);

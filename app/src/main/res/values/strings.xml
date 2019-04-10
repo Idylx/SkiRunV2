@@ -48,8 +48,8 @@
     <string name="french">French</string>
     <string name="german">German</string>
     <string name="english">English</string>
-    <string name="lastname">Your Lastname</string>
-    <string name="firstname">Your Firstname</string>
+    <string name="lastName">Your Lastname</string>
+    <string name="firstName">Your Firstname</string>
     <string name="phone">Your phone</string>
     <string name="jobPreferences">Job preferences</string>
 

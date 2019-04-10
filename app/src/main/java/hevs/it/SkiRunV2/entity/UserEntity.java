@@ -13,8 +13,8 @@ public class UserEntity implements User {
     @Exclude
     private String uid;
     private String email;
-    private String firstname;
-    private String lastname;
+    private String firstName;
+    private String lastName;
     private String phone;
     private String role;
 
@@ -28,8 +28,8 @@ public class UserEntity implements User {
     public UserEntity(User user){
         this.uid=user.getUid();
         this.email = user.getEmail();
-        this.firstname = user.getFirstname();
-        this.lastname = user.getLastname();
+        this.firstName = user.getFirstName();
+        this.lastName = user.getLastName();
         this.phone = user.getPhone();
         this.role = user.getRole();
         this.club = user.getClub();
@@ -56,21 +56,21 @@ public class UserEntity implements User {
     }
 
     @Override
-    public String getFirstname() {
-        return firstname;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setFirstname(String firstname){
-        this.firstname = firstname;
+    public void setFirstName(String firstName){
+        this.firstName = firstName;
     }
 
     @Override
-    public String getLastname() {
-        return lastname;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setLastname(String lastname){
-        this.lastname = lastname;
+    public void setLastName(String lastName){
+        this.lastName = lastName;
     }
 
     @Override
@@ -110,6 +110,6 @@ public class UserEntity implements User {
     }
 
     public String toString(){
-        return getFirstname() + " " + getLastname();
+        return getFirstName() + " " + getLastName();
     }
 }

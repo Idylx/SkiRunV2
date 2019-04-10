@@ -23,6 +23,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
+import android.hardware.camera2.CameraDevice;
+import android.hardware.camera2.CameraManager;
 import android.opengl.GLES20;
 import android.os.Bundle;
 import android.os.Handler;
@@ -60,9 +62,9 @@ public class DoorControllerCamera extends Activity implements SurfaceHolder.Call
         SurfaceTexture.OnFrameAvailableListener {
     private static final String TAG = "DoorControllerCamera";
 
-    private static final int VIDEO_WIDTH = 1280;  // dimensions for 720p video
-    private static final int VIDEO_HEIGHT = 720;
-    private static final int DESIRED_PREVIEW_FPS = 15;
+    private static final int VIDEO_WIDTH = 1920;  // dimensions for 720p video
+    private static final int VIDEO_HEIGHT = 1080;
+    private static final int DESIRED_PREVIEW_FPS = 20;
 
     private EglCore mEglCore;
     private WindowSurface mDisplaySurface;
@@ -248,6 +250,7 @@ public class DoorControllerCamera extends Activity implements SurfaceHolder.Call
         if (mCamera != null) {
             throw new RuntimeException("camera already initialized");
         }
+
 
         Camera.CameraInfo info = new Camera.CameraInfo();
 
@@ -453,7 +456,7 @@ public class DoorControllerCamera extends Activity implements SurfaceHolder.Call
         //       (can we guarantee that camera preview size is compatible with AVC video encoder?)
         try {
             mCircEncoder = new CircularEncoder(VIDEO_WIDTH, VIDEO_HEIGHT, 6000000,
-                    mCameraPreviewThousandFps / 1000, 7, mHandler);
+                    mCameraPreviewThousandFps / 1000, 30, mHandler);
         } catch (IOException ioe) {
             throw new RuntimeException(ioe);
         }

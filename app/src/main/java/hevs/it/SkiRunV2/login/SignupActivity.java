@@ -42,8 +42,8 @@ public class SignupActivity extends AppCompatActivity {
         btnSignUp = (Button) findViewById(R.id.sign_up_button);
         inputEmail = (EditText) findViewById(R.id.email);
         inputPassword = (EditText) findViewById(R.id.password);
-        inputLastname = (EditText) findViewById(R.id.lastname);
-        inputFirstname = (EditText) findViewById(R.id.firstname);
+        inputLastname = (EditText) findViewById(R.id.lastName);
+        inputFirstname = (EditText) findViewById(R.id.firstName);
         inputPhone = (EditText) findViewById(R.id.phone);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         btnResetPassword = (Button) findViewById(R.id.btn_reset_password);
@@ -121,8 +121,8 @@ public class SignupActivity extends AppCompatActivity {
                                     UserEntity mCurrentUser = new UserEntity();
                                     // get the edited text
                                     mCurrentUser.setEmail(email);
-                                    mCurrentUser.setLastname(lastname);
-                                    mCurrentUser.setFirstname(firstname);
+                                    mCurrentUser.setLastName(lastname);
+                                    mCurrentUser.setFirstName(firstname);
                                     mCurrentUser.setPhone(phone);
                                     mCurrentUser.setJobPreference("Aucune préférence");
                                     mCurrentUser.setClub("Pas de club");

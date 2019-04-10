@@ -49,8 +49,8 @@ public class EditProfileActivity extends AppCompatActivity {
                 Log.i("email current user is", mCurrentUser.getEmail());
 
                 // set all the edit text with the current data
-                mLastname_EditText.setText(mCurrentUser.getLastname());
-                mFirstname_EditText.setText(mCurrentUser.getFirstname());
+                mLastname_EditText.setText(mCurrentUser.getLastName());
+                mFirstname_EditText.setText(mCurrentUser.getFirstName());
                 mPhone_EditText.setText(mCurrentUser.getPhone());
             }
         });
@@ -91,8 +91,8 @@ public class EditProfileActivity extends AppCompatActivity {
     public void saveEditedUserOnFirebase(){
 
         // get the edited text
-        mCurrentUser.setLastname(mLastname_EditText.getText().toString());
-        mCurrentUser.setFirstname(mFirstname_EditText.getText().toString());
+        mCurrentUser.setLastName(mLastname_EditText.getText().toString());
+        mCurrentUser.setFirstName(mFirstname_EditText.getText().toString());
         mCurrentUser.setPhone(mPhone_EditText.getText().toString());
 
         // add it to firebase
