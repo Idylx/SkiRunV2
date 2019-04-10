@@ -54,7 +54,7 @@ public class TimekeeperMissions extends AppCompatActivity {
         i = getIntent();
         competitionName = i.getStringExtra("competition");
         disciplineName = i.getStringExtra("discipline");
-        missionName = i.getStringExtra("missionName");
+        missionName = i.getStringExtra("location");
 
         loadMission();
 

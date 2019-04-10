@@ -8,7 +8,7 @@
     tools:context=".missions.DoorControllerMissions">
 
     <TextView
-        android:id="@+id/dateTextView"
+        android:id="@+id/dateTextViewDoorController"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -18,7 +18,7 @@
         android:text="@string/datemission"
         android:textColor="@color/colorAccent"
         android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/descriptionTextView"
+        app:layout_constraintBottom_toTopOf="@+id/descriptionTextViewDoorController"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -26,7 +26,7 @@
         app:layout_constraintVertical_bias="0.438" />
 
     <TextView
-        android:id="@+id/descriptionTextView"
+        android:id="@+id/descriptionTextViewDoorController"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -35,19 +35,19 @@
         android:text="@string/descriptionmission"
         android:textColor="@color/colorAccent"
         android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/doneButton"
+        app:layout_constraintBottom_toTopOf="@+id/beginvideorecorderButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/doneButton"
+        android:id="@+id/beginvideorecorderButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="162dp"
         android:layout_marginEnd="162dp"
         android:layout_marginBottom="52dp"
-        android:text="@string/done"
+        android:text="@string/beginrecord"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

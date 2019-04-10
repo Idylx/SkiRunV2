@@ -18,6 +18,9 @@
 package hevs.it.SkiRunV2.missions;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
 import android.opengl.GLES20;
@@ -33,6 +36,7 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,6 +45,8 @@ import java.io.IOException;
 import java.lang.ref.WeakReference;
 
 import hevs.it.SkiRunV2.R;
+import hevs.it.SkiRunV2.entity.ResultEntity;
+import hevs.it.SkiRunV2.firebase.FirebaseResultManager;
 import hevs.it.SkiRunV2.missions.camera.AspectFrameLayout;
 import hevs.it.SkiRunV2.missions.camera.CameraUtils;
 import hevs.it.SkiRunV2.missions.camera.CircularEncoder;
@@ -66,10 +72,15 @@ public class DoorControllerCamera extends Activity implements SurfaceHolder.Call
     private int mTextureId;
     private int mFrameNum;
 
+    private ResultEntity result ;
+
+    Intent i;
+    String competitionName, disciplineName, location, missionName;
+
     private Camera mCamera;
     private int mCameraPreviewThousandFps;
 
-    private File mOutputFile;
+    //private File mOutputFile;
     private CircularEncoder mCircEncoder;
     private WindowSurface mEncoderSurface;
     private boolean mFileSaveInProgress;
@@ -88,6 +99,7 @@ public class DoorControllerCamera extends Activity implements SurfaceHolder.Call
         public static final int MSG_FRAME_AVAILABLE = 1;
         public static final int MSG_FILE_SAVE_COMPLETE = 2;
         public static final int MSG_BUFFER_STATUS = 3;
+
 
         private WeakReference<DoorControllerCamera> mWeakActivity;
 
@@ -160,14 +172,22 @@ public class DoorControllerCamera extends Activity implements SurfaceHolder.Call
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_door_controller_camera);
 
+        i = getIntent();
+
+        competitionName= i.getStringExtra("competition");
+        disciplineName = i.getStringExtra("discipline");
+        missionName = i.getStringExtra("missionName");
+        location = i.getStringExtra("location");
+
         SurfaceView sv = (SurfaceView) findViewById(R.id.continuousCapture_surfaceView);
         SurfaceHolder sh = sv.getHolder();
         sh.addCallback(this);
+        result = new ResultEntity();
 
         mHandler = new MainHandler(this);
         mHandler.sendEmptyMessageDelayed(MainHandler.MSG_BLINK_TEXT, 1500);
 
-        mOutputFile = new File(getFilesDir(), "continuous-capture.mp4");
+        //mOutputFile = new File(getFilesDir(), "temp");
         mSecondsOfVideo = 0.0f;
         updateControls();
     }
@@ -235,7 +255,7 @@ public class DoorControllerCamera extends Activity implements SurfaceHolder.Call
         int numCameras = Camera.getNumberOfCameras();
         for (int i = 0; i < numCameras; i++) {
             Camera.getCameraInfo(i, info);
-            if (info.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
+            if (info.facing == Camera.CameraInfo.CAMERA_FACING_BACK) {
                 mCamera = Camera.open(i);
                 break;
             }
@@ -330,7 +350,34 @@ public class DoorControllerCamera extends Activity implements SurfaceHolder.Call
         tv.setText(str);
 
 
-        mCircEncoder.saveVideo(mOutputFile);
+
+        // alert builder logic
+        //build dialog for the comment
+        AlertDialog.Builder alert = new AlertDialog.Builder(DoorControllerCamera.this, R.style.AlertDialog);
+        alert.setMessage(R.string.enterNumberCamera);
+
+        // Set an EditText view to get user input
+        final EditText input = new EditText(DoorControllerCamera.this);
+        alert.setView(input);
+
+        alert.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                Toast.makeText(getApplicationContext(), "saving the file ", Toast.LENGTH_LONG);
+
+                result.setBibNumber(Integer.parseInt(input.getText().toString()));
+                File tempVideo = new  File(getFilesDir(),competitionName+"_"+disciplineName+"_"+location+"_"+input.getText()+".mp4");
+                result.setCameraLink(tempVideo.getPath());
+                mCircEncoder.saveVideo(tempVideo);
+            }
+        });
+        alert.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+            fileSaveComplete(-1);
+            }
+        });
+
+        alert.show();
+
     }
 
     /**
@@ -349,6 +396,7 @@ public class DoorControllerCamera extends Activity implements SurfaceHolder.Call
 
         if (status == 0) {
             str = getString(R.string.recordingSucceeded);
+            FirebaseResultManager.updateResult(competitionName, disciplineName, missionName, result);
         } else {
             str = getString(R.string.recordingFailed, status);
         }

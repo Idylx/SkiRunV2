@@ -12,6 +12,8 @@ public class ResultEntity implements Result {
     private String result;
     private String unit;
 
+    private String cameraLink;
+
     public ResultEntity(){}
 
 
@@ -47,6 +49,10 @@ public class ResultEntity implements Result {
     public void setResult(String result) {
         this.result = result;
     }
+
+    @Override
+    public String getCameraLink() { return cameraLink; }
+    public void setCameraLink(String cameraLink) { this.cameraLink = cameraLink; }
 
 
 }

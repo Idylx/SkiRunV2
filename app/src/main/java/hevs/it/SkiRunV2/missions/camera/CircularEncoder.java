@@ -16,15 +16,27 @@
 
 package hevs.it.SkiRunV2.missions.camera;
 
+import android.content.Context;
 import android.media.MediaCodec;
 import android.media.MediaCodecInfo;
 import android.media.MediaFormat;
 import android.media.MediaMuxer;
+import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.Surface;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnPausedListener;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageMetadata;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 import java.io.IOException;
@@ -59,6 +71,8 @@ public class CircularEncoder {
     private Surface mInputSurface;
     private MediaCodec mEncoder;
 
+    private Context activityContext;
+
     /**
      * Callback function definitions.  CircularEncoder caller must provide one.
      */
@@ -89,7 +103,7 @@ public class CircularEncoder {
      * @param desiredSpanSec How many seconds of video we want to have in our buffer at any time.
      */
     public CircularEncoder(int width, int height, int bitRate, int frameRate, int desiredSpanSec,
-            Callback cb) throws IOException {
+                           Callback cb) throws IOException {
         // The goal is to size the buffer so that we can accumulate N seconds worth of video,
         // where N is passed in as "desiredSpanSec".  If the codec generates data at roughly
         // the requested bit rate, we can compute it as time * bitRate / bitsPerByte.
@@ -223,14 +237,21 @@ public class CircularEncoder {
 
         private final Object mLock = new Object();
         private volatile boolean mReady = false;
+        int result;
+
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef;
 
         public EncoderThread(MediaCodec mediaCodec, CircularEncoderBuffer encBuffer,
-                CircularEncoder.Callback callback) {
+                             CircularEncoder.Callback callback) {
             mEncoder = mediaCodec;
             mEncBuffer = encBuffer;
             mCallback = callback;
 
             mBufferInfo = new MediaCodec.BufferInfo();
+
+            storageRef = storage.getReference();
+            result = -1;
         }
 
         /**
@@ -388,11 +409,21 @@ public class CircularEncoder {
                 return;
             }
 
+            result = -1;
+
+            // File or Blob
+            Uri file = Uri.fromFile(outputFile);
+            // Create the file metadata
+            StorageMetadata metadata = new StorageMetadata.Builder().setContentType("video/mp4").build();
+
+            //TODO: here need to save the output file into firebase, first need to save it
+
+
             MediaCodec.BufferInfo info = new MediaCodec.BufferInfo();
             MediaMuxer muxer = null;
-            int result = -1;
+
             try {
-                muxer = new MediaMuxer(outputFile.getPath(),
+                muxer = new MediaMuxer(file.getPath(),
                         MediaMuxer.OutputFormat.MUXER_OUTPUT_MPEG_4);
                 int videoTrack = muxer.addTrack(mEncodedFormat);
                 muxer.start();
@@ -413,13 +444,47 @@ public class CircularEncoder {
                 if (muxer != null) {
                     muxer.stop();
                     muxer.release();
+
+                    // Upload file and metadata to the path 'video/ competition bla bla '
+                    UploadTask uploadTask = storageRef.child("video/" + file.getLastPathSegment()).putFile(file, metadata);
+
+                    // Listen for state changes, errors, and completion of the upload.
+                    uploadTask.addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                            double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+                            System.out.println("Upload is " + progress + "% done");
+                        }
+                    }).addOnPausedListener(new OnPausedListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onPaused(UploadTask.TaskSnapshot taskSnapshot) {
+                            System.out.println("Upload is paused");
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception exception) {
+                            // Handle unsuccessful uploads
+                            result= 2;
+                            mCallback.fileSaveComplete(result);
+                        }
+                    }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            // Handle successful uploads on complete
+                            // ...
+                            result = 0;
+                            mCallback.fileSaveComplete(result);
+                        }
+                    });
+
                 }
             }
 
             if (VERBOSE) {
                 Log.d(TAG, "muxer stopped, result=" + result);
             }
-            mCallback.fileSaveComplete(result);
+
+
         }
 
         /**
@@ -470,7 +535,7 @@ public class CircularEncoder {
                         encoderThread.frameAvailableSoon();
                         break;
                     case MSG_SAVE_VIDEO:
-                        encoderThread.saveVideo((File) msg.obj);
+                        encoderThread.saveVideo((File) msg.obj );
                         break;
                     case MSG_SHUTDOWN:
                         encoderThread.shutdown();

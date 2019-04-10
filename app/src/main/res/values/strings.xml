@@ -77,4 +77,7 @@
     <string name="nowSaving">Saving the video</string>
     <string name="recordingSucceeded">Recording success</string>
     <string name="recordingFailed">Recording failed</string>
+    <string name="beginrecord">Begin record</string>
+    <string name="enterNumberCamera">Please enter the bib number</string>
+    <string name="cancel">Cancel</string>
 </resources>
