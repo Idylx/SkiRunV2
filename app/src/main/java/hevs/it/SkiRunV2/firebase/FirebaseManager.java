@@ -3,6 +3,8 @@ package hevs.it.SkiRunV2.firebase;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -24,14 +26,23 @@ public class FirebaseManager {
 
     private static FirebaseDatabase mFirebaseDatabase = FirebaseDatabase.getInstance();
 
+    private static FirebaseUser mFirebaseCurrentUser ;
+
     public static void getUser(String uid, final FirebaseCallBack firebaseCallBack) {
         //Get the entity Person from an email
         DatabaseReference ref = mFirebaseDatabase.getReference().child(FirebaseSession.NODE_USERS).child(uid);
+        mFirebaseCurrentUser = FirebaseAuth.getInstance().getCurrentUser();
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 UserEntity user = dataSnapshot.getValue(UserEntity.class);
-                user.setUid(dataSnapshot.getKey());
+
+                try{
+                    user.setUid(dataSnapshot.getKey());
+                }catch (NullPointerException e){
+                    user.setEmail(mFirebaseCurrentUser.getEmail());
+                }
+                user.setEmail(mFirebaseCurrentUser.getEmail());
                 firebaseCallBack.onCallBack(user);
             }
 

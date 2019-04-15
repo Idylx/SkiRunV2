@@ -58,7 +58,7 @@ public class SettingsFragment extends Fragment {
 
         // display the email in the settings fragment
         mEmail = mView.findViewById(R.id.username);
-        mEmail.setText( "Username : " + mFirebaseCurrentUser.getEmail());
+        mEmail.setText(mFirebaseCurrentUser.getEmail());
 
         // button 'Edit profile'
         onPressEditButton();
@@ -91,7 +91,9 @@ public class SettingsFragment extends Fragment {
         mEditProfileButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
+
                 startActivity(new Intent(getActivity(), EditProfileActivity.class));
+
             }
         });
     }

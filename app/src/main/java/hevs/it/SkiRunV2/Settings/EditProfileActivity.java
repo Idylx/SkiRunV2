@@ -41,19 +41,28 @@ public class EditProfileActivity extends AppCompatActivity {
         // get current user
         mFirebaseCurrentUser = FirebaseAuth.getInstance().getCurrentUser();
 
-        // get all data of the current user
-        FirebaseManager.getUser(mFirebaseCurrentUser.getUid(), new FirebaseCallBack() {
-            @Override
-            public void onCallBack(Object o) {
-                mCurrentUser = (UserEntity) o;
-                Log.i("email current user is", mCurrentUser.getEmail());
+       try {
+           // get all data of the current user
+           FirebaseManager.getUser(mFirebaseCurrentUser.getUid(), new FirebaseCallBack() {
+               @Override
+               public void onCallBack(Object o) {
+                   mCurrentUser = (UserEntity) o;
+                   Log.i("email current user is", mCurrentUser.getEmail());
 
-                // set all the edit text with the current data
-                mLastname_EditText.setText(mCurrentUser.getLastName());
-                mFirstname_EditText.setText(mCurrentUser.getFirstName());
-                mPhone_EditText.setText(mCurrentUser.getPhone());
-            }
-        });
+                   // set the edit text with the current data
+                   mLastname_EditText.setText(mCurrentUser.getLastName());
+
+                   // set the edit text with the current data
+                   mFirstname_EditText.setText(mCurrentUser.getFirstName());
+
+                   // set the edit text with the current data
+                   mPhone_EditText.setText(mCurrentUser.getPhone());
+               }
+           });
+
+       }catch (NullPointerException e){
+           Toast.makeText(this, R.string.plzEnterData, Toast.LENGTH_SHORT).show();
+       }
 
         try {
             // the user press on 'ok' --> he wants to save all the changes

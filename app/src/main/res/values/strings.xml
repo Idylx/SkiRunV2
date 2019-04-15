@@ -80,4 +80,9 @@
     <string name="beginrecord">Begin record</string>
     <string name="enterNumberCamera">Please enter the bib number</string>
     <string name="cancel">Cancel</string>
+    <string name="plzEnterLN">Please enter your lastname</string>
+    <string name="plzEnterFN">Please enter your firstname</string>
+    <string name="plzEnterPhone">Please enter your phone</string>
+    <string name="plzEnterData">Please enter your Data</string>
+    <string name="username">Username</string>
 </resources>
