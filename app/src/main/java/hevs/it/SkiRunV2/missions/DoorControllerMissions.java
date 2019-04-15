@@ -21,7 +21,7 @@ public class DoorControllerMissions extends AppCompatActivity {
     private static final String TAG = "DoorController";
 
     MissionEntity mission;
-    TextView dateTextView, descriptionTextView;
+    TextView dateTextView, descriptionTextView, locationTextView;
     Button cameraButton;
     Intent i;
     String competitionName, disciplineName, missionName;
@@ -34,6 +34,7 @@ public class DoorControllerMissions extends AppCompatActivity {
 
         dateTextView = (TextView)findViewById(R.id.dateTextViewDoorController);
         descriptionTextView = (TextView) findViewById(R.id.descriptionTextViewDoorController);
+        locationTextView = (TextView) findViewById(R.id.locationTextViewController);
 
         cameraButton = (Button)findViewById(R.id.beginvideorecorderButton);
 
@@ -59,6 +60,7 @@ public class DoorControllerMissions extends AppCompatActivity {
                             dateTextView.setText(DateFormat.format("dd/MM/yy hh:mm", new Date(mission.getStartTime()*1000)).toString() +
                                     " - " + DateFormat.format("hh:mm", new Date(mission.getEndTime()*1000)).toString());
                             descriptionTextView.setText(mission.getDescription());
+                            locationTextView.setText("bob olivier");
                             getSupportActionBar().setTitle(mission.getMissionName());
 
                         }

@@ -29,7 +29,7 @@ public class TimekeeperMissions extends AppCompatActivity {
     private static final String TAG = "TimeKeeperMissions";
 
     MissionEntity mission;
-    TextView dateTextView, descriptionTextView, resultTextView;
+    TextView dateTextView, descriptionTextView, resultTextView, locationTextView;
     EditText bipNumberEditText, resultEditText;
     Button okButton, dnfButton;
     Intent i;
@@ -45,7 +45,7 @@ public class TimekeeperMissions extends AppCompatActivity {
         dateTextView = (TextView) findViewById(R.id.dateTextViewTimeKeeper);
         descriptionTextView = (TextView) findViewById(R.id.descriptionTextViewTimeKeeper);
         resultTextView = (TextView)findViewById(R.id.resultsTextview);
-
+        locationTextView = (TextView) findViewById(R.id.locationTextViewTimeKeeper);
 
         bipNumberEditText = (EditText)findViewById(R.id.bipNumberEditText);
         resultEditText = (EditText)findViewById(R.id.resultEditText);
@@ -54,7 +54,7 @@ public class TimekeeperMissions extends AppCompatActivity {
         i = getIntent();
         competitionName = i.getStringExtra("competition");
         disciplineName = i.getStringExtra("discipline");
-        missionName = i.getStringExtra("location");
+        missionName = i.getStringExtra("missionName");
 
         loadMission();
 
@@ -77,6 +77,7 @@ public class TimekeeperMissions extends AppCompatActivity {
                             dateTextView.setText(DateFormat.format("dd/MM/yy hh:mm", new Date(mission.getStartTime() * 1000)).toString() +
                                     " - " + DateFormat.format("hh:mm", new Date(mission.getEndTime() * 1000)).toString());
                             descriptionTextView.setText(mission.getDescription());
+                            locationTextView.setText(mission.getLocation());
                             getSupportActionBar().setTitle(mission.getMissionName());
                             changeResultText();
 

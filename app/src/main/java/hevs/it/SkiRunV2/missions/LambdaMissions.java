@@ -19,7 +19,7 @@ public class LambdaMissions extends AppCompatActivity {
     private static final String TAG = "LambdaMissions";
 
     MissionEntity mission;
-    TextView dateTextView, descriptionTextView;
+    TextView dateTextView, descriptionTextView, locationTextView;
     Intent i;
     String competitionName, disciplineName, missionName;
 
@@ -31,10 +31,12 @@ public class LambdaMissions extends AppCompatActivity {
 
         dateTextView = (TextView)findViewById(R.id.dateTextView);
         descriptionTextView = (TextView) findViewById(R.id.descriptionTextView);
+        locationTextView = (TextView) findViewById(R.id.locationTextViewLambada);
+
         i = getIntent();
         competitionName=i.getStringExtra("competition");
         disciplineName = i.getStringExtra("discipline");
-        missionName = i.getStringExtra("location");
+        missionName = i.getStringExtra("missionName");
 
         loadMission();
     }
@@ -50,10 +52,10 @@ public class LambdaMissions extends AppCompatActivity {
 
                             mission = (MissionEntity)o;
 
-
                             dateTextView.setText(DateFormat.format("dd/MM/yy hh:mm", new Date(mission.getStartTime()*1000)).toString() +
                                     " - " + DateFormat.format("hh:mm", new Date(mission.getEndTime()*1000)).toString());
                             descriptionTextView.setText(mission.getDescription());
+                            locationTextView.setText(mission.getLocation());
                             getSupportActionBar().setTitle(mission.getMissionName());
 
                         }
