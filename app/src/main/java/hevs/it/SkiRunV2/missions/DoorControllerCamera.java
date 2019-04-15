@@ -23,13 +23,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
-import android.hardware.camera2.CameraDevice;
-import android.hardware.camera2.CameraManager;
 import android.opengl.GLES20;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
+import android.text.InputType;
 import android.util.Log;
 import android.view.Display;
 import android.view.Surface;
@@ -39,6 +38,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -78,6 +78,8 @@ public class DoorControllerCamera extends Activity implements SurfaceHolder.Call
 
     Intent i;
     String competitionName, disciplineName, location, missionName;
+
+    ProgressBar pb ;
 
     private Camera mCamera;
     private int mCameraPreviewThousandFps;
@@ -180,6 +182,8 @@ public class DoorControllerCamera extends Activity implements SurfaceHolder.Call
         disciplineName = i.getStringExtra("discipline");
         missionName = i.getStringExtra("missionName");
         location = i.getStringExtra("location");
+
+        pb = (ProgressBar) findViewById(R.id.progressBarCamera);
 
         SurfaceView sv = (SurfaceView) findViewById(R.id.continuousCapture_surfaceView);
         SurfaceHolder sh = sv.getHolder();
@@ -293,6 +297,7 @@ public class DoorControllerCamera extends Activity implements SurfaceHolder.Call
 
         Display display = ((WindowManager)getSystemService(WINDOW_SERVICE)).getDefaultDisplay();
 
+        //TODO: seems that something is wrong here
         if(display.getRotation() == Surface.ROTATION_0) {
             mCamera.setDisplayOrientation(90);
             layout.setAspectRatio((double) cameraPreviewSize.height / cameraPreviewSize.width);
@@ -353,7 +358,6 @@ public class DoorControllerCamera extends Activity implements SurfaceHolder.Call
         tv.setText(str);
 
 
-
         // alert builder logic
         //build dialog for the comment
         AlertDialog.Builder alert = new AlertDialog.Builder(DoorControllerCamera.this, R.style.AlertDialog);
@@ -361,6 +365,7 @@ public class DoorControllerCamera extends Activity implements SurfaceHolder.Call
 
         // Set an EditText view to get user input
         final EditText input = new EditText(DoorControllerCamera.this);
+        input.setInputType(InputType.TYPE_CLASS_NUMBER);
         alert.setView(input);
 
         alert.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
@@ -368,9 +373,11 @@ public class DoorControllerCamera extends Activity implements SurfaceHolder.Call
                 Toast.makeText(getApplicationContext(), "saving the file ", Toast.LENGTH_LONG);
 
                 result.setBibNumber(Integer.parseInt(input.getText().toString()));
-                File tempVideo = new  File(getFilesDir(),competitionName+"_"+disciplineName+"_"+location+"_"+input.getText()+".mp4");
+                File tempVideo = new  File(getExternalFilesDir(null),competitionName+"_"+disciplineName+"_"+location+"_"+input.getText()+".mp4");
                 result.setCameraLink(tempVideo.getPath());
                 mCircEncoder.saveVideo(tempVideo);
+                pb.setVisibility(ProgressBar.VISIBLE);
+
             }
         });
         alert.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -400,6 +407,7 @@ public class DoorControllerCamera extends Activity implements SurfaceHolder.Call
         if (status == 0) {
             str = getString(R.string.recordingSucceeded);
             FirebaseResultManager.updateResult(competitionName, disciplineName, missionName, result);
+            pb.setVisibility(ProgressBar.INVISIBLE);
         } else {
             str = getString(R.string.recordingFailed, status);
         }
@@ -453,6 +461,7 @@ public class DoorControllerCamera extends Activity implements SurfaceHolder.Call
 
         // TODO: adjust bit rate based on frame rate?
         // TODO: adjust video width/height based on what we're getting from the camera preview?
+        // TODO: we need to fix the desired spansec
         //       (can we guarantee that camera preview size is compatible with AVC video encoder?)
         try {
             mCircEncoder = new CircularEncoder(VIDEO_WIDTH, VIDEO_HEIGHT, 6000000,

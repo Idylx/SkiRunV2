@@ -18,8 +18,10 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".missions.DoorControllerCamera"></activity>
-        <activity android:name=".missions.DoorControllerMissions" />
+        <activity android:name=".missions.DoorControllerCamera"
+            android:screenOrientation="landscape"/>
+        <activity android:name=".missions.DoorControllerMissions"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".missions.TimekeeperMissions"
             android:screenOrientation="portrait" />

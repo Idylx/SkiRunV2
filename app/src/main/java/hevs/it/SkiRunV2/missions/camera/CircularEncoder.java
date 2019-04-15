@@ -426,7 +426,7 @@ public class CircularEncoder {
             try {
 
                 Log.wtf(TAG, "FILEPATH : "+file.getPath());
-                muxer = new MediaMuxer(file.getPath(),
+                muxer = new MediaMuxer(outputFile.getPath(),
                         MediaMuxer.OutputFormat.MUXER_OUTPUT_MPEG_4);
                 int videoTrack = muxer.addTrack(mEncodedFormat);
                 muxer.start();
@@ -449,7 +449,7 @@ public class CircularEncoder {
                     muxer.release();
 
                     // Upload file and metadata to the path 'video/ competition bla bla '
-                    UploadTask uploadTask = storageRef.child("video/" + file.getLastPathSegment()).putFile(file, metadata);
+                    UploadTask uploadTask = storageRef.child("videos/" + file.getLastPathSegment()).putFile(file, metadata);
 
                     // Listen for state changes, errors, and completion of the upload.
                     uploadTask.addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {

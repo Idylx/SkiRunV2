@@ -72,11 +72,11 @@
     <string name="okbutton">The result has been saved</string>
     <string name="somethingbad">Something went bad, please retry !</string>
     <string name="capture">Capture</string>
-    <string name="secondsOfVideo">seconds of videos</string>
+    <string name="secondsOfVideo">%1$.3f seconds of videos</string>
     <string name="nowRecording">[Recording]</string>
     <string name="nowSaving">Saving the video</string>
     <string name="recordingSucceeded">Recording success</string>
-    <string name="recordingFailed">Recording failed</string>
+    <string name="recordingFailed">Recording FAILED (err=%1$d)</string>
     <string name="beginrecord">Begin record</string>
     <string name="enterNumberCamera">Please enter the bib number</string>
     <string name="cancel">Cancel</string>
