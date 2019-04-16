@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -142,9 +143,12 @@ public class SettingsFragment extends Fragment {
         mLanguageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getActivity(), LanguageActivity.class));
+                Toast.makeText(getActivity(), R.string.notImplemented, Toast.LENGTH_LONG).show();
+                // Will be implemented
+                // startActivity(new Intent(getActivity(), LanguageActivity.class));
             }
         });
+
     }
 
     // button 'logout'
