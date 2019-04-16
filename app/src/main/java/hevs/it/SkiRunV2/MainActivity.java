@@ -12,6 +12,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import hevs.it.SkiRunV2.Settings.SettingsFragment;
 import hevs.it.SkiRunV2.availability.AvailabilityFragment;
+import hevs.it.SkiRunV2.permissions.PermissionHelper;
 
 public class MainActivity extends AppCompatActivity  {
 
@@ -39,6 +40,10 @@ public class MainActivity extends AppCompatActivity  {
         AddFragment();
 
         setFragmentDashboard();
+
+        if (!PermissionHelper.hasCameraPermission(this)) {
+            PermissionHelper.requestCameraPermission(this, true);
+        }
     }
 
 
@@ -68,6 +73,9 @@ public class MainActivity extends AppCompatActivity  {
     @Override
     protected void onResume() {
         super.onResume();
+        if (!PermissionHelper.hasCameraPermission(this)) {
+            PermissionHelper.requestCameraPermission(this, true);
+        }
         reloadCorrectFragment();
     }
 
@@ -115,4 +123,6 @@ public class MainActivity extends AppCompatActivity  {
         fm.beginTransaction().show(availibilityFragment).commit();
         getSupportActionBar().setTitle(R.string.title_avilibility);
     }
+
+
 }

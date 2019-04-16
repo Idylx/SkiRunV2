@@ -29,6 +29,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.text.InputType;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.Display;
 import android.view.Surface;
@@ -45,6 +46,7 @@ import android.widget.Toast;
 import java.io.File;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
+import java.util.Calendar;
 
 import hevs.it.SkiRunV2.R;
 import hevs.it.SkiRunV2.entity.ResultEntity;
@@ -184,10 +186,13 @@ public class DoorControllerCamera extends Activity implements SurfaceHolder.Call
         location = i.getStringExtra("location");
 
         pb = (ProgressBar) findViewById(R.id.progressBarCamera);
+        pb.setVisibility(ProgressBar.INVISIBLE);
 
         SurfaceView sv = (SurfaceView) findViewById(R.id.continuousCapture_surfaceView);
         SurfaceHolder sh = sv.getHolder();
+
         sh.addCallback(this);
+
         result = new ResultEntity();
 
         mHandler = new MainHandler(this);
@@ -360,35 +365,56 @@ public class DoorControllerCamera extends Activity implements SurfaceHolder.Call
 
         // alert builder logic
         //build dialog for the comment
-        AlertDialog.Builder alert = new AlertDialog.Builder(DoorControllerCamera.this, R.style.AlertDialog);
-        alert.setMessage(R.string.enterNumberCamera);
+        AlertDialog.Builder builder = new AlertDialog.Builder(DoorControllerCamera.this, R.style.AlertDialog);
+
+        builder.setMessage(R.string.enterNumberCamera);
 
         // Set an EditText view to get user input
         final EditText input = new EditText(DoorControllerCamera.this);
         input.setInputType(InputType.TYPE_CLASS_NUMBER);
-        alert.setView(input);
-
-        alert.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+        builder.setView(input);
+        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
             public void onClick(DialogInterface dialog, int whichButton) {
-                Toast.makeText(getApplicationContext(), "saving the file ", Toast.LENGTH_LONG);
-
-                result.setBibNumber(Integer.parseInt(input.getText().toString()));
-                File tempVideo = new  File(getExternalFilesDir(null),competitionName+"_"+disciplineName+"_"+location+"_"+input.getText()+".mp4");
-                result.setCameraLink(tempVideo.getPath());
-                mCircEncoder.saveVideo(tempVideo);
-                pb.setVisibility(ProgressBar.VISIBLE);
-
+                //Do nothing here because we override this button later to change the close behaviour.
+                //However, we still need this because on older versions of Android unless we
+                //pass a handler the button doesn't get instantiated
             }
         });
-        alert.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
             public void onClick(DialogInterface dialog, int whichButton) {
-            fileSaveComplete(-1);
+                fileSaveComplete(-1);
+                dialog.dismiss();
             }
         });
 
-        alert.show();
+        final AlertDialog dialog = builder.create();
+        dialog.show();
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                if(!input.getText().toString().trim().isEmpty()){
+                    Toast.makeText(getApplicationContext(), "saving the file ", Toast.LENGTH_LONG).show();
 
+                    result.setBibNumber(Integer.parseInt(input.getText().toString()));
+                    File tempVideo = new  File(getExternalFilesDir(null),competitionName+"_"+disciplineName+"_"+location+"_"+input.getText()+"_"
+                            +DateFormat.format("dd-MM-yy hh:mm", Calendar.getInstance().getTime()).toString()+".mp4");
+                    result.setCameraLink(tempVideo.getPath());
+                    mCircEncoder.saveVideo(tempVideo);
+                    pb.setVisibility(ProgressBar.VISIBLE);
+                    dialog.dismiss();
+                }else{
+                    Toast.makeText(getApplicationContext(), R.string.enterNumberCamera, Toast.LENGTH_LONG).show();
+                }
+            }
+        });
     }
+
+
+
 
     /**
      * The file save has completed.  We can resume recording.
@@ -461,7 +487,7 @@ public class DoorControllerCamera extends Activity implements SurfaceHolder.Call
 
         // TODO: adjust bit rate based on frame rate?
         // TODO: adjust video width/height based on what we're getting from the camera preview?
-        // TODO: we need to fix the desired spansec
+        // TODO: need to fix the desired spansec
         //       (can we guarantee that camera preview size is compatible with AVC video encoder?)
         try {
             mCircEncoder = new CircularEncoder(VIDEO_WIDTH, VIDEO_HEIGHT, 6000000,

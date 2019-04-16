@@ -16,6 +16,7 @@ import hevs.it.SkiRunV2.R;
 import hevs.it.SkiRunV2.entity.MissionEntity;
 import hevs.it.SkiRunV2.firebase.FirebaseCallBack;
 import hevs.it.SkiRunV2.firebase.FirebaseMissionManager;
+import hevs.it.SkiRunV2.permissions.PermissionHelper;
 
 public class DoorControllerMissions extends AppCompatActivity {
     private static final String TAG = "DoorController";
@@ -60,7 +61,7 @@ public class DoorControllerMissions extends AppCompatActivity {
                             dateTextView.setText(DateFormat.format("dd/MM/yy hh:mm", new Date(mission.getStartTime()*1000)).toString() +
                                     " - " + DateFormat.format("hh:mm", new Date(mission.getEndTime()*1000)).toString());
                             descriptionTextView.setText(mission.getDescription());
-                            locationTextView.setText("bob olivier");
+                            locationTextView.setText(mission.getLocation());
                             getSupportActionBar().setTitle(mission.getMissionName());
 
                         }
@@ -77,15 +78,24 @@ public class DoorControllerMissions extends AppCompatActivity {
         cameraButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getApplicationContext(), DoorControllerCamera.class);
-                try {
-                    i.putExtra("competition", competitionName);
-                    i.putExtra("discipline", disciplineName);
-                    i.putExtra("missionName", missionName);
-                    i.putExtra("location", mission.getLocation());
-                    startActivity(i);
-                }catch (NullPointerException e ){
-                    Toast.makeText(DoorControllerMissions.this, R.string.somethingbad, Toast.LENGTH_SHORT);
+
+                if (!PermissionHelper.hasCameraPermission(DoorControllerMissions.this)) {
+                    PermissionHelper.requestCameraPermission(DoorControllerMissions.this, false);
+                    PermissionHelper.launchPermissionSettings(DoorControllerMissions.this);
+                }
+                    else {
+                    Intent i = new Intent(getApplicationContext(), DoorControllerCamera.class);
+                    try {
+                        i.putExtra("competition", competitionName);
+                        i.putExtra("discipline", disciplineName);
+                        i.putExtra("missionName", missionName);
+                        i.putExtra("location", mission.getLocation());
+                        startActivity(i);
+                    } catch (NullPointerException e) {
+                        Toast.makeText(DoorControllerMissions.this, R.string.somethingbad, Toast.LENGTH_SHORT).show();
+                    }
+
+
                 }
             }
         });
