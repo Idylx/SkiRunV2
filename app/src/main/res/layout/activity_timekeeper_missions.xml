@@ -52,7 +52,7 @@
         app:layout_constraintTop_toBottomOf="@+id/descriptionTextViewTimeKeeper" />
 
     <TextView
-        android:id="@+id/bipNumbertextView"
+        android:id="@+id/bibNumbertextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -68,24 +68,24 @@
         app:layout_constraintTop_toBottomOf="@+id/locationTextViewTimeKeeper" />
 
     <EditText
-        android:id="@+id/bipNumberEditText"
+        android:id="@+id/bibNumberEditText"
         android:layout_width="94dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="16dp"
-        android:backgroundTint="@color/colorAccent"
         android:ems="10"
         android:hint="007"
         android:inputType="number"
         android:textAlignment="center"
+        android:backgroundTint="@color/colorAccent"
         android:textColor="@color/colorAccent"
         android:textColorHint="@color/grey"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.438"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bipNumbertextView" />
+        app:layout_constraintTop_toBottomOf="@+id/bibNumbertextView" />
 
     <TextView
         android:id="@+id/resultsTextview"
@@ -101,7 +101,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.446"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bipNumberEditText" />
+        app:layout_constraintTop_toBottomOf="@+id/bibNumberEditText" />
 
     <EditText
         android:id="@+id/resultEditText"

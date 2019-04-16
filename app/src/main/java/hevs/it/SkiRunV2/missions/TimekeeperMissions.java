@@ -47,7 +47,7 @@ public class TimekeeperMissions extends AppCompatActivity {
         resultTextView = (TextView)findViewById(R.id.resultsTextview);
         locationTextView = (TextView) findViewById(R.id.locationTextViewTimeKeeper);
 
-        bipNumberEditText = (EditText)findViewById(R.id.bipNumberEditText);
+        bipNumberEditText = (EditText)findViewById(R.id.bibNumberEditText);
         resultEditText = (EditText)findViewById(R.id.resultEditText);
 
 
