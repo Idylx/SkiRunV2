@@ -5,16 +5,20 @@
         android:id="@+id/navigation_availibility"
         android:icon="@drawable/ic_clock"
         android:title="@string/title_avilibility"
+        android:color="@color/colorAccent" android:state_checked="true"
         />
 
     <item
         android:id="@+id/navigation_dashboard"
         android:icon="@drawable/ic_rocket"
-        android:title="@string/title_dashboard" />
+        android:title="@string/title_dashboard"
+        android:color="@color/colorAccent" android:state_checked="true"/>
 
     <item
         android:id="@+id/navigation_settings"
         android:icon="@drawable/ic_settings"
-        android:title="@string/title_settings" />
+        android:title="@string/title_settings"
+        android:color="@color/colorAccent" android:state_checked="true"
+        />
 
 </menu>
