@@ -3,33 +3,76 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".missions.DoorControllerCamera"
-    android:background="@drawable/gradient_background">
+    android:background="@drawable/gradient_background"
+    android:paddingLeft="0dp"
+    android:paddingTop="0dp"
+    android:paddingRight="0dp"
+    android:paddingBottom="0dp"
+    tools:context=".missions.DoorControllerCamera">
 
 
     <hevs.it.SkiRunV2.missions.camera.AspectFrameLayout
         android:id="@+id/continuousCapture_afl"
-        android:layout_width="match_parent"
-        android:layout_height="634dp"
-        android:layout_below="@id/capture_button"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_alignParentBottom="true"
         android:layout_centerVertical="true"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/capture_button">
+        app:layout_constraintTop_toTopOf="parent">
+
 
         <SurfaceView
             android:id="@+id/continuousCapture_surfaceView"
             android:layout_width="match_parent"
-            android:layout_height="632dp"
+            android:layout_height="match_parent"
             android:layout_gravity="center" />
 
     </hevs.it.SkiRunV2.missions.camera.AspectFrameLayout>
+
+    <ImageButton
+        android:id="@+id/capture_button"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="8dp"
+        android:adjustViewBounds="true"
+        android:background="@drawable/circle"
+        android:cropToPadding="false"
+        android:elevation="0dp"
+        android:onClick="clickCapture"
+        android:paddingStart="16dp"
+        android:paddingEnd="12dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_round_videocam_24px"
+
+        app:layout_constraintBottom_toBottomOf="@+id/continuousCapture_afl"
+        app:layout_constraintEnd_toEndOf="@+id/continuousCapture_afl"
+        app:layout_constraintHorizontal_bias="0.75"
+        app:layout_constraintStart_toEndOf="@+id/progressBarCamera"
+        app:layout_constraintTop_toTopOf="@+id/continuousCapture_afl" />
+
+    <!--ImageButton
+        android:id="@+id/capture_button"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="299dp"
+        android:layout_marginEnd="299dp"
+        android:layout_marginBottom="8dp"
+        android:adjustViewBounds="true"
+        android:background="@drawable/circle"
+        android:cropToPadding="false"
+        android:elevation="0dp"
+        android:onClick="clickCapture"
+        android:paddingStart="16dp"
+        android:paddingEnd="12dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_round_videocam_24px"
+        app:layout_constraintBottom_toBottomOf="@id/continuousCapture_afl"
+        app:layout_constraintEnd_toEndOf="@id/continuousCapture_afl"
+        -->
 
     <TextView
         android:id="@+id/recording_text"
@@ -37,11 +80,12 @@
         android:layout_height="wrap_content"
         android:layout_alignStart="@id/continuousCapture_afl"
         android:layout_alignTop="@id/continuousCapture_afl"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="72dp"
+        android:layout_marginTop="16dp"
         android:text="@string/nowRecording"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="#f00"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/continuousCapture_afl"
         app:layout_constraintTop_toTopOf="@+id/continuousCapture_afl" />
 
@@ -52,39 +96,18 @@
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="@+id/continuousCapture_afl"
         app:layout_constraintEnd_toEndOf="@+id/continuousCapture_afl"
-        app:layout_constraintHorizontal_bias="0.489"
         app:layout_constraintStart_toStartOf="@+id/continuousCapture_afl"
-        app:layout_constraintTop_toTopOf="@+id/continuousCapture_afl"
-        app:layout_constraintVertical_bias="0.208" />
-
-    <Button
-        android:id="@+id/capture_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="16dp"
-        android:onClick="clickCapture"
-        android:text="@string/capture"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/continuousCapture_afl" />
 
     <TextView
         android:id="@+id/capturedVideoDesc_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@id/capture_button"
-        android:layout_alignBottom="@id/capture_button"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="80dp"
-        android:layout_marginEnd="8dp"
-        android:layout_toEndOf="@id/capture_button"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="72dp"
         android:text="@string/secondsOfVideo"
-        android:textColor="@color/colorAccent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.981"
-        app:layout_constraintStart_toEndOf="@+id/capture_button"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:textColor="@color/colorVideoSave"
+        app:layout_constraintEnd_toEndOf="@+id/continuousCapture_afl"
+        app:layout_constraintTop_toTopOf="@+id/continuousCapture_afl" />
 
 </android.support.constraint.ConstraintLayout>

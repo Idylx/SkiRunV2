@@ -37,8 +37,8 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -64,9 +64,9 @@ public class DoorControllerCamera extends Activity implements SurfaceHolder.Call
         SurfaceTexture.OnFrameAvailableListener {
     private static final String TAG = "DoorControllerCamera";
 
-    private static final int VIDEO_WIDTH = 1920;  // dimensions for 720p video
+    private static final int VIDEO_WIDTH = 1920;  // dimensions for 1080p video
     private static final int VIDEO_HEIGHT = 1080;
-    private static final int DESIRED_PREVIEW_FPS = 20;
+    private static final int DESIRED_PREVIEW_FPS = 30;
 
     private EglCore mEglCore;
     private WindowSurface mDisplaySurface;
@@ -337,7 +337,7 @@ public class DoorControllerCamera extends Activity implements SurfaceHolder.Call
         tv.setText(str);
 
         boolean wantEnabled = (mCircEncoder != null) && !mFileSaveInProgress;
-        Button button = (Button) findViewById(R.id.capture_button);
+        ImageButton button = (ImageButton) findViewById(R.id.capture_button);
         if (button.isEnabled() != wantEnabled) {
             Log.d(TAG, "setting enabled = " + wantEnabled);
             button.setEnabled(wantEnabled);

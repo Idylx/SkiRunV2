@@ -6,7 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,7 +23,7 @@ public class DoorControllerMissions extends AppCompatActivity {
 
     MissionEntity mission;
     TextView dateTextView, descriptionTextView, locationTextView;
-    Button cameraButton;
+    ImageButton cameraButton;
     Intent i;
     String competitionName, disciplineName, missionName;
 
@@ -37,7 +37,7 @@ public class DoorControllerMissions extends AppCompatActivity {
         descriptionTextView = (TextView) findViewById(R.id.descriptionTextViewDoorController);
         locationTextView = (TextView) findViewById(R.id.locationTextViewController);
 
-        cameraButton = (Button)findViewById(R.id.beginvideorecorderButton);
+        cameraButton = (ImageButton) findViewById(R.id.beginvideorecorderButton);
 
         i = getIntent();
 

@@ -6,7 +6,7 @@
 
     <color name="bg_login">#FFFFFF</color>
     <color name="bg_register">#2e3237</color>
-    <color name="bg_main">#428bca</color>
+    <color name="bg_main">#428BCA</color>
     <color name="white">#FFFFFF</color>
     <color name="input_login">#222222</color>
     <color name="input_login_hint">#999999</color>
@@ -21,5 +21,6 @@
     <color name="red">#FFFF0000</color>
     <color name="grey">#AAAAAA</color>
     <color name="lightGrey">#F5F5F5</color>
+    <color name="colorVideoSave">#84FF00</color>
 
 </resources>
