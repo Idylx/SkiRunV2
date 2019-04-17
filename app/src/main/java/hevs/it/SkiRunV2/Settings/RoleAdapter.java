@@ -11,6 +11,7 @@ import hevs.it.SkiRunV2.R;
 import hevs.it.SkiRunV2.entity.UserEntity;
 import hevs.it.SkiRunV2.firebase.FirebaseUserManager;
 
+// Adapter for the roles
 public class RoleAdapter extends RecyclerView.Adapter<RoleAdapter.RolesViewHolder> {
 
     private static final String TAG = "RoleAdapter";

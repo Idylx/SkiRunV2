@@ -12,6 +12,7 @@ import hevs.it.SkiRunV2.R;
 import hevs.it.SkiRunV2.entity.UserEntity;
 import hevs.it.SkiRunV2.firebase.FirebaseUserManager;
 
+// Adapter for the clubs
 public class ClubAdapter extends RecyclerView.Adapter<ClubAdapter.ClubsViewHolder>  {
 
     private static final String TAG = "ClubAdapter";

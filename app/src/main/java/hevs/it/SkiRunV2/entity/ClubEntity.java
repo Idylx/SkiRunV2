@@ -6,8 +6,9 @@ import com.google.firebase.database.Exclude;
 
 import hevs.it.SkiRunV2.models.Club;
 
-
+// Club entity
 public class ClubEntity implements Club {
+
 
     @NonNull
     @Exclude
