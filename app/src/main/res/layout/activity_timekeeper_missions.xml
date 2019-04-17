@@ -126,12 +126,10 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="8dp"
         android:background="@drawable/roundable_button"
         android:text="Did not finish"
         android:textColor="@android:color/holo_blue_light"
         android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/validateResultButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/resultEditText" />
@@ -140,13 +138,13 @@
         android:id="@+id/validateResultButton"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="32dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
         android:background="@drawable/submit"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dnfbutton" />
 
 
 </android.support.constraint.ConstraintLayout>
