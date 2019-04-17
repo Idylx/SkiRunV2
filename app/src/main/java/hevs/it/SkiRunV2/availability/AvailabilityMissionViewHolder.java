@@ -5,6 +5,11 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import hevs.it.SkiRunV2.R;
 import hevs.it.SkiRunV2.firebase.FirebaseMissionManager;
 
@@ -19,6 +24,7 @@ public class AvailabilityMissionViewHolder
 
     public String currentMissionName;
 
+    List<String> listSubscribers = new ArrayList<>();
     //current settings of missions
     String currentCompetition;
     String currentDiscipline;
@@ -30,12 +36,25 @@ public class AvailabilityMissionViewHolder
         missionTime =(TextView) itemView.findViewById(R.id.AvailibilityMissionTime);
         selectionMission =(CheckBox) itemView.findViewById(R.id.AvailibilityMissionCheckBox);
 
+
         selectionMission.setClickable(false);
         //set listener to the checkbox
         itemView.setOnClickListener(this);
     }
 
 
+    public void setCheckSubscribed(){
+        for (String s : listSubscribers){
+            if (s.equals(FirebaseAuth.getInstance().getUid())){
+                selectionMission.setChecked(true);
+            }
+        }
+        for (String s : listSubscribers){
+            if (s.equals(FirebaseAuth.getInstance().getUid())){
+                selectionMission.setChecked(true);
+            }
+        }
+    }
     @Override
     public void onClick(View v) {
         if(!selectionMission.isChecked()){

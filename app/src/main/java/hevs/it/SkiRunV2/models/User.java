@@ -9,4 +9,5 @@ public interface User {
     String getRole();
     String getJobPreference();
     String getClub();
+    boolean isAdmin();
 }

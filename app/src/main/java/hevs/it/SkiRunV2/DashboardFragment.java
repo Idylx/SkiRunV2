@@ -225,7 +225,6 @@ public class DashboardFragment extends Fragment {
                     spDisciplines.getSelectedItem().toString(), new FirebaseCallBack() {
                         @Override
                         public void onCallBack(Object o) {
-
                             List<MissionEntity> myMissions = new ArrayList<>();
                             for(MissionEntity mission :  (List<MissionEntity>)o){
                                 for(String uid : mission.getSelecteds()){

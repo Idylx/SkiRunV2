@@ -66,7 +66,7 @@ public class DoorControllerCamera extends Activity implements SurfaceHolder.Call
 
     private static final int VIDEO_WIDTH = 1920;  // dimensions for 1080p video
     private static final int VIDEO_HEIGHT = 1080;
-    private static final int DESIRED_PREVIEW_FPS = 30;
+    private static final int DESIRED_PREVIEW_FPS = 24;
 
     private EglCore mEglCore;
     private WindowSurface mDisplaySurface;
@@ -491,7 +491,7 @@ public class DoorControllerCamera extends Activity implements SurfaceHolder.Call
         //       (can we guarantee that camera preview size is compatible with AVC video encoder?)
         try {
             mCircEncoder = new CircularEncoder(VIDEO_WIDTH, VIDEO_HEIGHT, 6000000,
-                    mCameraPreviewThousandFps / 1000, 30, mHandler);
+                    mCameraPreviewThousandFps / 1000, 25, mHandler);
         } catch (IOException ioe) {
             throw new RuntimeException(ioe);
         }
@@ -559,7 +559,7 @@ public class DoorControllerCamera extends Activity implements SurfaceHolder.Call
         int viewHeight = sv.getHeight();
         GLES20.glViewport(0, 0, viewWidth, viewHeight);
         mFullFrameBlit.drawFrame(mTextureId, mTmpMatrix);
-        drawExtra(mFrameNum, viewWidth, viewHeight);
+       // drawExtra(mFrameNum, viewWidth, viewHeight);
         mDisplaySurface.swapBuffers();
 
         // Send it to the video encoder.
@@ -567,7 +567,7 @@ public class DoorControllerCamera extends Activity implements SurfaceHolder.Call
             mEncoderSurface.makeCurrent();
             GLES20.glViewport(0, 0, VIDEO_WIDTH, VIDEO_HEIGHT);
             mFullFrameBlit.drawFrame(mTextureId, mTmpMatrix);
-            drawExtra(mFrameNum, VIDEO_WIDTH, VIDEO_HEIGHT);
+            //drawExtra(mFrameNum, VIDEO_WIDTH, VIDEO_HEIGHT);
             mCircEncoder.frameAvailableSoon();
             mEncoderSurface.setPresentationTime(mCameraTexture.getTimestamp());
             mEncoderSurface.swapBuffers();
@@ -578,7 +578,7 @@ public class DoorControllerCamera extends Activity implements SurfaceHolder.Call
 
     /**
      * Adds a bit of extra stuff to the display just to give it flavor.
-     */
+     *
     private static void drawExtra(int frameNum, int width, int height) {
         // We "draw" with the scissor rect and clear calls.  Note this uses window coordinates.
         int val = frameNum % 3;
@@ -593,5 +593,5 @@ public class DoorControllerCamera extends Activity implements SurfaceHolder.Call
         GLES20.glScissor(xpos, 0, width / 32, height / 32);
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);
         GLES20.glDisable(GLES20.GL_SCISSOR_TEST);
-    }
+    }*/
 }

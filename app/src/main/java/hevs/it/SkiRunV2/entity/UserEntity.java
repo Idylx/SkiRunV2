@@ -12,6 +12,7 @@ public class UserEntity implements User {
     @NonNull
     @Exclude
     private String uid;
+    private boolean admin;
     private String email;
     private String firstName;
     private String lastName;
@@ -111,5 +112,14 @@ public class UserEntity implements User {
 
     public String toString(){
         return getFirstName() + " " + getLastName();
+    }
+
+    @Override
+    public boolean isAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(boolean admin) {
+        this.admin = admin;
     }
 }

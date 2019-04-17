@@ -6,8 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.firebase.auth.FirebaseAuth;
-
 import java.util.Date;
 import java.util.List;
 
@@ -24,6 +22,8 @@ public class AvailabilityMissionAdapter extends RecyclerView.Adapter<Availabilit
     // current settings to get the path
     private String currentCompetition;
     private String currentDiscipline;
+    //
+
 
     //constructor
     AvailabilityMissionAdapter(List<MissionEntity> missions) {
@@ -44,19 +44,21 @@ public class AvailabilityMissionAdapter extends RecyclerView.Adapter<Availabilit
     @Override
     public void onBindViewHolder(AvailabilityMissionViewHolder holder, int i) {
 
+        holder.listSubscribers.clear();
         // bind data to the holder
         holder.missionName.setText(missions.get(i).getMissionName());
-        holder.missionTime.setText(DateFormat.format("hh:mm", new Date(missions.get(i).getStartTime()*1000)).toString()+" "+DateFormat.format("hh:mm", new Date(missions.get(i).getEndTime()*1000)).toString());
+        try {
+            holder.missionTime.setText(DateFormat.format("hh:mm", new Date(missions.get(i).getStartTime() * 1000)).toString() + " " + DateFormat.format("hh:mm", new Date(missions.get(i).getEndTime() * 1000)).toString());
+        }catch (NullPointerException e ){
+            holder.missionTime.setText("");
+        }
         holder.currentMissionName = missions.get(i).getMissionName();
         holder.currentCompetition = currentCompetition;
         holder.currentDiscipline = currentDiscipline;
 
-        for (String s : missions.get(i).getSubscribed()) {
-            if (s.equals(FirebaseAuth.getInstance().getUid()))
-                holder.selectionMission.setChecked(true);
-            else
-                holder.selectionMission.setChecked(false);
-        }
+        holder.listSubscribers.addAll( missions.get(i).getSubscribed());
+
+        holder.setCheckSubscribed();
 
     }
 
@@ -80,17 +82,19 @@ public class AvailabilityMissionAdapter extends RecyclerView.Adapter<Availabilit
         missions.clear();
         missions.addAll(newMission);
         notifyDataSetChanged();
+
     }
-/*
-    boolean checkSubscrubed(int i) {
+
+    /*
+    boolean checkSubscribed(int i) {
         for (String s : missions.get(i).getSubscribed()) {
-            if (s.equals(FirebaseAuth.getInstance().getUid()))
+            if (uidUser.equals(s))
                 return true;
             else
                return false;
         }
         return false;
-    }*/
-
+    }
+*/
 
 }
