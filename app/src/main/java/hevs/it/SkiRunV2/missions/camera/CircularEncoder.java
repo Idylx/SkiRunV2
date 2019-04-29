@@ -417,9 +417,7 @@ public class CircularEncoder {
             // Create the file metadata
             StorageMetadata metadata = new StorageMetadata.Builder().setContentType("video/mp4").build();
 
-            //TODO: here need to save the output file into firebase, first need to save it
-
-
+            // here need to save the output file into firebase, first need to save it inside the phone
             MediaCodec.BufferInfo info = new MediaCodec.BufferInfo();
             MediaMuxer muxer = null;
 
@@ -446,6 +444,8 @@ public class CircularEncoder {
             } finally {
                 if (muxer != null) {
                     muxer.stop();
+
+                    //relase before saving on firebase
                     muxer.release();
 
                     // Upload file and metadata to the path 'video/ competition bla bla '

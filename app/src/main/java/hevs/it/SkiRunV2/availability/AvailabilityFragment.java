@@ -129,16 +129,21 @@ public class AvailabilityFragment extends Fragment {
 
 
     private void refreshCompetitions() {
-        //get current competition
-        FirebaseManager.getListCompetions(new FirebaseCallBack() {
-            @Override
-            public void onCallBack(Object o) {
-                competions = (ArrayList<String>) o;
-                adapterCompetions.clear();
-                adapterCompetions.addAll(competions);
-                adapterCompetions.notifyDataSetChanged();
-            }
-        });
+        try {
+            // get current discipline
+            //get current competition
+            FirebaseManager.getListCompetions(new FirebaseCallBack() {
+                @Override
+                public void onCallBack(Object o) {
+                    competions = (ArrayList<String>) o;
+                    adapterCompetions.clear();
+                    adapterCompetions.addAll(competions);
+                    adapterCompetions.notifyDataSetChanged();
+                }
+            });
+        }catch (NullPointerException e){
+            Log.println(1, "AvailabilityFragment", e.getMessage());
+        }
     }
 
 

@@ -44,6 +44,7 @@ public class AvailabilityMissionAdapter extends RecyclerView.Adapter<Availabilit
     @Override
     public void onBindViewHolder(AvailabilityMissionViewHolder holder, int i) {
 
+        // clear the data before update
         holder.listSubscribers.clear();
         // bind data to the holder
         holder.missionName.setText(missions.get(i).getMissionName());
@@ -56,8 +57,10 @@ public class AvailabilityMissionAdapter extends RecyclerView.Adapter<Availabilit
         holder.currentCompetition = currentCompetition;
         holder.currentDiscipline = currentDiscipline;
 
+        //add all the subscriber
         holder.listSubscribers.addAll( missions.get(i).getSubscribed());
 
+        // check box
         holder.setCheckSubscribed();
 
     }
@@ -85,16 +88,6 @@ public class AvailabilityMissionAdapter extends RecyclerView.Adapter<Availabilit
 
     }
 
-    /*
-    boolean checkSubscribed(int i) {
-        for (String s : missions.get(i).getSubscribed()) {
-            if (uidUser.equals(s))
-                return true;
-            else
-               return false;
-        }
-        return false;
-    }
-*/
+
 
 }

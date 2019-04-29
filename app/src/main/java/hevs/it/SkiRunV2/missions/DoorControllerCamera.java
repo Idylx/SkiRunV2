@@ -64,6 +64,7 @@ public class DoorControllerCamera extends Activity implements SurfaceHolder.Call
         SurfaceTexture.OnFrameAvailableListener {
     private static final String TAG = "DoorControllerCamera";
 
+    //dimensions
     private static final int VIDEO_WIDTH = 1920;  // dimensions for 1080p video
     private static final int VIDEO_HEIGHT = 1080;
     private static final int DESIRED_PREVIEW_FPS = 24;
@@ -135,6 +136,7 @@ public class DoorControllerCamera extends Activity implements SurfaceHolder.Call
                 return;
             }
 
+            //handle the red message to display information to the user
             switch (msg.what) {
                 case MSG_BLINK_TEXT: {
                     TextView tv = (TextView) activity.findViewById(R.id.recording_text);
@@ -173,6 +175,7 @@ public class DoorControllerCamera extends Activity implements SurfaceHolder.Call
         }
     }
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -180,11 +183,13 @@ public class DoorControllerCamera extends Activity implements SurfaceHolder.Call
 
         i = getIntent();
 
+        //get the current node of the missions
         competitionName= i.getStringExtra("competition");
         disciplineName = i.getStringExtra("discipline");
         missionName = i.getStringExtra("missionName");
         location = i.getStringExtra("location");
 
+        //found the progressbar
         pb = (ProgressBar) findViewById(R.id.progressBarCamera);
         pb.setVisibility(ProgressBar.INVISIBLE);
 
@@ -302,6 +307,7 @@ public class DoorControllerCamera extends Activity implements SurfaceHolder.Call
 
         Display display = ((WindowManager)getSystemService(WINDOW_SERVICE)).getDefaultDisplay();
 
+        // the orientation is set inside the manifest, we should delete those parts
         //TODO: seems that something is wrong here
         if(display.getRotation() == Surface.ROTATION_0) {
             mCamera.setDisplayOrientation(90);

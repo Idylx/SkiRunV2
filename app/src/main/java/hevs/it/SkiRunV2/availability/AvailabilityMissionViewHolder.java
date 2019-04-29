@@ -36,27 +36,25 @@ public class AvailabilityMissionViewHolder
         missionTime =(TextView) itemView.findViewById(R.id.AvailibilityMissionTime);
         selectionMission =(CheckBox) itemView.findViewById(R.id.AvailibilityMissionCheckBox);
 
-
+        //desactivate the click, UX reason, so clicking on the check will call the on click of the row
         selectionMission.setClickable(false);
         //set listener to the checkbox
         itemView.setOnClickListener(this);
     }
 
-
+    // check if the user is in the list if subscibed
     public void setCheckSubscribed(){
         for (String s : listSubscribers){
             if (s.equals(FirebaseAuth.getInstance().getUid())){
                 selectionMission.setChecked(true);
             }
         }
-        for (String s : listSubscribers){
-            if (s.equals(FirebaseAuth.getInstance().getUid())){
-                selectionMission.setChecked(true);
-            }
-        }
     }
+
+
     @Override
     public void onClick(View v) {
+        // if the checkbox is not currently set update it on firebase
         if(!selectionMission.isChecked()){
             selectionMission.setChecked(true);
             FirebaseMissionManager.updateSubscriberMission(currentCompetition,currentDiscipline, currentMissionName);
