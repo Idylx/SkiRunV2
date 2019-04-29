@@ -2,15 +2,12 @@ package hevs.it.SkiRunV2.entity;
 
 import android.support.annotation.NonNull;
 import android.text.format.DateFormat;
-
 import com.google.firebase.database.Exclude;
-
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import hevs.it.SkiRunV2.models.Mission;
-
 
 public class MissionEntity implements Mission {
 
@@ -28,8 +25,6 @@ public class MissionEntity implements Mission {
     private List<String> selecteds;
     private Map<String,Object> results;
 
-
-
     public MissionEntity(){}
 
     public MissionEntity(Mission mission){
@@ -45,7 +40,6 @@ public class MissionEntity implements Mission {
         this.selecteds = mission.getSelecteds();
         this.results = mission.getResults();
     }
-
 
     @Override
     public String getMissionName() {

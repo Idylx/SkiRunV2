@@ -5,6 +5,4 @@ public interface Result {
     String getUnit();
     String getResult();
     String getCameraLink();
-
-
 }

@@ -37,16 +37,19 @@ public class MainActivity extends AppCompatActivity  {
         navigation.getMenu().findItem(R.id.navigation_dashboard).setChecked(true);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
+        // add fragment to main activity
         AddFragment();
 
+        // set the dashboard
         setFragmentDashboard();
 
+        // check permission for the camera
         if (!PermissionHelper.hasCameraPermission(this)) {
             PermissionHelper.requestCameraPermission(this, true);
         }
     }
 
-
+    // manage transaction between different fragments depending on the bottom navigation bar
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -83,6 +86,7 @@ public class MainActivity extends AppCompatActivity  {
         fm.beginTransaction().add(R.id.main_container, dashboardFragment, "1").add(R.id.main_container, settingsFragment, "2").add(R.id.main_container, availibilityFragment, "3").commit();
     }
 
+    // reload correct fragment depending on the current active string
     private void reloadCorrectFragment(){
         switch (activeString){
             case "dashboard":
@@ -100,6 +104,12 @@ public class MainActivity extends AppCompatActivity  {
                 break;
         }
     }
+
+    /*
+    The following three methods are setting the correct fragment
+        Hide every fragment apart the new current one
+        Set the fragment then set the title of the action bar
+     */
     private void setFragmentSettings(){
         fm.beginTransaction().hide(availibilityFragment).commit();
         fm.beginTransaction().hide(dashboardFragment).commit();

@@ -16,7 +16,6 @@ public class ResultEntity implements Result {
 
     public ResultEntity(){}
 
-
     public ResultEntity(Result result){
         this.bibNumber = result.getBibNumber();
         this.result = result.getResult();
@@ -53,6 +52,5 @@ public class ResultEntity implements Result {
     @Override
     public String getCameraLink() { return cameraLink; }
     public void setCameraLink(String cameraLink) { this.cameraLink = cameraLink; }
-
 
 }

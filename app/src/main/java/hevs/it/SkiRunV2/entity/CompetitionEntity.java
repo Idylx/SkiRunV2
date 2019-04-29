@@ -2,14 +2,10 @@ package hevs.it.SkiRunV2.entity;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
-
 import com.google.firebase.database.Exclude;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import hevs.it.SkiRunV2.models.Competition;
-
 
 public class CompetitionEntity implements Competition {
 
@@ -22,9 +18,7 @@ public class CompetitionEntity implements Competition {
     private List<ClubEntity> guestsClub;
     private List<DisciplineEntity> disciplines;
 
-
     public CompetitionEntity(){}
-
 
     public CompetitionEntity(Competition competition){
         this.name = competition.getName();
@@ -33,9 +27,6 @@ public class CompetitionEntity implements Competition {
         this.guestsClub = competition.getGuestsClub();
         this.disciplines = competition.getDisciplines();
     }
-
-
-
 
     @Override
     public String getName() {
@@ -64,7 +55,6 @@ public class CompetitionEntity implements Competition {
         this.endDate = endDate;
     }
 
-
     @Override
     public List<ClubEntity> getGuestsClub() {
         return guestsClub;
@@ -73,7 +63,6 @@ public class CompetitionEntity implements Competition {
     public void setGuestsClub(List<ClubEntity> guestsClub){
         this.guestsClub = guestsClub;
     }
-
 
     @Override
     public List<DisciplineEntity> getDisciplines() {
@@ -106,7 +95,6 @@ public class CompetitionEntity implements Competition {
         }
         return  list;
     }
-
 
     @Override
     public String toString() {

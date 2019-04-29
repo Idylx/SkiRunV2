@@ -1,5 +1,4 @@
 package hevs.it.SkiRunV2.availability;
-
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,16 +11,13 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import hevs.it.SkiRunV2.R;
 import hevs.it.SkiRunV2.entity.CompetitionEntity;
 import hevs.it.SkiRunV2.entity.MissionEntity;
 import hevs.it.SkiRunV2.firebase.FirebaseCallBack;
 import hevs.it.SkiRunV2.firebase.FirebaseManager;
-
 
 public class AvailabilityFragment extends Fragment {
 
@@ -41,7 +37,6 @@ public class AvailabilityFragment extends Fragment {
     RecyclerView rv;
     RecyclerView.LayoutManager layoutManager;
 
-
     CompetitionEntity competitionSelected;
     ArrayList<String> competions;
     ArrayAdapter<String> adapterCompetions;
@@ -59,15 +54,11 @@ public class AvailabilityFragment extends Fragment {
         competitionSelected = new CompetitionEntity();
         competions = new ArrayList<>();
 
-
         // initialize the list of mission
         missions = new ArrayList<>();
-        refreshCompetitions();
-
 
         //get every competition on the creation of the fragment
-
-
+        refreshCompetitions();
     }
 
     @Override
@@ -87,7 +78,6 @@ public class AvailabilityFragment extends Fragment {
         adapterDiscipline = new ArrayAdapter<String>(getContext(), R.layout.custom_textview, competitionSelected.getListDiscipline());
         adapter = new AvailabilityMissionAdapter(missions);
 
-
         return view;
     }
 
@@ -101,6 +91,7 @@ public class AvailabilityFragment extends Fragment {
         spDisciplines.setAdapter(adapterDiscipline);
         rv.setAdapter(adapter);
 
+        // when the user click on the spinner competition
         spCompetitions.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -110,43 +101,41 @@ public class AvailabilityFragment extends Fragment {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
+                // nothing selected
             }
         });
 
+        // when the user press on the spinner discipline
         spDisciplines.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                // refresh the missions
                 refreshMissions();
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
-
     }
 
-
-
+    // refresh competitions
     private void refreshCompetitions() {
-        try {
-            // get current discipline
-            //get current competition
-            FirebaseManager.getListCompetions(new FirebaseCallBack() {
-                @Override
-                public void onCallBack(Object o) {
-                    competions = (ArrayList<String>) o;
-                    adapterCompetions.clear();
-                    adapterCompetions.addAll(competions);
-                    adapterCompetions.notifyDataSetChanged();
-                }
-            });
-        }catch (NullPointerException e){
-            Log.println(1, "AvailabilityFragment", e.getMessage());
-        }
+        //get current competition
+        FirebaseManager.getListCompetions(new FirebaseCallBack() {
+            @Override
+            public void onCallBack(Object o) {
+                competions = (ArrayList<String>) o;
+                // clear the adapter
+                adapterCompetions.clear();
+                // add all the competitions
+                adapterCompetions.addAll(competions);
+                // notify changes
+                adapterCompetions.notifyDataSetChanged();
+            }
+        });
     }
 
-
+    // refresh the disciplines
     private void refreshDisciplines() {
         try {
             // get current discipline
@@ -154,9 +143,13 @@ public class AvailabilityFragment extends Fragment {
                 @Override
                 public void onCallBack(Object o) {
                     competitionSelected = (CompetitionEntity) o;
+                    // clear the adapter
                     adapterDiscipline.clear();
+                    // add all the competitions selected
                     adapterDiscipline.addAll(competitionSelected.getListDiscipline());
+                    // notify changes
                     adapterDiscipline.notifyDataSetChanged();
+                    // refresh the missions
                     refreshMissions();
                 }
             });
@@ -165,7 +158,7 @@ public class AvailabilityFragment extends Fragment {
         }
     }
 
-
+    // refresh missions
     private void refreshMissions() {
         try {
             //get current missions
@@ -188,8 +181,5 @@ public class AvailabilityFragment extends Fragment {
             Log.i(TAG, eI.getMessage());
             spDisciplines.setSelection(0);
         }
-
     }
-
-
 }

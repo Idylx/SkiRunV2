@@ -55,6 +55,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
                     return;
                 }
 
+                // reset password
                 progressBar.setVisibility(View.VISIBLE);
                 auth.sendPasswordResetEmail(email)
                         .addOnCompleteListener(new OnCompleteListener<Void>() {

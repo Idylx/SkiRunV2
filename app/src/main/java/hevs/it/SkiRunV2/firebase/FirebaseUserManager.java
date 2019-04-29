@@ -10,6 +10,7 @@ public class FirebaseUserManager{
 
     private static FirebaseDatabase mFirebaseDatabase = FirebaseDatabase.getInstance();
 
+    // update the user
     public static void updateUser(UserEntity userEntity) {
         DatabaseReference ref = mFirebaseDatabase.getReference().child(FirebaseSession.NODE_USERS);
         ref.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(userEntity);

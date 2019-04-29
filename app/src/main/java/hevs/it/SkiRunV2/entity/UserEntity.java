@@ -1,11 +1,8 @@
 package hevs.it.SkiRunV2.entity;
 
 import android.support.annotation.NonNull;
-
 import com.google.firebase.database.Exclude;
-
 import hevs.it.SkiRunV2.models.User;
-
 
 public class UserEntity implements User {
 
@@ -18,11 +15,8 @@ public class UserEntity implements User {
     private String lastName;
     private String phone;
     private String role;
-
-
     private String club;
     private String jobPreference;
-
 
     public UserEntity(){}
 
@@ -35,10 +29,7 @@ public class UserEntity implements User {
         this.role = user.getRole();
         this.club = user.getClub();
         this.jobPreference = user.getJobPreference();
-
-
     }
-
 
     @Override
     public String getUid() { return null; }

@@ -10,14 +10,12 @@ import java.util.Map;
 import hevs.it.SkiRunV2.models.Discipline;
 import hevs.it.SkiRunV2.models.Mission;
 
-
 public class DisciplineEntity implements Discipline {
 
     @NonNull
     @Exclude
     private String name;
     private List<MissionEntity> missions;
-
 
     public DisciplineEntity(){}
 
@@ -35,7 +33,6 @@ public class DisciplineEntity implements Discipline {
     public void setName(String name){
         this.name = name;
     }
-
 
     @Override
     public List<MissionEntity> getMissions() {

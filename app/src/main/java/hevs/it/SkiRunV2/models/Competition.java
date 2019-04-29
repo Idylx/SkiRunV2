@@ -1,9 +1,6 @@
 package hevs.it.SkiRunV2.models;
 
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
-
 import hevs.it.SkiRunV2.entity.ClubEntity;
 import hevs.it.SkiRunV2.entity.DisciplineEntity;
 
